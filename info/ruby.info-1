@@ -1,0 +1,1871 @@
+This is ruby.info, produced by makeinfo version 4.0 from Ruby.texi.
+
+INFO-DIR-SECTION Programming Languages
+START-INFO-DIR-ENTRY
+* ruby: (ruby).                 Ruby Language Reference Manual (English)
+END-INFO-DIR-ENTRY
+
+     This Info file was converted from the Ruby Language Reference
+     Manual (HTML), automatically.
+
+     The original HTML document is below.
+
+     <http://www.ruby-lang.org/en/man-1.4/>
+     for `Ruby' Version 1.4.6
+     written by Yukihiro Matsumoto <matz@zetabits.com>
+     Last modified: Mon Feb 23 16:01:41 1998
+
+     So, this document is matz's, too.
+
+
+File: ruby.info,  Node: Top,  Next: Preface,  Prev: (dir),  Up: (dir)
+
+Ruby Language Reference Manual
+******************************
+
+                    written by Yukihiro Matsumoto <matz@zetabits.com>
+                              Last modified: Mon Feb 23 16:01:41 1998
+                                This text is for `Ruby' Version 1.4.6
+
+* Menu:
+
+* Preface::
+* Options::
+* Ruby Syntax::
+* Ruby Functions::
+* Pre-defined variables and constants::
+* Pre-defined classes and modules::
+* Bundled Libraries::
+* Pseudo BNF Syntax of Ruby::
+* Ruby Glossary::
+* Variable Index::
+* Function Index::
+
+ --- The Detailed Node Listing ---
+
+Ruby Syntax
+
+* syntax_lexical::              Lexical structure
+*   syntax_ident::              Identifiers
+*   syntax_comment::            Comment
+*   syntax_embed_doc::          Embedded Documentation
+*   syntax_resword::            Reserved words
+* syntax_program::              Program
+* syntax_expression::           Expressions
+*   syntax_string::             String literals
+*   syntax_command::            Command output
+*   syntax_regexp::             Regular expressions
+*   syntax_exprsub::            Expression substitution in strings
+*   syntax_here_doc::           line-oriented string literals (Here document)
+*   syntax_numeric::            Numeric literals
+*   syntax_variable::           Variables and constants
+*   syntax_gvar::               Global variables
+*   syntax_ivar::               Instance variables
+*   syntax_lvar::               Local variables
+*   syntax_pvar::               Pseudo variables
+*   syntax_const::              Constants
+*   syntax_array::              Array expressions
+*   syntax_hash::               Hash expressions
+*   syntax_method::             Method invocation
+*   syntax_super::              super
+*   syntax_assign::             Assignment
+*   syntax_operator::           Operator expressions
+*   syntax_control::            Control structure
+*     syntax_if::               if
+*     syntax_if-mod::           if modifier
+*     syntax_unless::           unless
+*     syntax_unless-mod::       unless modifier
+*     syntax_case::             case
+*     syntax_and::              and
+*     syntax_or::               or
+*     syntax_not::              not
+*     syntax_range::            Range expressions
+*     syntax_while::            while
+*     syntax_while-mod::        while modifier
+*     syntax_until::            until
+*     syntax_until-mod::        until modifier
+*     syntax_iter::             Iterators
+*     syntax_for::              for
+*     syntax_yield::            yield
+*     syntax_raise::            raise
+*     syntax_begin::            begin
+*     syntax_retry::            retry
+*     syntax_return::           return
+*     syntax_break::            break
+*     syntax_next::             next
+*     syntax_redo::             redo
+*     syntax_BEGIN_proc::       BEGIN
+*     syntax_END_proc::         END
+*   syntax_cdef::               Class definitions
+*   syntax_scdef::              Singleton-class definitions
+*   syntax_mdef::               Module definitions
+*   syntax_method-def::         Method definitions
+*   syntax_singleton-def::      Singleton-method definitions
+*   syntax_alias::              alias
+*   syntax_undef::              undef
+*   syntax_defined_p::          defined?
+
+Pre-defined classes and modules
+
+* classes::                   Pre-defined classes
+* modules::                   Pre-defined modules
+
+Ruby Glossary
+
+* glossary_A::                A
+* glossary_B::                B
+* glossary_C::                C
+* glossary_D::                D
+* glossary_E::                E
+* glossary_F::                F
+* glossary_G::                G
+* glossary_H::                H
+* glossary_I::                I
+* glossary_J::                J
+* glossary_K::                K
+* glossary_L::                L
+* glossary_M::                M
+* glossary_N::                N
+* glossary_O::                O
+* glossary_P::                P
+* glossary_Q::                Q
+* glossary_R::                R
+* glossary_S::                S
+* glossary_T::                T
+* glossary_U::                U
+* glossary_V::                V
+* glossary_W::                W
+* glossary_X::                X
+* glossary_Y::                Y
+* glossary_Z::                Z
+
+
+File: ruby.info,  Node: Preface,  Next: Options,  Up: Top
+
+Preface
+*******
+
+   Ruby is the interpreted scripting language for quick and easy
+object-oriented programming.  It has many features to process text
+files and to do system management tasks (as in Perl).  It is simple,
+straight-forward, and extensible.
+
+   If you want a language for easy object-oriented programming, or
+you don't like the PERL ugliness, or you do like the concept of lisp,
+but don't like too much parentheses, Ruby may be the language of the
+choice.
+
+   Ruby's features are as follows:
+
+   - Interpretive
+
+     Ruby is the interpreted language, so you don't have to recompile
+     to execute the program written in Ruby.
+
+   - Variables have no type (dynamic typing)
+
+     Variables in Ruby can contain data of any type.  You don't have
+     to worry about variable typing.  Consequently, it has weaker
+     compile time check.
+
+   - No declaration needed
+
+     You can use variables in your Ruby programs without any
+     declarations.  Variable name itself denotes its scope (local,
+     global, instance, etc.)
+
+   - Simple syntax
+
+     Ruby has simple syntax influenced slightly from Eiffel.
+
+   - No user-level memory management
+
+     Ruby has automatic memory management.  Objects no longer
+     referenced from anywhere are automatically collected by the
+     garbage collector built in the interpreter.
+
+   - Everything is object
+
+     Ruby is the pure object-oriented language from the beginning.
+     Even basic data like integers are treated uniformly as objects.
+
+   - Class, inheritance, methods
+
+     Of course, as a O-O language, Ruby has basic features like
+     classes, inheritance, methods, etc.
+
+   - Singleton methods
+
+     Ruby has the feature to define methods for certain specified
+     object.  For example, you can define a press-button action for
+     certain GUI button by defining a singleton method for the
+     button.  Or, you can make up your own prototype based object
+     system using singleton methods (if you want to).
+
+   - Mix-in by modules
+
+     Ruby does not have the multiple inheritance intentionally.  IMO,
+     It is the source of confusion. Instead, Ruby has modules to
+     share the implementation across the inheritance tree. It is
+     often called the "Mix-in."
+
+   - Iterators
+
+     Ruby has iterators for loop abstraction.
+
+   - Closures
+
+     In Ruby, you can objectify the procedure.
+
+   - Text processing and regular expression
+
+     Ruby has bunch of text processing features like in Perl.
+
+   - Bignums
+
+     With built-in bignums, you can calculate factorial(400), for
+     example.
+
+   - Exception handling
+
+     As in Java(tm).
+
+   - Direct access to OS
+
+     Ruby can call most of system calls on UNIX boxes.  It can be
+     used in system programming.
+
+   - Dynamic loading
+
+     You can load object files into Ruby interpreter on-the-fly, on
+     most of UNIXes.
+
+
+File: ruby.info,  Node: Options,  Next: Ruby Syntax,  Prev: Preface,  Up: Top
+
+Command line options
+********************
+
+   Ruby interpreter accepts following command-line options
+(switches).  Basically they are quite similar to those of Perl.
+
+`-0digit'
+     specifies the input record separator (`$/') as an octal number.
+     If no digits given, the null character is the separator.  Other
+     switches may follow the digits.  `-00' turns Ruby into paragraph
+     mode.  `-0777' makes Ruby read whole file at once as a single
+     string, since there is no legal character with that value.
+
+`-a'
+     turns on auto-split mode when used with `-n' or `-p'.  In
+     auto-split mode, Ruby executes
+
+          $F = $_.split
+
+     at beginning of each loop.
+
+`-c'
+     causes Ruby to check the syntax of the script and exit without
+     executing.  If there is no syntax error, Ruby will print
+     `"Syntax OK"' to the standard output.
+
+`-Kc'
+     specifies KANJI (Japanese character) code-set.
+
+`-d'
+`--debug'
+     turns on debug mode.  `$DEBUG' will set true.
+
+`-e script'
+     specifies script from command-line.  if `-e' switch specified,
+     Ruby will not look for a script filename in the arguments.
+
+`-F regexp'
+     specifies input field separator (`$;').
+
+`-h'
+`--help'
+     prints a summary of the options.
+
+`-i extension'
+     specifies in-place-edit mode.  The extension, if specified, is
+     added to old filename to make a backup copy.
+
+     example:
+
+          % echo matz > /tmp/junk
+          % cat /tmp/junk
+          matz
+          % ruby -p -i.bak -e '$_.upcase!' /tmp/junk
+          % cat /tmp/junk
+          MATZ
+          % cat /tmp/junk.bak
+          matz
+
+`-I directory'
+     used to tell Ruby where to load the library scripts.  Directory
+     path will be added to the load-path variable (``$:'').
+
+`-l'
+     enables automatic line-ending processing, which means firstly
+     set `$\' to the value of `$/', and secondly chops every line
+     read using `chop!', when used with `-n' or `-p'.
+
+`-n'
+     causes Ruby to assume the following loop around your script,
+     which makes it iterate over filename arguments somewhat like
+     `sed -n' or `awk'.
+
+          while gets
+          ...
+          end
+
+`-p'
+     acts mostly same as `-n' switch, but print the value of variable
+     `$_' at the each end of the loop.
+
+     example:
+
+          % echo matz | ruby -p -e '$_.tr! "a-z", "A-Z"'
+          MATZ
+
+`-r filename'
+     causes Ruby to load the file using ` require' (*note Ruby
+     Functions::).  It is useful with switches `-n' or `-p'.
+
+`-s'
+     enables some switch parsing for switches after script name but
+     before any filename arguments (or before a `--').  Any switches
+     found there is removed from ARGV and set the corresponding
+     variable in the script.
+
+     example:
+
+          #! /usr/local/bin/ruby -s
+          # prints "true" if invoked with `-xyz' switch.
+          print "true\n" if $xyz
+
+`-S'
+     makes Ruby uses the PATH environment variable to search for
+     script, unless if its name begins with a slash.  This is used to
+     emulate `#!' on machines that don't support it, in the following
+     manner:
+
+          #!/bin/sh
+          exec ruby -S -x $0 "$@"
+          #! ruby
+
+     On some systems $0 does not always contain the full pathname, so
+     you need `-S' switch to tell Ruby to search for the script if
+     necessary.
+
+`-T [level]'
+     Forces "taint" checks to be turned on so you can test them.  If
+     level is specified, `$SAFE' to be set to that level.  It's a good
+     idea to turn them on explicitly for programs run on another's
+     behalf, such as CGI programs.
+
+`-v'
+`--verbose'
+     enables verbose mode. Ruby will prints its version at the
+     beginning, and set the variable ``$VERBOSE'' to true.  Some
+     methods prints extra messages if this variable is true.  If this
+     switch is given, and no other switches present, Ruby quits after
+     printing its version.
+
+`--version'
+     prints the version of Ruby executable.
+
+`-w'
+     enables verbose mode without printing version message at the
+     beginning.  It set the variable ``$VERBOSE'' to true.
+
+`-x[directory]'
+     tells Ruby that the script is embedded in a message.  Leading
+     garbage will be discarded until the first that starts with "#!"
+     and contains string "ruby".  Any meaningful switches on that
+     line will applied. The end of script must be specified with
+     either EOF, `^D' (control-D), `^Z' (control-Z), or reserved word
+     `__END__'.If the directory name is specified, Ruby will switch
+     to that directory before executing script.
+
+`-X directory'
+     causes Ruby to switch to the directory.
+
+`-y'
+`--yydebug'
+     turns on compiler debug mode.  Ruby will print bunch of internal
+     state messages during compiling scripts.  You don't have to
+     specify this switch, unless you are going to debug the Ruby
+     interpreter itself.
+
+
+File: ruby.info,  Node: Ruby Syntax,  Next: Ruby Functions,  Prev: Options,  Up: Top
+
+Ruby syntax
+***********
+
+* Menu:
+
+* syntax_lexical::            Lexical structure
+*   syntax_ident::            Identifiers
+*   syntax_comment::          Comment
+*   syntax_embed_doc::        Embedded Documentation
+*   syntax_resword::          Reserved words
+* syntax_program::            Program
+* syntax_expression::         Expressions
+*   syntax_string::           String literals
+*   syntax_command::          Command output
+*   syntax_regexp::           Regular expressions
+*   syntax_exprsub::          Expression substitution in strings
+*   syntax_here_doc::         line-oriented string literals (Here document)
+*   syntax_numeric::          Numeric literals
+*   syntax_variable::         Variables and constants
+*   syntax_gvar::             Global variables
+*   syntax_ivar::             Instance variables
+*   syntax_lvar::             Local variables
+*   syntax_pvar::             Pseudo variables
+*   syntax_const::            Constants
+*   syntax_array::            Array expressions
+*   syntax_hash::             Hash expressions
+*   syntax_method::           Method invocation
+*   syntax_super::            super
+*   syntax_assign::           Assignment
+*   syntax_operator::         Operator expressions
+*   syntax_control::          Control structure
+*     syntax_if::             if
+*     syntax_if-mod::         if modifier
+*     syntax_unless::         unless
+*     syntax_unless-mod::     unless modifier
+*     syntax_case::           case
+*     syntax_and::            and
+*     syntax_or::             or
+*     syntax_not::            not
+*     syntax_range::          Range expressions
+*     syntax_while::          while
+*     syntax_while-mod::      while modifier
+*     syntax_until::          until
+*     syntax_until-mod::      until modifier
+*     syntax_iter::           Iterators
+*     syntax_for::            for
+*     syntax_yield::          yield
+*     syntax_raise::          raise
+*     syntax_begin::          begin
+*     syntax_retry::          retry
+*     syntax_return::         return
+*     syntax_break::          break
+*     syntax_next::           next
+*     syntax_redo::           redo
+*     syntax_BEGIN_proc::     BEGIN
+*     syntax_END_proc::       END
+*   syntax_cdef::             Class definitions
+*   syntax_scdef::            Singleton-class definitions
+*   syntax_mdef::             Module definitions
+*   syntax_method-def::       Method definitions
+*   syntax_singleton-def::    Singleton-method definitions
+*   syntax_alias::            alias
+*   syntax_undef::            undef
+*   syntax_defined_p::        defined?
+
+
+File: ruby.info,  Node: syntax_lexical,  Next: syntax_ident,  Up: Ruby Syntax
+
+Lexical structure
+=================
+
+   The character set used in the Ruby source files for the current
+implementation is based on ASCII.  The case of characters in source
+files is significant. All syntactic constructs except identifiers and
+certain literals may be separated by an arbitrary number of whitespace
+characters and comments. The whitespace characters are space, tab,
+vertical tab, backspace, carriage return, and form feed.  Newlines
+works as whitespace only when expressions obviously continues to the
+next line.
+
+
+File: ruby.info,  Node: syntax_ident,  Next: syntax_comment,  Prev: syntax_lexical,  Up: Ruby Syntax
+
+Identifiers
+-----------
+
+   Examples:
+
+             foobar
+             ruby_is_simple
+
+   Ruby identifiers are consist of alphabets, decimal digits, and the
+underscore character, and begin with a alphabets(including
+underscore).  There are no restrictions on the lengths of Ruby
+identifiers.
+
+
+File: ruby.info,  Node: syntax_comment,  Next: syntax_embed_doc,  Prev: syntax_ident,  Up: Ruby Syntax
+
+Comment
+-------
+
+   Examples:
+
+             # this is a comment line
+
+   Ruby comments start with "`#'" outside of a string or character
+literal (`?#') and all following text until the end of the line.
+
+
+File: ruby.info,  Node: syntax_embed_doc,  Next: syntax_resword,  Prev: syntax_comment,  Up: Ruby Syntax
+
+Embedded Documentation
+----------------------
+
+   Example:
+
+             =begin
+             the everything between a line beginning with `=begin' and
+             that with `=end' will be skipped by the interpreter.
+             =end
+
+   If the Ruby interpreter encounters a line beginning with `=begin',
+it skips that line and all remaining lines through and including a
+line that begins with `=end'.
+
+
+File: ruby.info,  Node: syntax_resword,  Next: syntax_program,  Prev: syntax_embed_doc,  Up: Ruby Syntax
+
+Reserved words
+--------------
+
+   The reserved words are:
+
+             BEGIN    class    ensure   nil      self     when
+             END      def      false    not      super    while
+             alias    defined  for      or       then     yield
+             and      do       if       redo     true
+             begin    else     in       rescue   undef
+             break    elsif    module   retry    unless
+             case     end      next     return   until
+
+
+File: ruby.info,  Node: syntax_program,  Next: syntax_expression,  Prev: syntax_resword,  Up: Ruby Syntax
+
+Program
+=======
+
+   Example:
+
+             print "hello world!\n"
+
+   Ruby programs are sequence of expressions. Each expression are
+delimited by semicolons(`;') or newlines.  Backslashes at the end of
+line does not terminate expression.
+
+
+File: ruby.info,  Node: syntax_expression,  Next: syntax_string,  Prev: syntax_program,  Up: Ruby Syntax
+
+Expression
+==========
+
+   Examples:
+
+             true
+             (1+2)*3
+             foo()
+             if test then ok else ng end
+
+   Ruby expressions can be grouped by parentheses.
+
+
+File: ruby.info,  Node: syntax_string,  Next: syntax_command,  Prev: syntax_expression,  Up: Ruby Syntax
+
+String literals
+---------------
+
+   Examples:
+
+             "this is a string expression\n"
+             "concat#{foobar}"
+             'concat#{foobar}'
+             %q!I said, "You said, 'She said it.'"!
+             %!I said, "You said, 'She said it.'"!
+             %Q('This is it.'\n)
+
+   String expressions begin and end with double or single quote marks.
+Double-quoted string expressions are subject to backslash escape and
+expression substitution. Single-quoted strings are not (except for
+`\'' and `\\').
+
+   The string expressions begin with `%' are the special form to
+avoid putting too many backslashes into quoted strings.  The
+`%q/STRING/' expression is the generalized single quote.  The
+`%Q/STRING/' (or `%/STRING/') expression is the generalized double
+quote.  Any non-alphanumeric delimiter can be used in place of `/',
+including newline.  If the delimiter is an opening bracket or
+parenthesis, the final delimiter will be the corresponding closing
+bracket or parenthesis.  (Embedded occurrences of the closing bracket
+need to be backslashed as usual.)
+
+Backslash notation
+..................
+
+`\t'
+     tab(0x09)
+
+`\n'
+     newline(0x0a)
+
+`\r'
+     carriage return(0x0d)
+
+`\f'
+     form feed(0x0c)
+
+`\b'
+     backspace(0x08)
+
+`\a'
+     bell(0x07)
+
+`\e'
+     escape(0x1b)
+
+`\s'
+     whitespace(0x20)
+
+`\nnn'
+     character in octal value nnn
+
+`\xnn'
+     character in hexadecimal value nn
+
+`\cx'
+     control x
+
+`\C-x'
+     control x
+
+`\M-x'
+     meta x (c | 0x80)
+
+`\M-\C-x'
+     meta control x
+
+`\x'
+     character x itself
+
+   The string literal expression yields new string object each time it
+evaluated.
+
+
+File: ruby.info,  Node: syntax_command,  Next: syntax_regexp,  Prev: syntax_string,  Up: Ruby Syntax
+
+Command output
+--------------
+
+   Examples:
+
+             `date`
+             %x{ date }
+
+   Strings delimited by backquotes are performed by a subshell after
+escape sequences interpretation and expression substitution.  The
+standard output from the commands are taken as the value. Commands
+performed each time they evaluated.
+
+   The `%x/STRING/' is the another form of the command output
+expression.
+
+
+File: ruby.info,  Node: syntax_regexp,  Next: syntax_exprsub,  Prev: syntax_command,  Up: Ruby Syntax
+
+Regular expression
+------------------
+
+   Examples:
+
+             /^Ruby the OOPL/
+             /Ruby/i
+             /my name is #{myname}/o
+             %r|^/usr/local/.*|
+
+   Strings delimited by slashes are regular expressions.  The
+characters right after latter slash denotes the option to the regular
+expression.  Option `i' means that regular expression is case
+insensitive.  Option `i' means that regular expression does
+expression substitution (*note Ruby Syntax::) only once at the first
+time it evaluated.  Option `x' means extended regular expression,
+which means whitespaces and commens are allowd in the expression.
+Option `p' denotes POSIX mode, in which newlines are treated as
+normal character (matches with dots).
+
+   The `%r/STRING/' is the another form of the regular expression.
+
+`^'
+     beginning of a line or string
+
+`$'
+     end of a line or string
+
+`.'
+     any character except newline
+
+`\w'
+     word character[0-9A-Za-z_]
+
+`\W'
+     non-word character
+
+`\s'
+     whitespace character[ \t\n\r\f]
+
+`\S'
+     non-whitespace character
+
+`\d'
+     digit, same as[0-9]
+
+`\D'
+     non-digit
+
+`\A'
+     beginning of a string
+
+`\Z'
+     end of a string, or before newline at the end
+
+`\z'
+     end of a string
+
+`\b'
+     word boundary(outside[]only)
+
+`\B'
+     non-word boundary
+
+`\b'
+     backspace(0x08)(inside[]only)
+
+`[ ]'
+     any single character of set
+
+`*'
+     0 or more previous regular expression
+
+`*?'
+     0 or more previous regular expression(non greedy)
+
+`+'
+     1 or more previous regular expression
+
+`+?'
+     1 or more previous regular expression(non greedy)
+
+`{m,n}'
+     at least m but most n previous regular expression
+
+`{m,n}?'
+     at least m but most n previous regular expression(non greedy)
+
+`?'
+     0 or 1 previous regular expression
+
+`|'
+     alternation
+
+`( )'
+     grouping regular expressions
+
+`(?# )'
+     comment
+
+`(?: )'
+     grouping without backreferences
+
+`(?= )'
+     zero-width positive look-ahead assertion
+
+`(?! )'
+     zero-width negative look-ahead assertion
+
+`(?ix-ix)'
+     turns on (or off) `i' and `x' options within regular expression.
+     These modifiers are localized inside an enclosing group (if any).
+
+`(?ix-ix: )'
+     turns on (or off) `i' and `x' options within this non-capturing
+     group.
+
+   Backslash notation and expression substitution available in regular
+expressions.
+
+
+File: ruby.info,  Node: syntax_exprsub,  Next: syntax_here_doc,  Prev: syntax_regexp,  Up: Ruby Syntax
+
+Expression substitution in strings
+----------------------------------
+
+   Examples:
+
+             "my name is #{$ruby}"
+
+   In double-quoted strings, regular expressions, and command output
+expressions, the form like "#{expression}" extended to the evaluated
+result of that expression. If the expressions are the variables which
+names begin with the character either `$',`@', expressions  are not
+needed to be surrounded by braces. The character `#' is interpreted
+literally if it it not followed by characters `{',`$',`@'.
+
+
+File: ruby.info,  Node: syntax_here_doc,  Next: syntax_numeric,  Prev: syntax_exprsub,  Up: Ruby Syntax
+
+line-oriented string literals (Here document)
+---------------------------------------------
+
+   There's a line-oriente form of the string literals that is usually
+called as `here document'.  Following a `<<' you can specify a string
+or an identifier to terminate the string literal, and all lines
+following the current line up to the terminator are the value of the
+string.  If the terminator is quoted, the type of quotes determines
+the type of the line-oriented string literal.  Notice there must be
+no space between `<<' and the terminator.
+
+   If the `-' placed before the delimiter, then all leading
+whitespcae characters (tabs or spaces) are stripped from input lines
+and the line containing delimiter.  This allows here-documents within
+scripts to be indented in a natural fashion.
+
+               print <<EOF
+             The price is #{$Price}.
+             EOF
+     
+               print <<"EOF";                  # same as above
+             The price is #{$Price}.
+             EOF
+     
+               print <<`EOC`                   # execute commands
+             echo hi there
+             echo lo there
+             EOC
+     
+               print <<"foo", <<"bar"    # you can stack them
+             I said foo.
+             foo
+             I said bar.
+             bar
+     
+               myfunc(<<"THIS", 23, <<'THAT')
+             Here's a line
+             or two.
+             THIS
+             and here's another.
+             THAT
+     
+               if need_define_foo
+                 eval <<-EOS                   # delimiters can be indented
+                   def foo
+                     print "foo\n"
+                   end
+                 EOS
+               end
+
+
+File: ruby.info,  Node: syntax_numeric,  Next: syntax_variable,  Prev: syntax_here_doc,  Up: Ruby Syntax
+
+Numeric literals
+----------------
+
+`123'
+     integer
+
+`-123'
+     integer(signed)
+
+`1_234'
+     integer(underscore within decimal numbers ignored)
+
+`123.45'
+     floating point number
+
+`1.2e-3'
+     floating point number
+
+`0xffff'
+     hexadecimal integer
+
+`0b01011'
+     binary integer
+
+`0377'
+     octal integer
+
+`?a'
+     ASCII code for character `a'(97)
+
+`?\C-a'
+     Control-a(1)
+
+`?\M-a'
+     Meta-a(225)
+
+`?\M-\C-a'
+     Meta-Control-a(129)
+
+`:symbol'
+     Integer corresponding identifiers, variable names, and operators.
+
+   In ?-representation all backslash notations are available.
+
+
+File: ruby.info,  Node: syntax_variable,  Next: syntax_gvar,  Prev: syntax_numeric,  Up: Ruby Syntax
+
+Variables and constants
+-----------------------
+
+   The variable in Ruby programs can be distinguished by the first
+character of its name. They are either global variables, instance
+variables, local variables, and class constants. There are no
+restriction for variable name length (except heap size).
+
+
+File: ruby.info,  Node: syntax_gvar,  Next: syntax_ivar,  Prev: syntax_variable,  Up: Ruby Syntax
+
+Global variables
+----------------
+
+   Examples:
+
+             $foobar
+             $/
+
+   The variable which name begins with the character ``$'', has
+global scope, and can be accessed from any location of the program.
+Global variables are available as long as the program lives.
+Non-initialized global variables has value `nil'.
+
+
+File: ruby.info,  Node: syntax_ivar,  Next: syntax_lvar,  Prev: syntax_gvar,  Up: Ruby Syntax
+
+Instance variables
+------------------
+
+   Examples:
+
+             @foobar
+
+   The variable which name begins which the character ``@'', is an
+instance variable of `self'.  Instance variables are belong to the
+certain object.  Non-initialized instance variables has value `nil'.
+
+
+File: ruby.info,  Node: syntax_const,  Next: syntax_array,  Prev: syntax_pvar,  Up: Ruby Syntax
+
+Constants
+---------
+
+   Examples:
+
+             FOOBAR
+
+   The identifier which name begins with upper case letters ([A-Z])
+is an constant.  The constant definitions are done by assignment in
+the class definition body.  Assignment to the constants must be done
+once.  Changing the constant value or accessing to the non-initialized
+constants raises a `NameError' exception.
+
+   The constants can be accessed from:
+
+   * the class or module body in which the constant is defined,
+     including the method body and the nested module/class definition
+     body.
+
+   * the class which inherit the constant defining class.
+
+   * the class or module which includes the constant defining module.
+
+   Class definition defines the constant automatically, all class
+names are constants.
+
+   To access constants defined in certain class/module, operator `::'
+can be used.
+
+   To access constants defined in the Object class, operator `::'
+without the left hand side operand can be used.
+
+   Examples:
+
+             Foo::Bar
+             ::Bar
+
+   No assignment using operator ``::'' is permitted.
+
+
+File: ruby.info,  Node: syntax_lvar,  Next: syntax_pvar,  Prev: syntax_ivar,  Up: Ruby Syntax
+
+Local variables
+---------------
+
+   Examples:
+
+             foobar
+
+   The identifier which name begins with lower case character or
+underscore, is a local variable or a method invocation.  The first
+assignment in the local scope (bodies of class, module, method
+definition) to such identifiers are declarations of the local
+variables.  Non-declared identifiers are method invocation without
+arguments.
+
+   The local variables assigned first time in the blocks are only
+valid in that block.  They are called `dynamic variables.'  For
+example:
+
+             i0 = 1
+             loop {
+               i1 = 2
+               print defined?(i0), "\n"      # true
+               print defined?(i1), "\n"      # true
+               break
+             }
+             print defined?(i0), "\n"        # true
+             print defined?(i1), "\n"        # false
+
+
+File: ruby.info,  Node: syntax_pvar,  Next: syntax_const,  Prev: syntax_lvar,  Up: Ruby Syntax
+
+Pseudo variables
+----------------
+
+   There are special variables called `pseudo variables'.
+
+`self'
+     the receiver of the current method
+
+`nil'
+     the sole instance of the Class NilClass(represents false)
+
+`true'
+     the sole instance of the Class TrueClass(typical true value)
+
+`false'
+     the sole instance of the Class FalseClass(represents false)
+
+`__FILE__'
+     the current source file name.
+
+`__LINE__'
+     the current line number in the source file.
+
+   The values of the pseudo variables cannot be changed. Assignment to
+these variables causes exceptions.
+
+
+File: ruby.info,  Node: syntax_array,  Next: syntax_hash,  Prev: syntax_const,  Up: Ruby Syntax
+
+Array expression
+----------------
+
+   Examples:
+
+             [1, 2, 3]
+
+   Syntax:
+
+             `[' expr,...`]'
+
+   Returns an array, which contains result of each expressions.
+Arrays are instances of the class Array (*note Array::).
+
+   `%w' expressions make creation of the arrays of strings easier.
+They are equivalent to the single quoted strings split by the
+whitespaces.  For example:
+
+             %w(foo bar baz)
+
+   is equivalent to `["foo", "bar", "baz"]'.  Note that parenthesis
+right after `%s' is the quote delimiter, not usual parenthesis.
+
+
+File: ruby.info,  Node: syntax_hash,  Next: syntax_method,  Prev: syntax_array,  Up: Ruby Syntax
+
+Hash expression
+---------------
+
+   Examples:
+
+             {1=>2, 2=>4, 3=>6}
+
+   Syntax:
+
+             { expr => expr...}
+
+   Returns a new Hash object, which maps each key to corresponding
+value.  Hashes are instances of the class Hash (*note Hash::).
+
+
+File: ruby.info,  Node: syntax_method,  Next: syntax_super,  Prev: syntax_hash,  Up: Ruby Syntax
+
+Method invocation
+-----------------
+
+   Examples:
+
+             foo.bar()
+             foo.bar
+             bar()
+             print "hello world\n"
+             print
+
+   Syntax:
+
+     [expr `.'] identifier [`(' expr...[`*' [expr]],[`&' ] expr`)']
+     [expr `::'] identifier [`(' expr...[`*' [expr]],[`&' expr] `)']
+
+   Method invocation expression invokes the method of the receiver
+(right hand side expression of the dot) specified by the identifier.
+If no receiver specified, `self' is used as a receiver.
+
+   Identifier names are normal identifiers and identifier suffixed by
+character `?' or `!'.  As a convention, `identifier?' are used as
+predicate names, and `identifier!' are used for the more destructive
+(or more dangerous) methods than the method which have same name
+without `!'.
+
+   If the last argument expression preceded by `*', the value of the
+expression expanded to arguments, that means
+
+             foo(*[1,2,3])
+
+   equals
+
+             foo(1,2,3)
+
+   If the last argument expression preceded by `&', the value of the
+expression, which must be a `Proc' object, is set as the block for
+the calling method.
+
+   Some methods are private, and can be called from function form
+invocations (the forms that omits receiver).
+
+
+File: ruby.info,  Node: syntax_super,  Next: syntax_assign,  Prev: syntax_method,  Up: Ruby Syntax
+
+`super'
+-------
+
+   Examples:
+
+             super
+             super(1,2,3)
+
+   Syntax:
+
+             super
+             super(expr,...)
+
+   the `super' invokes the method which the current method overrides.
+If no arguments given, arguments to the current method passed to the
+method.
+
+
+File: ruby.info,  Node: syntax_assign,  Next: syntax_operator,  Prev: syntax_super,  Up: Ruby Syntax
+
+Assignment
+----------
+
+   Examples:
+
+             foo = bar
+             foo[0] = bar
+             foo.bar = baz
+
+   Syntax:
+
+             variable '=' expr
+             constant '=' expr
+             expr`['expr..`]' '=' expr
+             expr`.'identifier '=' expr
+
+   Assignment expression are used to assign objects to the variables
+or such.  Assignments sometimes work as declarations for local
+variables or class constants.  The left hand side of the assignment
+expressions can be either:
+
+   * variables
+
+                  variables `=' expression
+
+     If the left hand side is a variables, then assignment is directly
+     performed.
+
+   * array reference
+
+                  expr1`[' expr2...`]' `=' exprN
+
+     This from is evaluated to the invocation of the method named
+     `[]=', with expr1 as the receiver, and values expr2 to exprN as
+     arguments.
+
+   * attribute reference
+
+                  expr `.' identifier `=' expr
+
+     This from is evaluated to the invocation of the method named
+     `identifier=' with the right hand side expression as a argument.
+
+
+self assignment
+...............
+
+   Examples:
+
+             foo += 12
+
+   Syntax:
+
+             expr op= expr     # left hand side must be assignable.
+
+   This form evaluated as `expr = expr op expr'.  But right hand side
+expression evaluated once.  op can be one of:
+
+             +, -, *, /, %, **, &, |, ^, <<, >>, &&, ||
+
+   There may be no space between operators and `='.
+
+Multiple assignment
+...................
+
+   Examples:
+
+             foo, bar, baz = 1, 2, 3
+             foo, = list()
+             foo, *rest = list2()
+
+   Syntax:
+
+             expr `,' [expr `,'...] [`*' expr] = expr [, expr...][`*' [expr]]
+             `*' expr = expr [, expr...][`*' expr]
+
+   Multiple assignment form performs multiple assignment from
+expressions or an array.  Each left hand side expression must be
+assignable.  If single right hand side expression given, the value of
+the expression converted into an array, then each element in array
+assigned one by one to the left hand side expressions.  If number of
+elements in the array is greater than left hand sides, they are just
+ignored.  If left hand sides are longer than the array, `nil' will be
+added to the locations.
+
+   Multiple assignment acts like this:
+
+             foo, bar = [1, 2]       # foo = 1; bar = 2
+             foo, bar = 1, 2         # foo = 1; bar = 2
+             foo, bar = 1            # foo = 1; bar = nil
+     
+             foo, bar, baz = 1, 2    # foo = 1; bar = 2; baz = nil
+             foo, bar = 1, 2, 3      # foo = 1; bar = 2
+             foo,*bar = 1, 2, 3      # foo = 1; bar = [2, 3]
+
+   The value of the multiple assignment expressions are the array
+used to assign.
+
+
+File: ruby.info,  Node: syntax_operator,  Next: syntax_control,  Prev: syntax_assign,  Up: Ruby Syntax
+
+Operator expressions
+--------------------
+
+   Examples:
+
+             1+2*3/4
+
+   As a syntax sugar, several methods and control structures has
+operator form.  Ruby has operators show below:
+
+             high   ::
+                    []
+                    **
+                    -(unary)  +(unary)  !  ~
+                    *  /  %
+                    +  -
+                    <<  >>
+                    &
+                    |  ^
+                    >  >=  <  <=
+                    <=> ==  === !=  =~  !~
+                    &&
+                    ||
+                    .. ...
+                    =(+=, -=...)
+                    not
+             low    and or
+
+   Most of operators are just method invocation in special form. But
+some operators are not methods, but built in to the syntax:
+
+             =, .., ..., !, not, &&, and, ||, or, !=, !~
+
+   In addition, assignment operators(`+=' etc.) are not
+user-definable.
+
+
+File: ruby.info,  Node: syntax_control,  Next: syntax_if,  Prev: syntax_operator,  Up: Ruby Syntax
+
+Control structure
+-----------------
+
+   Control structures in Ruby are expressions, and have some value.
+Ruby has the loop abstraction feature called iterators. Iterators are
+user-definable loop structure.
+
+
+File: ruby.info,  Node: syntax_if,  Next: syntax_if-mod,  Prev: syntax_control,  Up: Ruby Syntax
+
+`if'
+....
+
+   Examples:
+
+             if age >= 12 then
+               print "adult fee\n"
+             else
+               print "child fee\n"
+             end
+             gender = if foo.gender == "male" then "male" else "female" end
+
+   Syntax:
+
+             if expr [then]
+               expr...
+             [elsif expr [then]
+               expr...]...
+             [else
+               expr...]
+             end
+
+   `if' expressions are used for conditional execution. The values
+`false' and `nil' are false, and everything else are true.  Notice
+Ruby uses `elsif', not `else if' nor `elif'.
+
+   If conditional part of `if' is the regular expression literal,
+then it evaluated like:
+
+             $_ =~ /re/
+
+
+File: ruby.info,  Node: syntax_if-mod,  Next: syntax_unless,  Prev: syntax_if,  Up: Ruby Syntax
+
+`if' modifier
+.............
+
+   Examples:
+
+             print "debug\n" if $debug
+
+   Syntax:
+
+             expr if expr
+
+   executes left hand side expression, if right hand side expression
+is true.
+
+
+File: ruby.info,  Node: syntax_unless,  Next: syntax_unless-mod,  Prev: syntax_if-mod,  Up: Ruby Syntax
+
+`unless'
+........
+
+   Examples:
+
+             unless $baby
+               feed_meat
+             else
+               feed_milk
+             end
+
+   Syntax:
+
+             unless expr [then]
+               expr...
+             [else
+               expr...]
+             end
+
+   `unless' expressions are used for reverse conditional execution.
+It is equivalent to:
+
+             if !(cond)
+               ...
+             else
+               ...
+             end
+
+
+File: ruby.info,  Node: syntax_unless-mod,  Next: syntax_case,  Prev: syntax_unless,  Up: Ruby Syntax
+
+`unless' modifier
+.................
+
+   Examples:
+
+             print "stop\n" unless valid($passwd)
+
+   Syntax:
+
+             expr unless expr
+
+   executes left hand side expression, if right hand side expression
+is false.
+
+
+File: ruby.info,  Node: syntax_case,  Next: syntax_and,  Prev: syntax_unless-mod,  Up: Ruby Syntax
+
+`case'
+......
+
+   Examples:
+
+             case $age
+             when 0 .. 2
+               "baby"
+             when 3 .. 6
+               "little child"
+             when 7 .. 12
+               "child"
+             when 12 .. 18
+               # Note: 12 already matched by "child"
+               "youth"
+             else
+               "adult"
+             end
+
+   Syntax:
+
+             case expr
+             [when expr [, expr]...[then]
+               expr..]..
+             [else
+               expr..]
+             end
+
+   the `case' expressions are also for conditional execution.
+Comparisons are done by operator `==='.  Thus:
+
+             case expr0
+             when expr1, expr2
+               stmt1
+             when expr3, expr4
+               stmt2
+             else
+               stmt3
+             end
+
+   is basically same to below:
+
+             _tmp = expr0
+             if expr1 === _tmp || expr2 === _tmp
+               stmt1
+             elsif expr3 === _tmp || expr4 === _tmp
+               stmt2
+             else
+               stmt3
+             end
+
+   Behavior of the `===' method varies for each Object.  See
+docutmentation for each class.
+
+
+File: ruby.info,  Node: syntax_and,  Next: syntax_or,  Prev: syntax_case,  Up: Ruby Syntax
+
+`and'
+.....
+
+   Examples:
+
+             test && set
+             test and set
+
+   Syntax:
+
+             expr `&&' expr
+             expr `and' expr
+
+   Evaluates left hand side, then if the result is true, evaluates
+right hand side.  `and' is lower precedence alias.
+
+
+File: ruby.info,  Node: syntax_or,  Next: syntax_not,  Prev: syntax_and,  Up: Ruby Syntax
+
+`or'
+....
+
+   Examples:
+
+             demo || die
+             demo or die
+
+   Syntax:
+
+             expr `||' expr
+             expr or expr
+
+   Evaluates left hand side, then if the result is false, evaluates
+right hand side.  `or' is lower precedence alias.
+
+
+File: ruby.info,  Node: syntax_not,  Next: syntax_range,  Prev: syntax_or,  Up: Ruby Syntax
+
+`not'
+.....
+
+   Examples:
+
+             ! me
+             not me
+             i != you
+
+   Syntax:
+
+             `!' expr
+             not expr
+
+   Returns true if false, false if true.
+
+             expr `!=' expr
+
+   Syntax sugar for `!(expr == expr)'.
+
+             expr `!~' expr
+
+   Syntax sugar for `!(expr =~ expr)'.
+
+
+File: ruby.info,  Node: syntax_range,  Next: syntax_while,  Prev: syntax_not,  Up: Ruby Syntax
+
+Range expressions
+.................
+
+   Examples:
+
+             1 .. 20
+             /first/ ... /second/
+
+   Syntax:
+
+             expr `..' expr
+             expr `...' expr
+
+   If range expression appears in any other place than conditional
+expression, it returns range object (*note Range::) from left hand
+side to right hand side.
+
+   If range expression appears in conditional expression, it gives
+false until left hand side returns true, it stays true until right
+hand side is true.  `..' acts like `awk', `...' acts like `sed'.
+
+
+File: ruby.info,  Node: syntax_while,  Next: syntax_while-mod,  Prev: syntax_range,  Up: Ruby Syntax
+
+`while'
+.......
+
+   Examples:
+
+             while sunshine
+               work()
+             end
+
+   Syntax:
+
+             while expr [do]
+               ...
+             end
+
+   Executes body while condition expression returns true.
+
+
+File: ruby.info,  Node: syntax_while-mod,  Next: syntax_until,  Prev: syntax_while,  Up: Ruby Syntax
+
+`while' modifier
+................
+
+   Examples:
+
+             sleep while idle
+
+   Syntax:
+
+             expr while expr
+
+   Repeats evaluation of left hand side expression, while right hand
+side is true.  If left hand side is `begin' expression, `while'
+evaluates that expression at lease once.
+
+
+File: ruby.info,  Node: syntax_until,  Next: syntax_until-mod,  Prev: syntax_while-mod,  Up: Ruby Syntax
+
+`until'
+.......
+
+   Examples:
+
+             until sunrise
+               sleep
+             end
+
+   Syntax:
+
+             until expr [do]
+               ...
+             end
+
+   Executes body until condition expression returns true.
+
+
+File: ruby.info,  Node: syntax_until-mod,  Next: syntax_iter,  Prev: syntax_until,  Up: Ruby Syntax
+
+`until' modifier
+................
+
+   Examples:
+
+             work until tired
+
+   Syntax:
+
+             expr until expr
+
+   Repeats evaluation of left hand side expression, until right hand
+side is true.  If left hand side is `begin' expression, `until'
+evaluates that expression at lease once.
+
+
+File: ruby.info,  Node: syntax_iter,  Next: syntax_for,  Prev: syntax_until-mod,  Up: Ruby Syntax
+
+Iterators
+.........
+
+   Examples:
+
+             [1,2,3].each do |i| print i*2, "\n" end
+             [1,2,3].each{|i| print i*2, "\n"}
+
+   Syntax:
+
+             method_call do [`|' expr...`|'] expr...end
+             method_call `{' [`|' expr...`|'] expr...`}'
+
+   The method may be invoked with the block (`do .. end' or `{..}').
+The method may be evaluate back that block from inside of the
+invocation.  The methods that calls back the blocks are sometimes
+called as iterators.  The evaluation of the block from iterator is
+done by `yield' (*note Ruby Syntax::).
+
+   The difference between `do' and braces are:
+
+   * Braces has stronger precedence.  For example:
+
+                  foobar a, b do .. end   # foobar will be called with the block.
+                  foobar a, b { .. }      # b will be called with the block.
+
+   * Braces introduce the nested local scopes, that is newly declared
+         local variables in the braces are valid only in the blocks.
+         For example:
+
+                  foobar {
+                    i = 20                # local variable `i' declared in the block.
+                    ...
+                  }
+                  print defined? i        # `i' is not defined here.
+                  foobar a, b { .. }      # it is not valid outside of the block
+
+
+
+File: ruby.info,  Node: syntax_for,  Next: syntax_yield,  Prev: syntax_iter,  Up: Ruby Syntax
+
+`for'
+.....
+
+   Examples:
+
+             for i in [1, 2, 3]
+               print i*2, "\n"
+             end
+
+   Syntax:
+
+             for lhs... in expr [do]
+               expr..
+             end
+
+   Executes body for each element in the result of expression. `for'
+is the syntax sugar for:
+
+             (expr).each `{' `|' lhs..`|' expr.. `}'
+
+
+File: ruby.info,  Node: syntax_yield,  Next: syntax_raise,  Prev: syntax_for,  Up: Ruby Syntax
+
+`yield'
+.......
+
+   Examples:
+
+             yield data
+
+   Syntax:
+
+             yield `(' [expr [`,' expr...]])
+             yield [expr [`,' expr...]]
+
+   Evaluates the block given to the current method with arguments, if
+no argument is given, `nil' is used as an argument.  The argument
+assignment to the block prameter is done just like multiple
+assignment.  If the block is not supplied for the current method, the
+exception is raised.
+
+
+File: ruby.info,  Node: syntax_raise,  Next: syntax_begin,  Prev: syntax_yield,  Up: Ruby Syntax
+
+`raise'
+.......
+
+   Examples:
+
+             raise "you lose"  # raise RuntimeError
+             # both raises SyntaxError
+             raise SyntaxError, "invalid syntax"
+             raise SyntaxError.new("invalid syntax")
+             raise             # re-raise last exception
+
+   Syntax:
+
+             raise
+             raise message_or_exception
+             raise error_type, message
+             raise error_type, message, traceback
+
+   Raises a exception.  In the first form, re-raises last exception.
+In second form, if the argument is the string, creates a new
+`RuntimeError' exception, and raises it.  If the argument is the
+exception, `raise' raises it.  In the third form, `raise' creates a
+new exception of type ERROR_TYPE, and raises it.  In the last form,
+the third argument is the traceback information for the raising
+exception in the format given by variable $@ (*note Pre-defined
+variables and constants::) or `caller' (*note Ruby Functions::)
+function.
+
+   The exception is assigned to the variable `$!', and the position
+in the source file is assigned to the `$@'.
+
+   The word ``raise'' is not the reserved word in Ruby.  `raise' is
+the method of the `Kernel' (*note Kernel::) module.  There is an
+alias named `fail'.
+
+
+File: ruby.info,  Node: syntax_begin,  Next: syntax_retry,  Prev: syntax_raise,  Up: Ruby Syntax
+
+`begin'
+.......
+
+   Examples:
+
+             begin
+               do_something
+             rescue
+               recover
+             ensure
+               must_to_do
+             end
+
+   Syntax:
+
+             begin
+               expr..
+             [rescue [error_type,..]
+               expr..]..
+             [else
+               expr..]
+             [ensure
+               expr..]
+             end
+
+   `begin' expression executes its body and returns the value of the
+last evaluated expression.
+
+   If an exception occurs in the `begin' body, the `rescue' clause
+with the matching exception type is executed (if any).  The match is
+done by the `kind_of?' (*note Object::).  The default value of the
+rescue clause argument is the `StandardError', which is the
+superclass of most built-in exceptions.  Non-local jumps like
+`SystemExit' or `Interrupt' are not subclass of the `StandardError'.
+
+   The `begin' statement has an optional `else' clause, which must
+follow all `rescue' clauses.  It is executed if the `begin' body does
+not raise any exception.
+
+   For the `rescue' clauses, the `error_type' is evaluated just like
+the arguments to the method call, and the clause matches if the value
+of the variable $! is the instance of any one of the `error_type' of
+its subclass.  If ERROR_TYPE is not class nor module, the `rescue'
+clause raises TYPEERROR exception.
+
+   If `ensure' clause given, its clause body executed whenever
+`begin'body exits.
+
+
+File: ruby.info,  Node: syntax_retry,  Next: syntax_return,  Prev: syntax_begin,  Up: Ruby Syntax
+
+`retry'
+.......
+
+   Examples:
+
+             retry
+
+   Syntax:
+
+             retry
+
+   If `retry' appears in `rescue' clause of `begin' expression,
+restart from the beginning of the 1`begin' body.
+
+             begin
+               do_something # exception raised
+             rescue
+               # handles error
+               retry  # restart from beginning
+             end
+
+   If `retry' appears in the iterator, the block, or the body of the
+`for' expression, restarts the invocation of the iterator call.
+Arguments to the iterator is re-evaluated.
+
+             for i in 1..5
+               retry if some_condition # restart from i == 1
+             end
+
+             # user defined "until loop"
+             def UNTIL(cond)
+               yield
+               retry if not cond
+             end
+
+   `retry' out of `rescue' clause or iterators raises exception.
+
+
+File: ruby.info,  Node: syntax_return,  Next: syntax_break,  Prev: syntax_retry,  Up: Ruby Syntax
+
+`return'
+........
+
+   Examples:
+
+             return
+             return 12
+             return 1,2,3
+
+   Syntax:
+
+             return [expr[`,' expr...]]
+
+   Exits from method with the return value.  If more than two
+expressions are given, the array contains these values will be the
+return value.  If no expression given, `nil' will be the return value.
+

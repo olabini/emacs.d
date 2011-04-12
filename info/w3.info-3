@@ -1,0 +1,1374 @@
+Info file: w3.info,    -*-Text-*-
+produced by `texinfo-format-buffer'
+from file `w3.txi'
+using `texinfmt.el' version 2.38 of 3 July 1998.
+
+INFO-DIR-SECTION World Wide Web
+INFO-DIR-SECTION GNU Emacs Lisp
+START-INFO-DIR-ENTRY
+* Emacs/W3: (w3).                 Emacs/W3 World Wide Web browser.
+END-INFO-DIR-ENTRY
+
+This file documents the Emacs/W3 World Wide Web browser.
+
+Copyright (C) 1993, 1994, 1995, 1996 William M. Perry Copyright (C)
+1996, 1997 Free Software Foundation
+
+Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+
+
+File: w3.info, Node: cue, Next: play-during, Prev: cue-after, Up: Speech Properties
+
+cue
+...
+
+*Note cue-before::.
+
+
+
+File: w3.info, Node: play-during, Next: speed, Prev: cue, Up: Speech Properties
+
+cue-during
+..........
+
+Value: <url> | mix | none Initial: mix Applies to: all elements
+Inherited: no Similar to the cue-before and cue-after properties, this
+indicates sound to be played during an element as a background (ie the
+sound is mixed in with the speech).
+
+Examples:
+
+       BLOCKQUOTE.sad { cue-during: url(violins.aiff) }
+
+
+
+File: w3.info, Node: speed, Next: voice-family, Prev: play-during, Up: Speech Properties
+
+speed
+.....
+
+Value:         <words-per-minute> | x-slow | slow | medium | fast |     
+               x-fast | faster | slower                                 
+Initial:       medium                                                   
+Applies to:    all elements                                             
+Inherited:     yes                                                      
+
+Specifies the speaking rate. Note that both absolute and relative
+keyword values are allowed (compare with *Note font-weight::).
+
+
+
+File: w3.info, Node: voice-family, Next: pitch, Prev: speed, Up: Speech Properties
+
+voice-family
+............
+
+Value:         [[<specific-voice> | <generic-voice>],]*                 
+               [<specific-voice> | <generic-voice>]                     
+Initial:       device-specific                                          
+Applies to:    all elements                                             
+Inherited:     yes                                                      
+
+The value is a prioritized list of voice family names. Generic
+families are male, female, and child.
+
+Examples of specific voice families are: comedian, paul, lisa
+
+Examples
+
+       H1 { voice-family: announcer, male }
+       P.part.romeo { voice-family: romeo, male }
+       P.part.juliet { voice-family: juliet, female }
+
+
+
+File: w3.info, Node: pitch, Next: pitch-range, Prev: voice-family, Up: Speech Properties
+
+pitch
+.....
+
+
+
+
+File: w3.info, Node: pitch-range, Next: stress, Prev: pitch, Up: Speech Properties
+
+pitch-range
+...........
+
+
+
+
+File: w3.info, Node: stress, Next: richness, Prev: pitch-range, Up: Speech Properties
+
+stress
+......
+
+Value:         <percentage>                                             
+Initial:       medium                                                   
+Applies to:    all elements                                             
+Inherited:     yes                                                      
+
+Specifies the level of stress (assertiveness or emphasis) of the
+speaking voice. English is a stressed language, and different parts of
+a sentence are assigned primary, secondary or tertiary stress. The
+value of property 'stress' controls the amount of inflection that
+results from these stress markers.
+
+Increasing the value of this property results in the speech being more
+strongly inflected. It is in a sense dual to property 'pitch-range'
+and is provided to allow developers to exploit higher-end auditory
+displays.
+
+
+
+File: w3.info, Node: richness, Next: speak-punctuation, Prev: stress, Up: Speech Properties
+
+richness
+........
+
+Value:         <percentage>                                             
+Initial:       medium (50%)                                             
+Applies to:    all elements                                             
+Inherited:     yes                                                      
+
+Specifies the richness (brightness) of the speaking voice. Different
+speech devices may require the setting of one or more device-specific
+parameters to achieve this effect.
+
+The effect of increasing richness is to produce a voice that carries
+-- reducing richness produces a soft, mellifluous voice.
+
+
+
+File: w3.info, Node: speak-punctuation, Next: speak-date, Prev: richness, Up: Speech Properties
+
+speak-punctuation
+.................
+
+Value:         code | none                                              
+Initial:       none                                                     
+Applies to:    all elements                                             
+Inherited:     yes                                                      
+
+'code' indicates that punctuation such as semicolons, braces, and so
+on are to be spoken literally. The default value of 'none' means that
+punctuation is not spoken but instead is rendered naturally as various
+pauses.
+
+
+
+File: w3.info, Node: speak-date, Next: speak-numeral, Prev: speak-punctuation, Up: Speech Properties
+
+speak-date
+..........
+
+Value:         myd | dmy | ymd | none                                   
+Initial:       none                                                     
+Applies to:    all elements                                             
+Inherited:     no                                                       
+
+This is a hint that the element contains a date and also how that date
+should be spoken. month-day-year is common in the USA, while
+day-month-year is common in Europe and year-month-day is also used.
+
+This should really be an HTML tag not a stylesheet property, since it
+gives semantic information about the content.
+
+
+
+File: w3.info, Node: speak-numeral, Next: speak-time, Prev: speak-date, Up: Speech Properties
+
+speak-numeral
+.............
+
+Value:         digits | continous                                       
+Initial:       none                                                     
+Applies to:    all elements                                             
+Inherited:     yes                                                      
+
+
+
+File: w3.info, Node: speak-time, Prev: speak-numeral, Up: Speech Properties
+
+speak-time
+..........
+
+Value:         24 | 12 | none                                           
+Initial:       none                                                     
+Applies to:    all elements                                             
+Inherited:     yes                                                      
+
+
+
+File: w3.info, Node: Units, Prev: Properties, Up: Stylesheets
+
+Units
+=====
+
+* Menu:
+
+* Length Units::                
+* Percentage Units::            
+* Color Units::                 
+* URLs::                        
+* Angle Units::                 
+* Time Units::                  
+
+
+
+File: w3.info, Node: Length Units, Next: Percentage Units, Prev: Units, Up: Units
+
+Length Units
+------------
+
+
+
+File: w3.info, Node: Percentage Units, Next: Color Units, Prev: Length Units, Up: Units
+
+Percentage Units
+----------------
+
+
+
+File: w3.info, Node: Color Units, Next: URLs, Prev: Percentage Units, Up: Units
+
+color Units
+-----------
+
+
+
+File: w3.info, Node: URLs, Next: Angle Units, Prev: Color Units, Up: Units
+
+URLs
+----
+
+
+
+File: w3.info, Node: Angle Units, Next: Time Units, Prev: URLs, Up: Units
+
+Angle Units
+-----------
+
+These are the legal angle units:
+   * deg: degrees
+   * grad
+   * rad: radians
+
+
+
+File: w3.info, Node: Time Units, Prev: Angle Units, Up: Units
+
+Time Units
+----------
+
+These are the legal time units:
+
+   * ms: milliseconds
+   * s: seconds
+
+
+
+File: w3.info, Node: Supported URLs, Next: MIME Support, Prev: Stylesheets, Up: Top
+
+Supported URLs
+**************
+
+::WORK:: List supported URL types, specific RFCs, etc.
+
+"Uniform Resource Locators" (URLs) are a specific form of "Uniform
+Resource Identifiers" (URI) described in RFC2396 which updates RFC1738
+and RFC1808.
+
+RFC2016 defines uniform resource agents.
+
+URI have the form SCHEME:SCHEME-SPECIFIC-PART, where SCHEME appears in
+the menu below for URLs supported by Emacs/W3.
+
+FTP, NFS, HTTP, HTTPS, `rlogin', `telnet', tn3270, IRC and gopher URLs
+all have the form SCHEME://[USERINFO@]HOSTNAME[:PORT][/PATH] where `['
+and `]' delimit optional parts.  USERINFO sometimes takes the form
+USERINFO:PASSWORD but you should beware of the security risks of
+sending cleartext passwords.  HOSTNAME may be a domain name or a
+dotted decimal address.  If the `:PORT' is omitted then Emacs/W3 will
+use the well known port for that service.  With the possible exception
+of `telnet', it is very rare for ports to be specified, and it is
+possible using a non-standard port may have undesired consequences if
+a different service is listening on that port (eg. a gopher URL
+specifying the SMTP port can cause mail to be sent), but *Note
+url-bad-port-list: Other Variables.  The meaning of the PATH component
+depends on the service.
+
+* Menu:
+
+* file::                        Local file access.
+* ftp::                         Remote file access via ftp.
+* nfs::                         Remote file access via NFS.
+* info::                        Access to the Emacs Info system.
+* http/https::                  HTTP/1.0 support.
+* mailto::                      Sending simple electronic mail.
+* mailserver::                  Slightly more complicated electronic mail.
+* news/nntp/snews::             Reading and sending Usenet news.
+* rlogin/telnet/tn3270::        Legacy host connections.
+* irc::                         Internet Relay Chat.
+* data::                        Embedding the data within the URL itself.
+* gopher::                      Gopher and Gopher+.
+* finger::                      The old favorite.
+* netrek::                      netrek.
+
+
+
+File: w3.info, Node: file, Next: ftp, Prev: Supported URLs, Up: Supported URLs
+
+File URLs
+=========
+
+This allows Emacs/W3 to read arbitary files from hosts.  Compressed
+files are handled, but support is hard-coded so that
+`jka-compr-compression-info-list' and so on have no affect.  Suffixes
+recognized are `.z', `.gz' and `.Z'.  If the URL points to a
+directory, then it will try to retrieve a file named by
+`url-directory-index-file' (`index.html' by default) and parse it,
+otherwise you get a directory listing in `dired' mode.  If the URL
+refers to a file on a remote host, then Emacs/W3 uses `ange-ftp'
+(*Note ange-ftp: Top.) or `efs' (*Note efs: Top.) to retrive the file.
+ftp:// and file:// are synonymous for Emacs/W3.
+
+
+
+File: w3.info, Node: ftp, Next: nfs, Prev: file, Up: Supported URLs
+
+FTP URLs
+========
+
+For details of usage see *Note file::.  In Emacs/W3 file and FTP URLs
+are synonymous and files on the localhost are retrieved directly
+rather than by FTP.  Emacs/W3 relies on `ange-ftp' (*Note ange-ftp:
+Top.) or `efs' (*Note efs: Top.) to do the actual transfers.
+
+
+
+File: w3.info, Node: nfs, Next: info, Prev: ftp, Up: Supported URLs
+
+NFS URLs
+========
+
+gdj1: have I misunderstood the point of this?  Since NFS is fairly
+transparent to the user (at least when it's working), there isn't very
+much to say here.  An nfs URL is similar to a file URL except that it
+points to a file on a remote host that is handled by the automounter
+on the local host.  The variable `url-nfs-automounter-directory-spec'
+may need to be tweaked depending on local configuration.  The NFS URL
+is defined in RFC2224.
+
+
+
+File: w3.info, Node: info, Next: http/https, Prev: nfs, Up: Supported URLs
+
+info
+====
+Info URLs are not an officially recognised URL (gdj1: is this right?),
+but Emacs/W3 will parse them to produce a reference to a TeXinfo node,
+or `Top' if one is not specified.  `Info-mode' will be used to browse
+the document.
+
+
+
+File: w3.info, Node: http/https, Next: mailto, Prev: info, Up: Supported URLs
+
+http/https
+==========
+The HyperText Transfer Protocol is the protocol used to get documents
+from the World Wide Web.  Emacs/W3 supports HTTP version 1.0 as
+defined in RFC1945 -- now superseded by version 1.1 defined in
+RFC2068.
+
+If `url-honor-refresh-requests' is `nil' then `Refresh' headers will
+not be honoured, if `t' then they will always be honoured, otherwise
+the user will be asked for each request.  The default is `t'.
+`url-be-anal-about-file-attributes' controls whether HTTP is used to
+discover file attributes, or whether they're just guessed.  The
+default is `nil' which means that Emacs/W3 will make educated guesses.
+
+HTTPS is a secure version of HTTP defined in RFC2069 (gdj1: ?).
+Emacs/W3 requires SSL to handle this, *Note Installing SSL::.
+
+
+
+File: w3.info, Node: mailto, Next: mailserver, Prev: http/https, Up: Supported URLs
+
+mailto
+======
+A mailto URL will send an email message to the address in the URL, for
+example `mailto:foo@bar.com' would compose a message to foo@bar.com.
+Emacs/W3 uses the command specified by the `url-mail-command' variable
+to compose the email, this is `url-mail' by default which uses Gnu's
+`message' mode (*Note Message: (message)Top.) if available, otherwise
+the standard `mail' command.  An X-Url-From header field containing
+the URL of the document that contained the mailto URL is added, as is
+an X-Mailer header field containing the version of Emacs/W3 being
+used.
+
+RFC2368 extends the definition of mailto URLs in RFC1738.  The form of
+a mailto URL is `mailto:MAILBOX[?HEADER=CONTENTS[&HEADER=CONTENTS]]'
+where an arbitary number of HEADERs can be added.  If the HEADER is
+`body', then CONTENTS is put in the body otherwise a HEADER header
+field is created with CONTENTS as its contents.  Note that Emacs/W3
+does not consider any headers as `dangerous' so you should check them
+before sending the message.
+
+Email messages are defined in RFC822.
+
+
+
+File: w3.info, Node: mailserver, Next: news/nntp/snews, Prev: mailto, Up: Supported URLs
+
+mailserver
+==========
+A mailserver URL allows you to send an email to a person, but this URL
+optionally specifies a subject and a body.  The basic format is
+`mailserver:[MAILBOX/SUBJECT[/BODY]'.  Thus,
+`mailserver:foo@bar.com/wibble/flibble' will compose a message to
+foo@bar.com with SUBJECT as the subject and BODY already in the body
+of the email.  Note that both the subject and the body are "hex"ed,
+but the subject cannot contain newlines.
+
+
+
+File: w3.info, Node: news/nntp/snews, Next: rlogin/telnet/tn3270, Prev: mailserver, Up: Supported URLs
+
+news/nntp/snews
+===============
+If the URL doesn't specify a host, then the host in `url-news-server'
+will be used, and unless the URL has a port the news port as defined
+in `url-default-ports' (119) will be used.  The username and password
+specified in the URL will be used if present.  The URL may contain a
+message-id, in which case that article is displayed; it may contain a
+newsgroup in which case Gnus is used to display the newsgroup; or it
+may by empty in which case Gnus is called with no arguments.  Emacs/W3
+requires Gnus v5.x or Red, Quassia or Pterodactyl Gnus, *Note Top:
+(gnus)Top.  The variable `url-news-use-article-mode' controls the
+displaying of news articles; if non-`nil' then articles are displayed
+in Gnus article mode, otherwise they are turned into HTML and rendered
+by Emacs/W3.
+
+An NNTP URL is the same as a news URL, except that the URL may specify
+an article by its number.
+
+
+
+File: w3.info, Node: rlogin/telnet/tn3270, Next: irc, Prev: news/nntp/snews, Up: Supported URLs
+
+rlogin/telnet/tn3270
+====================
+To handle rlogin, telnet and tn3270 URLs, Emacs/W3 runs an `rlogin',
+`telnet' or `tn3270' session (the program names and arguments are
+hardcoded) in a `terminal-emulator' buffer.  Well-known ports are used
+if the URL does not specify a port.
+
+
+
+
+File: w3.info, Node: irc, Next: data, Prev: rlogin/telnet/tn3270, Up: Supported URLs
+
+irc
+===
+"Internet Relay Chat" (IRC) is handled by handing off the IRC session
+to a function named in `url-irc-function'.  This function must take
+five argumenst, HOST, PORT, CHANNEL, USER and PASSWORD.  The CHANNEL
+argument specifies the channel to join immediately, this can be `nil'.
+By default this is `url-irc-zenirc' which processes the arguments and
+lets `zenirc' handle the session.
+
+
+
+File: w3.info, Node: data, Next: gopher, Prev: irc, Up: Supported URLs
+
+data
+====
+
+Data URLs contain MIME data in the URL itself, by default the data is
+8bit encoded `text/plain', but the URL can specify either or both the
+content-type and the encoding.  Emacs/W3 will parse the URL's data as
+MIME and display it appropriately.  *Note MIME Support::.
+
+
+
+File: w3.info, Node: gopher, Next: finger, Prev: data, Up: Supported URLs
+
+gopher
+======
+"Gopher" (Go for) was in someways the precurser to the world wide web
+and is becoming rarer as the web becomes more powerful.  Nevertheless,
+there are still many gopher sites around and Emacs/W3 supports this
+protocol (of course).  The variable `url-gopher-labels' maps gopher
+types to something else (gdj: ?)  for displaying the gopher menus.
+`url-gopher-icons' maps gopher types to pictures.
+`url-gopher-to-mime' maps gopher types to MIME types.  If
+`url-use-hypertext-gopher' is non-`nil', then gopher pages will be
+turned into HTML for Emacs/W3 to parse and display normally, otherwise
+Emacs/W3 will let `gopher.el' handle all gopher requests which will
+lose gopher+ support and inlined searching.  This is `t' by default.
+
+
+
+File: w3.info, Node: finger, Next: netrek, Prev: gopher, Up: Supported URLs
+
+finger
+======
+Finger URLs will finger a given user at a given host, or `localhost'
+if no host is specified, processing the results to create an HTML page
+for Emacs/W3 to display.
+
+
+
+File: w3.info, Node: netrek, Prev: finger, Up: Supported URLs
+
+netrek
+======
+This is unsupported at present.
+
+
+
+
+File: w3.info, Node: MIME Support, Next: Security, Prev: Supported URLs, Up: Top
+
+MIME Support
+************
+MIME is an emerging standard for multimedia mail.  It offers a very
+flexible typing mechanism.  The type of a file or message is specified
+in two parts, separated by a '/'.  The first part is the general
+category of the data (text, application, image, etc.).  The second
+part is the specific type of data (postscript, png, jpeg, etc.).  So
+`text/html' specifies an HTML document, whereas `image/x-xwindowdump'
+specifies an image of an Xwindow taken with the `xwd' program.
+
+
+This typing allows much more flexibility in naming files.  HTTP/1.0
+servers can now send back content-type headers in response to a
+request, and not have the client second-guess it based on file
+extensions.  HTML files can now be named `something.png' (not a great
+idea, but possible).
+
+* Menu:
+
+* Adding MIME types based on file extensions::  How to map file
+                                                extensions onto MIME
+                                                types (e.g., `.png ->
+                                                image/png)'.
+* Specifying Viewers::          How to specify external and internal viewers
+                        for files that Emacs/W3 cannot handle natively.
+
+
+
+File: w3.info, Node: Adding MIME types based on file extensions, Next: Specifying Viewers, Prev: MIME Support, Up: MIME Support
+
+Adding MIME types based on file extensions
+==========================================
+
+For some protocols however, it is still necessary to guess the content
+of a file based on the file extension.  This type of guess-work should
+only be needed when accessing files via FTP, local file access, or old
+HTTP/0.9 servers.
+
+Instead of specifying how to view things twice, once based on
+content-type and once based on the file extension, it is easier to map
+file extensions to MIME content-types.  The variable that controls
+this is `mm-mime-extensions'.
+
+This variable is an assoc list of file extensions and the corresponding
+MIME content-type.  A sample entry looks like: `(".movie"
+. "video/x-sgi-movie")' This makes all files that end in `.movie'
+(`foo.movie' and `bar.movie') be interpreted as SGI animation files.
+If a content-type is defined for the document, then this is
+over-ridden.  Regular expressions can NOT be used.
+
+Both Mosaic and the NCSA HTTP daemon rely on a separate file for
+mapping file extensions to MIME types.  Instead of having the users of
+Emacs/W3 duplicate this in lisp, this file can be parsed using the
+`url-parse-mimetypes' function.  This function is called each time w3
+is loaded.  It tries to locate mimetype files in several places. If
+the environment variable `MIMETYPES' is nonempty, then this is assumed
+to specify a UNIX-like path of mimetype files (this is a colon
+separated string of pathnames).  If the `MIMETYPES' environment
+variable is empty, then Emacs/W3 looks for these files:
+
+  1. `~/.mime-types'
+  2. `/etc/mime-types'
+  3. `/usr/etc/mime-types'
+  4. `/usr/local/etc/mime-types'
+  5. `/usr/local/www/conf/mime-types'
+
+Each line contains information for one HTTP type.  These types
+resemble MIME types.  To add new ones, use subtypes beginning with x-,
+such as application/x-myprogram.  Lines beginning with # are comment
+lines, and suitably ignored.  Each line consists of:
+
+type/subtype ext1 ext2 ...  extN
+
+type/subtype is the MIME-like type of the document. ext* is any number
+of space-separated filename extensions which correspond to the MIME
+type.
+
+
+
+File: w3.info, Node: Specifying Viewers, Prev: Adding MIME types based on file extensions, Up: MIME Support
+
+Specifying Viewers
+==================
+
+Not all files look as they should when parsed as an HTML document
+(whitespace is stripped, paragraphs are reformatted, and lots of
+little changes that make the document look unrecognizable).  Files may
+be passed to external programs or Emacs Lisp functions to be viewed.
+
+Not all files can be viewed accurately from within an Emacs session
+(PNG files for example, or audio files).  For this reason, the user
+can specify file "viewers" based on MIME content-types.  This is done
+with a standard mailcap file.  *Note Mailcap Files::.
+
+As an alternative, the function `mm-add-mailcap-entry' can also be
+used from an appropriate hook.  *Note Hooks::.  This functions takes
+three arguments, the major type ("image"), the minor type ("png"), and
+an assoc list of information about the viewer.  Please see the URL
+documentation for more specific information on what this assoc list
+should look like.
+
+
+
+File: w3.info, Node: Security, Next: Cookies, Prev: MIME Support, Up: Top
+
+Security
+********
+There are an increasing number of ways to authenticate a user to a web
+service.  Emacs/W3 tries to support as many as possible.  Emacs/W3
+currently supports:
+
+Basic Authentication
+     The weakest authentication available, not recommended if serious
+     security is necessary.  This is simply a string that looks like
+     `user:password' that has been Base64 encoded, as defined in RFC
+     1421.
+Digest Authentication
+     Jeffery L. Hostetler, John Franks, Philip Hallam-Baker, Ari
+     Luotonen, Eric W. Sink, and Lawrence C. Stewart have an internet
+     draft for a new authentication mechanism.  For the complete
+     specification, please see draft-ietf-http-digest-aa-01.txt in the
+     nearest internet drafts archive (1) (*Note Security-Footnotes::).
+SSL Encryption
+     SSL is the `Secure Sockets Layer' interface.  Emacs/W3 supports
+     HTTP transfers over an SSL encrypted channel, if the appropriate
+     files have been installed.  *Note Installing SSL::.
+
+
+Privacy
+=======
+Sometimes you don't want people to know who you are, or where you've
+been.  HTTP is quite happy to tell everyone it meets who you are and
+where you've come from.  `url-privacy-level' can be used to set how
+much information is given, it can be a list of the following symbols
+
+`email'
+     Do not send email address.  This just sets
+     `url-personal-mail-address' to `nil'.
+`os'
+     Do not send operating system
+`lastloc'
+     Do not send the last location
+`agent'
+     Do not send the User-Agent string (for an alternative approach,
+     *Note Masquerading::).
+`cookie'
+     Never accept cookies (*Note Cookies::)
+
+Alternatively `url-privacy-level' can be a single symbol,
+`none'
+     Send all information.
+`low'
+     Don't send the last location.  Equivalent to `(lastloc)'
+`high'
+     Don't send the email address or last location.  Equivalent to
+     `(email lastloc)'
+`paranoid'
+     Don't send anything.  Equivalent to `(email os lastloc agent
+     cookie)'
+
+If you change `url-privacy-level' then you should also call
+`url-setup-privacy-info' to make sure that the changes propogate.
+
+
+File: w3.info  Node: Security-Footnotes, Up: Security
+
+(1) One is ftp://ds.internic.net/internet-drafts
+
+
+
+File: w3.info, Node: Cookies, Next: Non-Unix Operating Systems, Prev: Security, Up: Top
+
+Cookies
+*******
+
+HTTP is a stateless protocol which means that the server sees every
+request for pages independently with no idea of how it relates to any
+other request.  Therefore the server has no idea whether or not you've
+seen a page before, or whether you've registered (if that's an
+option).  Cookies (1) (*Note Cookies-Footnotes::) are used to add
+state to HTTP sessions.  Cookies are defined in RFC2109.
+
+Cookies are saved in the file specified in `url-cookie-file', which is
+`W3-CONFIGURATION-DIRECTORY/cookies' by default.  Note that this file
+should probably not be world writable, and possibly not even world
+readable.
+
+Some people see cookies as an invasion of privacy while others see
+them as a product of badly designed websites and buggy servers.
+Emacs/W3 lets you unconditionally reject all cookies by adding
+`cookie' to `url-privacy-level' or setting it to `paranoid' (*Note
+Security::) but for those who want finer control over what to accept
+and reject, Emacs/W3 offers `url-cookie-trusted-urls' and
+`url-cookie-untrusted-urls' which are lists of regular expressions
+that match URLs from which cookies should be accepted and rejected
+respectively.  If a URL matches patterns in both of these, then
+Emacs/W3 decides whether to accept or not based on the most specific
+match (the most specific match being the shortest match).  Note that
+Emacs/W3 only considers the first match for each variable, so the
+regular expressions should be in increasing order of generality.
+
+For even more control over which cookies are accepted, you can set
+`url-cookie-confirmation' to non-`nil', in which case every time a
+cookie is offered Emacs/W3 will ask if you want to accept it.  This
+only applies to cookies that would otherwise be accepted, Emacs/W3
+will still reject cookies from URLs matched in
+`url-cookie-untrusted-urls'.
+
+
+File: w3.info  Node: Cookies-Footnotes, Up: Cookies
+
+(1) In computer terms a "cookie" is data that a program holds but
+which has no meaning in itself.  Cookies are not processed by the
+program (indeed the program may not even know what data they hold or
+what format it's in) but is passed to libraries or servers which do
+understand it.
+
+
+
+File: w3.info, Node: Non-Unix Operating Systems, Next: Speech Integration, Prev: Cookies, Up: Top
+
+Non-Unix Operating Systems
+**************************
+
+* Menu:
+
+* VMS::                         The wonderful world of VAX|AXP-VMS!
+* OS/2::                        The next-best thing to Unix.
+* MS-DOS::                      The wonderful world of MS-DOG!
+* Windows::                     Windows NT, Chicago/Windows 95.
+
+
+
+File: w3.info, Node: VMS, Next: OS/2, Prev: Non-Unix Operating Systems, Up: Non-Unix Operating Systems
+
+VMS
+===
+
+:: WORK :: VMS Specific instriuctions
+
+
+
+File: w3.info, Node: OS/2, Next: MS-DOS, Prev: VMS, Up: Non-Unix Operating Systems
+
+OS/2
+====
+
+:: WORK :: OS/2 Specific instructions
+
+
+
+File: w3.info, Node: MS-DOS, Next: Windows, Prev: OS/2, Up: Non-Unix Operating Systems
+
+MS-DOS
+======
+
+:: WORK :: DOS Specific instructions
+
+
+
+File: w3.info, Node: Windows, Prev: MS-DOS, Up: Non-Unix Operating Systems
+
+Windows
+=======
+
+:: WORK :: 32bit Windows Specific instructions
+
+
+
+File: w3.info, Node: Speech Integration, Next: Advanced Features, Prev: Non-Unix Operating Systems, Up: Top
+
+Speech Integration
+******************
+
+:: WORK :: Emacspeak integration
+
+
+
+File: w3.info, Node: Advanced Features, Next: More Help, Prev: Speech Integration, Up: Top
+
+Advanced Features
+*****************
+
+* Menu:
+
+* Disk Caching::                Improving performance by using a local disk cache
+* Printing::                    Emacs/W3 can print HTML by various methods.
+* Interfacing to Mail/News::    How to make VM understand hypertext links
+* Debugging HTML::              How to make Emacs/W3 display warnings about invalid
+                                HTML/HTML+ constructs.
+* Hooks::                       Various hooks to use throughout Emacs/W3
+* Other Variables::             Miscellaneous variables that control the real
+                                guts of Emacs/W3.
+
+
+
+File: w3.info, Node: Disk Caching, Next: Printing, Prev: Advanced Features, Up: Advanced Features
+
+Disk Caching
+============
+
+A cache stores the information on a page on the local machine.  When
+requesting a page that is in the cache, Emacs/W3 can retrieve the page
+from the cache more quickly than retrieving the page again from its
+location out on the network.  With a well-populated cache, browsing
+the web is dramatically faster.
+
+The first time a page is requested, Emacs/W3 retrieves the page from
+the network.  When requesting a page that is in the cache, Emacs/W3
+checks to see if the page has changed since it was last retrieved from
+the remote machine.  If it has not changed, the local copy is used,
+saving the transmission of the file over the network.
+
+To turn on disk caching, set the variable `url-automatic-caching' to
+non-`nil', or choose the 'Caching' menu item (under `Options').  That
+is all there is to it.  Running the `clean-cache' shell script fist is
+recommended, to allow for future cleaning of the cache.  This shell
+script will remove all files that have not been accessed since it was
+last run.  To keep the cache pared down, it is recommended that this
+script be run from at or cron (see the manual pages for crontab(5) or
+at(1) for more information)
+
+
+With a large cache of documents on the local disk, it can be very
+handy when traveling, or any other time the network connection is not
+active (a laptop with a dial-on-demand PPP connection, etc).  Emacs/W3
+can rely solely on its cache, and avoid checking to see if the page
+has changed on the remote server.  In the case of a dial-on-demand PPP
+connection, this will keep the phone line free as long as possible,
+only bringing up the PPP connection when asking for a page that is not
+located in the cache.  This is very useful for demonstrations as well.
+To turn this feature on, set the variable `url-standalone-mode' to
+non-`nil', or choose the `Use Cache Only' menu item (under `Options')
+
+`url-cache-expired' decides whether or not a cache entry has expired.
+It is a function that take two times as it parameters and returns
+non-`nil' if the second time is "too old" when compared with the first
+time.  `url-cache-ignored-protocols' is a list of protocols that will
+never be cached, this is `'("www" "about" "https" "mailto")' by
+default. `url-cache-directory' sets the directory to store the cache
+files, `"W3-CONFIGURATION-DIRECTORYcache/"' by default.
+`url-cache-creation-function' sets the type of cache to use, it is a
+function that takes a URL as an argument and returns the absolute
+pathname of the cache-file corresponding to that URL.  You may write
+your own function or use one of the two ready built functions,
+`url-cache-create-filename-using-md5' and
+`url-cache-create-filename-human-readable'.  The advantage of
+`url-cache-create-filename-using-md5' is that there are very few cache
+collisions but is only "suitably fast" if you're not using XEmacs.
+`url-cache-create-filename-human-readable' will give a filename more
+obviously connected to the URL, but it is more likely to conflict with
+other files.
+
+
+
+File: w3.info, Node: Printing, Next: Interfacing to Mail/News, Prev: Disk Caching, Up: Advanced Features
+
+
+Printing
+========
+
+If you want to print an HTML document, then Emacs/W3 needs to convert
+it into something that can be printed.  You can choose from
+
+HTML source
+     This will simply print the raw HTML source code using
+     `lpr-buffer'.  An appropriate <base> tag is inserted at the
+     beginning of the document. 
+Formatted text
+     This will print the rendered document using `lpr-buffer'; so the
+     conversion is handled by Emacs.  This will print plain ASCII.
+
+Postscript
+     This will call the function in `w3-postscript-print-function',
+     which is `ps-print-buffer-with-faces' by default.  This just
+     tells Emacs to generate postscript as best it can.
+
+LaTeX
+     Emacs/W3 can generate a LaTeX equivalent of the HTML document.
+
+     `w3-print-command' contains a command string to print `dvi'
+     files.  It is `lpr -h -d' by default.
+
+
+     There are several variables controlling what the final LaTeX
+     document looks like.
+
+     :: WORK :: Document the new LaTeX backend
+
+
+     `w3-latex-use-latex2e'
+          If non-`nil', configures the LaTeX engine to use the LaTeX2e
+          syntax.  A `nil' value indicates that LaTeX 2.0.9
+          compabibility will be used instead.
+     `w3-latex-docstyle'
+          The document style to use when printing or mailing converted
+          HTML files in LaTeX.
+     `w3-latex-packages'
+          List of LaTeX packages to include.  Currently this is only
+          used if `w3-latex-use-latex2e' is non-`nil'.
+     `w3-latex-use-maketitle'
+          If non-`nil', the LaTeX engine will use real LaTeX title
+          pages for document titles.
+     `w3-latex-print-links'
+          If non-`nil', prints the URLs of hypertext links as endnotes
+          at the end of the document.  If set to `footnote', prints
+          the URL's as footnotes on each page.
+
+
+
+
+File: w3.info, Node: Interfacing to Mail/News, Next: Debugging HTML, Prev: Printing, Up: Advanced Features
+
+Interfacing to Mail/News
+========================
+
+More and more people are including URLs in their signatures, and
+within the body of mail messages.  It can get quite tedious to type
+these into the minibuffer to follow one.
+
+With the latest versions of VM (the 5.9x series of betas) and Gnus
+(5.x), URLs are automatically highlighted, and can be followed with
+the mouse or the return key.  How the URLs are viewed is determined by
+the variable `browse-url-browser-function', and it should be set to
+the symbol `browse-url-w3'.
+
+To access URLs from within RMAIL, the following hook should do the
+trick.
+     (add-hook 'rmail-mode-hook
+     	  (function
+     	   (lambda ()
+     	     (define-key rmail-mode-map [mouse-2] 'w3-maybe-follow-link-mouse)
+     	     (define-key rmail-mode-map "\r"      'w3-maybe-follow-link))))
+
+
+
+File: w3.info, Node: Debugging HTML, Next: Hooks, Prev: Interfacing to Mail/News, Up: Advanced Features
+
+Debugging HTML
+==============
+For those people that are adventurous, or are just as anal as I am
+about people writing valid HTML, set the variable `w3-debug-html' to
+`t' and see what happens.  Alternatively, you can set it to `style' to
+warn about stylistic issues as well.  The debugging information will
+be written to the buffer named by `w3-debug-buffer', `*HTML Debug*' by
+default.  To control font-lock highlighting in the HTML error buffer,
+use `w3-html-errors-font-lock-keywords'.  After Emacs/W3 has displayed
+HTML errors for a page, it runs `w3-display-errors-hook'.
+
+
+If a Emacs/W3 thinks it has encountered invalid HTML, then a debugging
+message is displayed.
+
+:: WORK :: Need to list the different values w3-debug-html can have, and
+:: WORK :: what they do ::
+
+gdj1: Does this refer to the macro?  And if so, why?
+
+
+
+File: w3.info, Node: Hooks, Next: Other Variables, Prev: Debugging HTML, Up: Advanced Features
+
+Hooks
+=====
+
+These are the various hooks that can be used to customize some of
+Emacs/W3's behavior.  They are arranged in the order in which they
+would happen when retrieving a document.  These are all 'normal hooks'
+in standard Emacs-terminology, meaning they are functions (or lists of
+functions) that are called consecutively.
+
+`w3-load-hook'
+     These hooks are run the first time a URL is fetched.  All the
+     Emacs/W3 variables are initialized before this hook is run.
+`w3-mode-hook'
+     These hooks are run after a buffer has been parsed and displayed,
+     but before any inlined images are downloaded and converted.
+`w3-source-file-hook'
+     These hooks are run after displaying a document's source.
+
+
+
+File: w3.info, Node: Other Variables, Prev: Hooks, Up: Advanced Features
+
+Miscellaneous variables
+=======================
+
+There are lots of variables that control the real nitty-gritty of
+Emacs/W3 that the beginning user probably shouldn't mess with.  Here
+they are.
+
+`url-bad-port-list'
+     List of ports to warn the user about connecting to.  Defaults to
+     just the mail, NNTP and chargen ports so a malicious HTML author
+     cannot spoof mail or news to other people.
+`url-confirmation-func'
+     What function to use for asking yes or no functions.  Possible
+     values are `'yes-or-no-p' or `'y-or-n-p', or any function that
+     takes a single argument (the prompt), and returns `t' only if a
+     positive answer is gotten.  Defaults to `'yes-or-no-p'.
+
+`url-passwd-entry-func'
+     This is a symbol indicating which function to call to read in a
+     password.  If this variable is `nil' at startup, it is
+     initialized depending on whether "EFS" or "ange-ftp" is being
+     used.  This function should accept the prompt string as its first
+     argument, and the default value as its second argument.
+
+`url-max-password-attempts'
+     When a protected document is requested, Emacs/W3 will prompt for
+     a password.  `url-max-password-attempts' controls how many
+     attempts should be allowed, it is 5 by default.
+
+`w3-reuse-buffers'
+     Determines what happens when `w3-fetch' is called on a document
+     that has already been loaded into another buffer.  Possible
+     values are: `nil', `yes', and `no'.  `nil' will ask the user if
+     Emacs/W3 should reuse the buffer (this is the default value).  A
+     value of `yes' means assume the user wants to always reuse the
+     buffer.  A value of `no' means assume the user always wants to
+     re-fetch the document.
+
+`url-show-status'
+     Whether to show progress messages in the minibuffer.
+     `url-show-status' controls if a running total of the number of
+     bytes transferred is displayed.  This Can cause a large
+     performance hit if using a remote X display over a slow link, or
+     a terminal with a slow modem.
+
+`mm-content-transfer-encodings'
+     An assoc list of CONTENT-TRANSFER-ENCODINGS or CONTENT-ENCODINGS
+     and the appropriate decoding algorithms for each.  If the `cdr'
+     of a node is a list, then this specifies the decoder is an
+     external program, with the program as the first item in the list,
+     and the rest of the list specifying arguments to be passed on the
+     command line.  If using an external decoder, it must accept its
+     input from `stdin' and send its output to `stdout'.
+
+     If the `cdr' of a node is a symbol whose function definition is
+     non-`nil', then that encoding can be handled internally.  The
+     function is called with 2 arguments, buffer positions bounding
+     the region to be decoded.  The function should completely replace
+     that region with the unencoded information.
+
+     Currently supported transfer encodings are: base64, x-gzip, 7bit,
+     8bit, binary, x-compress, x-hqx, and quoted-printable.
+
+`url-uncompressor-alist'
+     An assoc list of file extensions and the appropriate
+     uncompression programs for each.  This is used to build the
+     Accept-encoding header for HTTP/1.0 requests.
+
+`w3-do-scripting'
+     If this is non-`nil' then Emacs/W3 will do clien-side scripting.
+     This is `nil' by default.
+
+`url-external-retrieval-program, url-external-retrieval-args'
+     `url-external-retrieval-program' names the external program that
+     is run to retrieve URLs.  It is `www' by default.
+     `url-external-retrieval-args' specifies the arguments that will
+     be passed to it, `("-source")' by default.
+
+`w3-netscape-compatible-comments'
+     Not everyone uses proper HTML comments.  To allow for the
+     presence of lesser browsers, Emacs/W3 will honour the incorrect
+     netscape-style comments (`<! >') if
+     `w3-netscape-compatible-comments' is non-`nil'.  This is `t' by
+     default, but it shouldn't need to be.
+
+`font-blink-interval'
+     This controls how often blinks occur for text inside `<blink>'
+     tags.  It is 0.5 seconds by default.
+
+`url-inhibit-mime-parsing'
+     This controls whether to parse MIME headers in a message.  If it
+     is `nil' then the headers are parsed and deleted.
+
+`url-mime-language-string'
+     This is used to set the contents of the `Accept-language:' field
+     in HTTP/1.0 requests.  If it is `nil' then the field isn't added
+     and the server's default language version is retrieved, if it is
+     `*' then the first available langauge version is retrieved.  If
+     it is a string, then it should be the desired language.
+
+`url-multiple-p'
+     If this is non-`nil' then multiple queries are possible through `
+     *URL-<i>*' buffers.
+
+`url-personal-mail-address'
+     `url-personal-mail-address' contains your full email address.
+     This is sent in the FROM field in an HTTP/1.0 request, but *Note
+     Security:: for how to prevent this.  If `nil' (the default), then
+     it will be set to `user-mail-address' if non-`nil', else it will
+     be `(user-real-login-name)' at `(system-name)'.
+
+`url-temporary-directory, w3-temporary-directory'
+     `url-temporary-directory' and `w3-temporary-directory' control
+     where temporary files are placed.  If `TMPDIR' is set then they
+     default to that, otherwise `/tmp'.
+
+`w3-documentation-root'
+     This specifies the location of the Emacs/W3 documentation, it
+     *must* end in a slash.
+
+`w3-popup-menu-on-mouse-3'
+     If you like context-sensitive menus then you're bound to like
+     `w3-popup-menu-on-mouse-3'.  If non-`nil' (the default) then
+     Emacs/W3 will bind mouse-3 to provide context-sensitive menus.
+     This might not work at the moment.  If `w3-popup-menu-on-mouse-3'
+     is `nil', then Emacs/W3 will not change the binding of mouse-3.
+
+`w3-track-mouse'
+     If `w3-track-mouse' is non-`nil' (the default) then Emacs/W3 will
+     display the URL under the mouse in the echo-area.
+
+`w3-use-menus'
+     If `w3-use-menus' is `nil' then Emacs/W3 will not provide a menu
+     interface.  If it is `1', then Emacs/W3 will add a `W3' item to
+     the Emacs menubar.  If it is a list then Emacs/W3 will add its
+     own menubar.  The following symbols may appear in the list to
+     control what Emacs/W3 puts in its menubar.
+     `file'
+          A list of file related commands
+     `edit'
+          Various standard editing commands (copy/paste)
+     `view'
+          Controlling various things about the document view
+     `go'
+          Navigation control
+     `bookmark'
+          Bookmark / hotlist control
+     `options'
+          Various options
+     `buffers'
+          The standard buffers menu
+     `emacs'
+          A toggle button to switch back to normal emacs menus
+     `style'
+          Control style information and who gets to set what
+     `search'
+          Various search engines
+     `help'
+          The help menu
+     `nil'
+          This may appear once in the list.  All menus after this will
+          be displayed flush right.
+
+
+
+
+File: w3.info, Node: More Help, Next: Future Directions, Prev: Advanced Features, Up: Top
+
+More Help
+*********
+For more help on Emacs/W3, please send me mail
+(wmperry+w3@cs.indiana.edu).  Several discussion lists have also been
+created for Emacs/W3.  To subscribe, send mail to
+majordomo@indiana.edu, with the body of the message 'subscribe
+LISTNAME <EMAIL ADDRES>'.  All other mail should go to
+<listname>@indiana.edu.
+
+
+   * w3-announce -- this list is for anyone interested in Emacs/W3,
+     and should in general only be used by me.  The gnu.emacs.sources
+     newsgroup and a few other mailing lists are included on this.
+     Please only use this list for major package releases related to
+     Emacs/W3.  (www-announce@w3.org is included on this list).
+   * w3-beta -- this list is for beta testers of Emacs/W3.  These
+     brave souls test out not-quite stable code.
+   * w3-dev -- a list consisting of myself and a few other people who
+     are interested in the internals of Emacs/W3, and doing active
+     development work.  Pretty dead right now, but I hope it will
+     grow.
+
+For help on the World Wide Web in general, please refer to the
+comp.infosystems.www.* newsgroups.  There are also several discussion
+lists concerning the Web.  Send mail to <listname>-request@w3.org with
+a subject line of 'subscribe <listname>'.  All mail should go to
+<listname>@w3.org.  Administrative mail should go to www-admin@w3.org.
+The lists are:
+
+
+   * www-talk -- for general discussion of the World Wide Web, where
+     its going, new features, etc.  All the major developers are
+     subscribed to this list.
+   * www-announce -- for announcements concerning the World Wide Web.
+     Server changes, new servers, new software, etc.
+
+As a last resort, mail me.  I'll try to answer as quickly as I can.
+
+
+
+File: w3.info, Node: Future Directions, Next: Reporting Bugs, Prev: More Help, Up: Top
+
+Future Directions
+*****************
+Changes are constantly being made to the Emacs browser (hopefully all
+for the better).  This is a list of the things that are being worked
+on right now.
+
+BUGS (4.0):
+   - need to support HTTP/0.9 (http://c2.com:8080) responses
+   - /etc/mailcap cannot overide builtin mm-mime-data stuff?
+   - try to protect people from using '~' in file URLs
+   - keystrokes entered while in w3-pause self-insert under XEmacs --
+     the loop around dispatch-event needs to be smarter about what it
+     swallows.
+   - border-color can have multiple color specifications, but we
+     currently choke with 'args out of range' when we see this.
+   - widget appears to be stealing button3 to mean 'activate' -- this
+     is bogus!  We lose all context-sensitive menus because of this.
+   - We still seem to be growing the line size under Emacs 19.x/20.x
+   - It would be really nice if w3 buffers were put into w3-mode as
+     soon as they were created. Then if the rendering craps out
+     somehow then the buffer could be browsed such as it was. Ideally,
+     links and widgets would be functional.
+   - document how to translate Netscape foo.pac files to emacs lisp
+   - Should we stop using reporter.el?
+
+BUGS (4.1):
+   - background colors are not heeded on table rows (<tr>).  Same
+     properties on individual cells or the table as a whole work fine.
+   - <br> in <dd> hosed -- margins in general tend to be too big
+     sometimes.
+   - client side imagemaps have to be in the same buffer (actually in
+     the smae buffer, _BEFORE_ the usemap directive on an image) --
+     fix to be able to use imagemaps in different files, any position,
+     etc, etc.
+
+FEATURES (4.1)
+   - cache a formatted version of documents, with enough info to
+     recreate the widgets in them.
+   - w3-preview-region command
+   - LDAP support (XEmacs)
+   - New proxy type for sending requests via mail to a mail->web->mail
+     gateway.
+   - Emacspeak Interaction
+
+        * some way of specifying in a stylesheet whether certain text
+          is inaudible.  use the 'inaudible text property for this.
+        * Full Aural-CSS support
+
+   - more sophisticated filling algorithm. I'm not sure exactly what
+     would be sufficient but breaking lines after punctuation seems
+     like it would solve most of the problem.
+   - When fetching images for viewing (not inlining), W3 should at
+     least have an option of displaying it inline, ala Netscape.
+   - Widget library merging
+
+        * Write a font selection widget
+        * Write a voice selection widget
+        * Write a mailcap entry widget
+
+   - Custom library merging *
+   - Hotlist handling
+
+        * Abstract out current support
+        * Do something similar to GNUS 'backends' to provide easy way
+          to add new bookmark formats, etc.
+
+   - Write a new major mode for handling CSS style sheets
+
+FEATURES (5.0)
+
+   - Emacspeak Integration
+
+        * Need option to turn off table rendering and print it out as
+          a table that is viewable with emacspeak-table-ui.el
+
+   - Write a text/xml parser
+   - Completely rewrite display code again
+
+        * Abstract everything out to follow parse->flow
+          objects->render model
+        * Base all stylesheet stuff off of DSSSL
+        * CSS2
+        * New rendering backends
+
+             - Native postscript output
+             - LaTeX upgrade
+             - TeXinfo
+
+   - Display code
+
+        * implement <spacer> from netscape 3.0b5
+        * reimplement w3-show-headers
+        * Handle math environment using the calc library
+        * Better integration with the parser
+
+
+
+
+File: w3.info, Node: Reporting Bugs, Next: Dealing with Firewalls, Prev: Future Directions, Up: Top
+
+Reporting Bugs
+**************
+
+If any bugs are discovered in Emacs/W3, please report them to the
+mailing list w3-beta@xemacs.org -- this is where the brave souls who
+beta test the latest versions of Emacs/W3 reside, and are generally
+very responsive to bug reports.  Please make sure to use the bug
+submission feature of Emacs/W3, so that all relevant information will
+be sent along with your bug report.  By default this is bound to the
+`w' key when in an Emacs/W3 buffer, or you can use M-x w3-submit-bug
+from anywhere within Emacs.
+
+For problems that are causing emacs to signal and error, please send a
+backtrace.  You can get a backtrace by `M-x setvariable RET
+debug-on-error RET t RET', and then reproduce the error.
+
+If the problem is visual, please capture a copy of the output and mail
+it along with the bug report (preferably as a MIME attachment, but
+anything will do).  You can use the `xwd' program under X-windows for
+this, or Alt-PrintScreen under Windows 95/NT.  Sorry, but I don't
+remember what the magic incarnation is for doing a screen dump under
+NeXTstep or OS/2.
+
+If the problem is actually causing Emacs to crash, then you will need
+to also mail the maintainers of the various Emacs distributions with
+the bug.  Please use the gnu.emacs.bug newgroup for reporting bugs
+with GNU Emacs 19, and comp.emacs.xemacs for reporting bugs with
+XEmacs 19 or XEmacs 20.  I am actively involved with the beta testing
+of the latest versions of both branches of Emacs, and if I can
+reproduce the problem, I will do my best to see it gets fixed in the
+next release.
+
+It is also important to always maintain as much context as possible in
+your responses.  I get so much email from my various Emacs-activities
+and work, that I cannot remember everything.  If you send a bug
+report, and I send you a reply, and you reply with 'no that didn't
+work', then odds are I will have no clue what didn't work, much less
+what that was trying to fix in the first place.  It will be much
+quicker and less painful if I don't have to waste a round-trip email
+exchange saying 'what are you talking about'.
+
+
+

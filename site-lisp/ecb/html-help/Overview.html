@@ -1,0 +1,85 @@
+<html lang="en">
+<head>
+<title>ECB - the Emacs Code Browser</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name=description content="ECB - the Emacs Code Browser">
+<meta name=generator content="makeinfo 4.2">
+<link href="http://www.gnu.org/software/texinfo/" rel=generator-home>
+</head>
+<body>
+<p>
+Node:<a name="Overview">Overview</a>,
+Next:<a rel=next accesskey=n href="Activation-and-Deactivation.html#Activation%20and%20Deactivation">Activation and Deactivation</a>,
+Previous:<a rel=previous accesskey=p href="Install-and-first-steps.html#Install%20and%20first%20steps">Install and first steps</a>,
+Up:<a rel=up accesskey=u href="ecb.html#Top">Top</a>
+<hr><br>
+
+<h2>Overview</h2>
+
+<p>ECB is a global minor-mode which offers a couple of <dfn>ECB-windows</dfn>
+for browsing your sources comfortable with the mouse and the keyboard. 
+These "special" windows are also called <dfn>tree-buffer</dfn> in this
+manual. Every <dfn>item</dfn> in such a tree-buffer, i.e. every line, is
+also called a <dfn>node</dfn> of this tree-buffer. See <a href="Tree-buffer-styles.html#Tree-buffer%20styles">Tree-buffer styles</a> to get an impression about the look&amp;feel of these
+tree-buffers. There are currently three different types of
+ECB-windows/tree-buffers:
+
+<ul>
+<li>ECB-Directories
+<li>ECB-Sources
+<li>ECB-Methods
+</ul>
+
+<p>In addition to these "special" ECB-windows you have always an
+<dfn>edit-area</dfn> where you can edit sour source-files. The edit-area
+can be divided into several <dfn>edit-windows</dfn> - as many as you need
+(see <a href="The-edit-area.html#The%20edit-area">The edit-area</a>). And at the bottom of the ECB-frame a
+durable <dfn>compilation-window</dfn> (also called <dfn>compile-window</dfn>)
+can be displayed (optional), where all the output of Emacs-compilation
+(compile, grep etc.) is shown (see <a href="Temp--and-compile-buffers.html#Temp-%20and%20compile-buffers">Temp- and compile-buffers</a>).
+
+<p>The following "screenshot" illustrates the typical layout of
+the ECB-frame<a rel=footnote href="#fn-1"><sup>1</sup></a>:
+
+<br><pre>------------------------------------------------------------------
+|              |                                                 |
+|  Directories |                                                 |
+|              |                                                 |
+|--------------|                                                 |
+|              |                                                 |
+|  Sources     |                                                 |
+|              |                                                 |
+|--------------|                   Edit-area                     |
+|              |   (can be splitted in several edit-windows)     |
+|  Methods     |                                                 |
+|              |                                                 |
+|--------------|                                                 |
+|              |                                                 |
+|  History     |                                                 |
+|              |                                                 |
+------------------------------------------------------------------
+|                                                                |
+|                 Compilation-window (optional)                  |
+|                                                                |
+------------------------------------------------------------------
+</pre>
+
+<p>In the following subsections the "special" ECB-windows will be
+explained in detail.
+
+<ul>
+<li><a accesskey=1 href="ECB-Directories-buffer.html#ECB%20Directories-buffer">ECB Directories-buffer</a>:       Contents of the ECB Directories-buffer
+<li><a accesskey=2 href="ECB-Sources-buffer.html#ECB%20Sources-buffer">ECB Sources-buffer</a>:           Contents of the ECB Sources/history-buffer
+<li><a accesskey=3 href="ECB-Methods-buffer.html#ECB%20Methods-buffer">ECB Methods-buffer</a>:           Contents of the ECB Methods-buffer
+</ul>
+
+<hr><h4>Footnotes</h4>
+<ol type="1">
+<li><a name="fn-1"></a>
+<p>This is only one example of the layouts ECB
+offers, see <a href="Changing-the-ECB-layout.html#Changing%20the%20ECB-layout">Changing the ECB-layout</a></p>
+
+</ol><hr>
+
+</body></html>
+

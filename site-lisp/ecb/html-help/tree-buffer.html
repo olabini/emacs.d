@@ -1,0 +1,35 @@
+<html lang="en">
+<head>
+<title>ECB - the Emacs Code Browser</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name=description content="ECB - the Emacs Code Browser">
+<meta name=generator content="makeinfo 4.2">
+<link href="http://www.gnu.org/software/texinfo/" rel=generator-home>
+</head>
+<body>
+<p>
+Node:<a name="tree-buffer">tree-buffer</a>,
+Next:<a rel=next accesskey=n href="Adviced-functions.html#Adviced%20functions">Adviced functions</a>,
+Previous:<a rel=previous accesskey=p href="List-of-hooks.html#List%20of%20hooks">List of hooks</a>,
+Up:<a rel=up accesskey=u href="Elisp-programming.html#Elisp%20programming">Elisp programming</a>
+<hr><br>
+
+<h3>The library tree-buffer.el</h3>
+
+<p>The library tree-buffer.el is ECB independent and can be used for
+other applications too. But such an application is not allowed to use
+any of the variables of tree-buffer.el especially not the variable
+<strong>tree-buffers</strong>!
+
+<p><code>tree-buffers</code>: Only for internal use. It contains all
+tree-buffers of current Emacs-instance, means <strong>all</strong>
+tree-buffers of <strong>all</strong> applications which uses currently
+tree-buffers. Every application must store its own collection of
+tree-buffers in an own variable! For example: ECB stores its
+tree-buffer set in <code>ecb-tree-buffers</code>!
+
+<p>An application may only use the methods tree-buffer.el provides but no
+internal variables!
+
+</body></html>
+

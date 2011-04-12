@@ -1,0 +1,1591 @@
+This is ruby.info, produced by makeinfo version 4.0 from Ruby.texi.
+
+INFO-DIR-SECTION Programming Languages
+START-INFO-DIR-ENTRY
+* ruby: (ruby).                 Ruby Language Reference Manual (English)
+END-INFO-DIR-ENTRY
+
+     This Info file was converted from the Ruby Language Reference
+     Manual (HTML), automatically.
+
+     The original HTML document is below.
+
+     <http://www.ruby-lang.org/en/man-1.4/>
+     for `Ruby' Version 1.4.6
+     written by Yukihiro Matsumoto <matz@zetabits.com>
+     Last modified: Mon Feb 23 16:01:41 1998
+
+     So, this document is matz's, too.
+
+
+File: ruby.info,  Node: syntax_break,  Next: syntax_next,  Prev: syntax_return,  Up: Ruby Syntax
+
+`break'
+.......
+
+   Examples:
+
+             i=0
+             while i<3
+               print i, "\n"
+               break
+             end
+
+   Syntax:
+
+             break
+
+   Exits from the most internal loop.  Notice `break' does not exit
+from `case' expression like C.
+
+
+File: ruby.info,  Node: syntax_next,  Next: syntax_redo,  Prev: syntax_break,  Up: Ruby Syntax
+
+`next'
+......
+
+   Examples:
+
+             next
+
+   Syntax:
+
+             next
+
+   Jumps to next iteration of the most internal loop.
+
+
+File: ruby.info,  Node: syntax_redo,  Next: syntax_BEGIN_proc,  Prev: syntax_next,  Up: Ruby Syntax
+
+`redo'
+......
+
+   Examples:
+
+             redo
+
+   Syntax:
+
+             redo
+
+   Restarts this iteration of the most internal loop, without
+checking loop condition.
+
+
+File: ruby.info,  Node: syntax_BEGIN_proc,  Next: syntax_END_proc,  Prev: syntax_redo,  Up: Ruby Syntax
+
+BEGIN
+.....
+
+   Examples:
+
+             BEGIN {
+               ...
+             }
+
+   Syntax:
+
+             BEGIN '{'
+               expr..
+             '}'
+
+   Registers the initialize routine.  The block followed after
+`BEGIN' is evaluated before any other statement in that file (or
+string).  If multiple `BEGIN' blocks are given, they are evaluated in
+the appearing order.
+
+   The `BEGIN' block introduce new local-variable scope.  They don't
+share local variables with outer statements.
+
+   The `BEGIN' statement can only appear at the toplevel.
+
+
+File: ruby.info,  Node: syntax_END_proc,  Next: syntax_cdef,  Prev: syntax_BEGIN_proc,  Up: Ruby Syntax
+
+END
+---
+
+   Examples:
+
+             END {
+               ...
+             }
+
+   Syntax:
+
+             END '{' expr.. '}'
+
+   Registers finalize routine.  The block followed after `END' is
+evaluated just before the interpreter termination.  Unlike `BEGIN',
+`END' blocks shares their local variables, just like blocks.
+
+   The `END' statement registers its block only once at the first
+execution.  If you want to register finalize routines many times, use
+at_exit (*note Ruby Functions::).
+
+   The `END' statement can only appear at the toplevel.  Also you
+cannot cancel finalize routine registered by `END'.
+
+
+File: ruby.info,  Node: syntax_cdef,  Next: syntax_scdef,  Prev: syntax_END_proc,  Up: Ruby Syntax
+
+Class definitions
+-----------------
+
+   Examples:
+
+             class Foo < Super
+               def test
+                  :
+               end
+                  :
+             end
+
+   Syntax:
+
+             class identifier [`<' superclass ]
+               expr..
+             end
+
+   Defines the new class.  The class names are identifiers begin with
+uppercase character.
+
+
+File: ruby.info,  Node: syntax_scdef,  Next: syntax_mdef,  Prev: syntax_cdef,  Up: Ruby Syntax
+
+Singleton-class definitions
+---------------------------
+
+   Examples:
+
+             class << obj
+               def test
+                  :
+               end
+                  :
+             end
+
+   Syntax:
+
+             class `<<' expr
+               expr..
+             end
+
+   Defines the class attribute for certain object.  The definitions
+within this syntax only affect the specified object.
+
+
+File: ruby.info,  Node: syntax_mdef,  Next: syntax_method-def,  Prev: syntax_scdef,  Up: Ruby Syntax
+
+Module definitions
+------------------
+
+   Examples:
+
+             module Foo
+               def test
+                  :
+               end
+                  :
+             end
+
+   Syntax:
+
+             module identifier
+               expr..
+             end
+
+   Defines the new module The module names are identifiers begin with
+uppercase character.
+
+
+File: ruby.info,  Node: syntax_method-def,  Next: syntax_singleton-def,  Prev: syntax_mdef,  Up: Ruby Syntax
+
+Method definitions
+------------------
+
+   Examples:
+
+             def fact(n)
+               if n == 1 then
+                  1
+               else
+                 n * fact(n-1)
+               end
+             end
+
+   Syntax:
+
+             def method_name [`(' [arg ['=' default]]...[`,' `*' arg ]`)']
+               expr..
+             end
+
+   Defines the new method.  Method_name should be either identifier or
+re-definable operators (e.g. ==, +, -, etc.).  Notice the method is
+not available before the definition.  For example:
+
+             foo
+             def foo
+               print "foo\n"
+             end
+
+   will raise an exception for undefined method invoking.
+
+   The argument with default expression is optional.  The evaluation
+of the default expression is done at the method invocation time.  If
+the last argument preceded by `*', actual parameters which don't have
+corresponding formal arguments are assigned in this argument as an
+array.
+
+   If the last argument preceded by `&', the block given to the
+method is converted into the `Proc' object, and assigned in this
+argument.  In case both `*' and `&' are present in the argument list,
+`&' should come later.
+
+   The method definitions can not be nested.
+
+   The return value of the method is the value given to the `return'
+(*note Ruby Syntax::), or that of the last evaluated expression.
+
+   Some methods are marked as `private', and must be called in the
+function form.
+
+   When the method is defined outside of the class definition, the
+method is marked as private by default.  On the other hand, the
+methods defined in the class definition are marked as public by
+default.  The default visibility and the `private' mark of the
+methods can be changed by `public' (*note Module::) or `private'
+(*note Module::) of the `Module' (*note Module::).
+
+   In addition, the methods named `initialize' are always defined as
+private methods.
+
+
+File: ruby.info,  Node: syntax_singleton-def,  Next: syntax_alias,  Prev: syntax_method-def,  Up: Ruby Syntax
+
+Singleton-method definitions
+----------------------------
+
+   Examples:
+
+             def foo.test
+               print "this is foo\n"
+             end
+
+   Syntax:
+
+             def expr `.' identifier [`(' [arg [`=' default]]...[`,' `*' arg ]`)']
+               expr..
+             end
+
+   The singleton-method is the method which belongs to certain
+object. The singleton-method definitions can be nested.
+
+   The singleton-methods of classes inherited to its subclasses.  The
+singleton-methods of classes are acts like class methods in other
+object-oriented languages.
+
+
+File: ruby.info,  Node: syntax_alias,  Next: syntax_undef,  Prev: syntax_singleton-def,  Up: Ruby Syntax
+
+`alias'
+-------
+
+   Examples:
+
+             alias foo bar
+             alias $MATCH $&
+
+   Syntax:
+
+             alias method-name method-name
+             alias global-variable-name global-variable-name
+
+   Gives alias to methods or global variables.  Aliases can not be
+defined within the method body.
+
+   The aliase of the method keep the current definition of the method,
+even when methods are overridden.
+
+   Making aliases for the numbered global variables (`$1', `$2',...)
+is prohibited.  Overriding the builtin global variables may cause
+serious problems.
+
+
+File: ruby.info,  Node: syntax_undef,  Next: syntax_defined_p,  Prev: syntax_alias,  Up: Ruby Syntax
+
+`undef'
+-------
+
+   Examples:
+
+             undef bar
+
+   Syntax:
+
+             undef method-name
+
+   Cancels the method definition.  `Undef' can not appear in the
+method body.  By using `undef' and `alias', the interface of the
+class can be modified independently from the superclass, but notice
+it may be broke programs by the internal method call to self.
+
+
+File: ruby.info,  Node: syntax_defined_p,  Prev: syntax_undef,  Up: Ruby Syntax
+
+`defined?'
+----------
+
+   Examples:
+
+             defined? print
+             defined? File.print
+             defined?(foobar)
+             defined?($foobar)
+             defined?(@foobar)
+             defined?(Foobar)
+
+   Syntax:
+
+             defined? expr
+
+   Returns false if the expression is not defined.  Returns the string
+that describes a kind of the expression.
+
+
+File: ruby.info,  Node: Ruby Functions,  Next: Pre-defined variables and constants,  Prev: Ruby Syntax,  Up: Top
+
+Built-in functions
+******************
+
+   Some methods defined in the `Kernel' (*note Kernel::) module can
+be called from everywhere, and are to be called like functions.
+You'd better think twice before redefining these methods.
+
+ - Function: ` STR
+     Performs STR by a subshell.  The standard output from the
+     commands are taken as the value.  This method is called by a
+     syntax sugar form like ``str`'.
+
+
+ - Function: Array (ARG)
+     Converts the argument to the array using `to_a'.
+
+
+ - Function: Float (ARG)
+     Converts the argument to the float value.
+
+
+ - Function: Integer (ARG)
+     Converts the argument to the integer value.  If the argument is
+     string, and happen to start with 0x, 0b, 0, interprets it as hex,
+     binary, octal string respectively.
+
+
+ - Function: String (ARG)
+     Converts the argument to the string using `Kernel#to_s' (*note
+     Kernel::).
+
+
+ - Function: at_exit
+     Register the block for clean-up to execute at the interpreter
+     termination.
+
+
+ - Function: autoload (MODULE, FILE)
+     Specifies FILE  to be loaded using the method `require' (*note
+     Ruby Functions::), when MODULE accessed for the first time.
+     MODULE must be a string or a symbol.
+
+
+ - Function: binding
+     Returns the data structure of the variable/method binding, which
+     can be used for the second argument of the `eval'.
+
+
+ - Function: caller ([LEVEL])
+     Returns the context information (the backtrace) of current call
+     in the form used for the variable `$@'.  When LEVEL specified,
+     `caller' goes up to calling frames LEVEL times and returns the
+     context information.  `caller' returns an empty array at
+     toplevel.
+
+     The lines below prints stack frame:
+
+          for c in caller(0)
+            print c, "\n"
+          end
+
+
+ - Function: catch (TAG){...}
+     Executes the block, and if an non-local exit named TAG submitted
+     by the THROW (*note Ruby Functions::), it returns with the value
+     given by the `throw'.
+
+     For example, the code below returns the value 25, not 10, and the
+     SOME_PROCESS never be called.
+
+          def throw_exit
+            throw :exit, 25
+          end
+          
+          catch(:exit) {
+             throw_exit
+             some_process;
+             10;
+          }
+
+
+ - Function: chop
+ - Function: chop!
+     Removes off the last character of the value of the variable `$_'
+     (2 characters if the last characters are "\r\n").  `chop!'
+     modifies the string itself.  `chop' makes a copy to modify.
+
+
+ - Function: chomp ([RS])
+ - Function: chomp! ([RS])
+     Removes off the line ending from the value of the variable `$_'.
+     See String#chomp (*note String::).
+
+
+ - Function: eval (EXPR[, BINDING])
+     Evaluate EXPR as a Ruby program.  If the `Proc' object or the
+     binding data from `binding' is given to the optional second
+     argument, the string is compiled and evaluated under its binding
+     environment.
+
+
+ - Function: exec (COMMAND...)
+     Executes COMMAND as a subprocess, and *never returns*.
+
+     If multiple arguments are given, `exec' invokes command
+     directly, so that whitespaces and shell's meta-characters are not
+     processed by the shell.
+
+     If the first argument is an array that has two elements, the
+     first element is the real path for the command, and the second
+     element is for the argv[0] to `execl(2)'.
+
+
+ - Function: exit ([STATUS])
+     Exits immediately with `status'.  if STATUS is omitted, exits
+     with 0 status.
+
+     `exit' raises `SystemExit' to terminate the program, which can
+     be handled by the `rescue' clause of the `begin' statement.
+
+
+ - Function: exit! ([STATUS])
+     Exits with status.  Unlike `exit', it ignores any kind of
+     exception handling (including `ensure').  Used to terminate
+     sub-process after calling fork (*note Ruby Functions::).
+
+
+ - Function: fork
+     Does a `fork(2)' system call.  Returns the child pid to the
+     parent process and `nil' to the child process.  When called with
+     the block, it creates the child process and execute the block in
+     the child process.
+
+
+ - Function: gets ([RS])
+ - Function: readline ([RS])
+     Reads a string from the virtual concatenation of each file
+     listed on the command line or standard input (in case no files
+     specified).  If the end of file is reached, `nil' will be the
+     result.  The line read is also set to the variable `$_'.  The
+     line terminator is specified by the optional argument RS, which
+     default value is defined by the variable `$/'.
+
+     `readline' functions just like `gets', except it raises an
+     `EOFError' exception at the end of file.
+
+
+ - Function: global_variables
+     Returns the list of the global variable names defined in the
+     program.
+
+
+ - Function: gsub (PATTERN[, REPLACE])
+ - Function: gsub! (PATTERN[, REPLACE])
+     Searches a string held in the variable `$_' for a PATTERN, and
+     if found, replaces all the occurrence of the pattern with the
+     REPLACE and returns the replaced string.  `gsub!' modifies the
+     original string in place, `gsub' makes copy, and keeps the
+     original unchanged.  See also String#gsub (*note String::).
+
+
+ - Function: iterator?
+     Returns true, if called from within the methods called with the
+     block (the iterators), otherwise false.
+
+
+ - Function: load (FILE[, PRIV])
+     Loads and evaluates the Ruby program in the FILE.  If FILE is
+     not an absolute path, it searches file to be load from the
+     search path in the variable `$:'.  The tilde (``~'') at
+     begenning of the path will be expanded into the user's home
+     directory like some shells.
+
+     If the optional argument PRIV is true, loading and evaluating is
+     done under the unnamed module, to avoid global name space
+     pollution.
+
+
+ - Function: local_variables
+     Returns the list of the local variable names defined in the
+     current scope.
+
+
+ - Function: loop
+     Loops forever (until terminated explicitly).
+
+
+ - Function: open (FILE[, MODE])
+ - Function: open (FILE[, MODE]){...}
+     Opens the FILE, and returns a File (*note File::) object
+     associated with the file.  The MODE argument specifies the mode
+     for the opened file, which is either `"r"', `"r+"', `"w"',
+     `"w+"', `"a"', `"a+"'.  See `fopen(3)'.  If MODE omitted, the
+     default is `"r"'
+
+     If the FILE begins with `"|"', Ruby performs following string as
+     a sub-process, and associates pipes to the standard input/output
+     of the sub-process.
+
+     *Note for the converts from Perl*: The command string *starts*
+     with `|', not ends with `|'.
+
+     If the command name described above is `"-"', Ruby forks, and
+     create pipe-line to the child process.
+
+     When `open' is called with the block, it opens the file and
+     evaluates the block, then after the evaluation, the file is
+     closed for sure.  That is:
+
+          open(path, mode) do |f|
+            ...
+          end
+          
+          # mostly same as above
+          
+          f = open(path, mode)
+          begin
+            ...
+          ensure
+            f.close
+          end
+
+
+ - Function: p (OBJ)
+     Prints human-readable representation of the OBJ to the stdout.
+     It works just like:
+
+          print obj.inspect, "\n"
+
+
+ - Function: print (ARG1...)
+     Prints arguments.  If no argument given, the value of the
+     variable `$_' will be printed.  If an argument is not a string,
+     it is converted into string using `Kernel#to_s' (*note Kernel::).
+
+     If the value of `$;' is non-nil, its value printed between each
+     argument.  If the value of `$\' is non-nil, its value printed at
+     the end.
+
+
+ - Function: printf ([PORT, ]FORMAT, ARG...)
+     Prints arguments formatted according to the FORMAT like
+     `sprintf' (*note Ruby Functions::).  If the first argument is
+     the instance of the IO (*note IO::) or its subclass, print
+     redirected to that object.  the default is the value of
+     `$stdout'.
+
+
+ - Function: proc
+ - Function: lambda
+     Returns newly created procedure object from the block. The
+     procedure object is the instance of the class Proc (*note
+     Proc::).
+
+
+ - Function: putc (C)
+     Writes the character C to the default output ($>).
+
+
+ - Function: putc (OBJ..)
+     Writes an OBJ to the default output ($>), then newline for each
+     arguments.
+
+
+ - Function: raise ([ERROR_TYPE,][MESSAGE][,TRACEBACK])
+ - Function: fail ([ERROR_TYPE,][MESSAGE][,TRACEBACK])
+     Raises an exception.  In no argument given, re-raises last
+     exception.  With one arguments, raises the exception if the
+     argument is the exception.  If the argument is the string,
+     `raise' creates a new `RuntimeError' exception, and raises it.
+     If two arguments supplied, `raise' creates a new exception of
+     type ERROR_TYPE, and raises it.
+
+     If the optional third argument TRACEBACK is specified, it must
+     be the traceback infomation for the raising exception in the
+     format given by variable $@ (*note Pre-defined variables and
+     constants::) or `caller' (*note Ruby Functions::) function.
+
+     The exception is assigned to the variable `$!', and the position
+     in the source file is assigned to the `$@'.
+
+     If the first argument is not an exception class or object, the
+     exception actually raised is determined by calling it's
+     `exception' method (baring the case when the argument is a
+     string in the second form).  The `exception' method of that
+     class or object must return it's representation as an exception.
+
+     The `fail' is an alias of the `raise'.
+
+
+ - Function: rand (MAX)
+     Returns a random integer number greater than or equal to 0 and
+     less than the value of MAX.  (MAX should be positive.)
+     Automatically calls `srand' (*note Ruby Functions::) unless
+     `srand()' has already been called.
+
+     If MAX is 0, `rand' returns a random float number greater than
+     or equal to 0 and less than 1.
+
+
+ - Function: readlines ([RS])
+     Reads entire lines from the virtual concatenation of each file
+     listed on the command line or standard input (in case no files
+     specified), and returns an array containing the lines read.
+
+     Lines are separated by the value of the optional argument RS,
+     which default value is defined by the variable `$/' (*note
+     Pre-defined variables and constants::).
+
+
+ - Function: require (FEATURE)
+     Demands a library file specified by the FEATURE.  The FEATURE is
+     a string to specify the module to load.  If the extension in the
+     FEATURE is `".so"', then Ruby interpreter tries to load
+     dynamic-load file. If the extension is `".rb"', then Ruby script
+     will be loaded.  If no extension present, the interpreter
+     searches for dynamic-load modules first, then tries to Ruby
+     script.  On some system actual dynamic-load modules have
+     extension name `".o"', `".dll"' or something, though `require'
+     always uses the extension `".so"' as a dynamic-load modules.
+
+     `require' returns true if modules actually loaded.  Loaded
+     module names are appended in `$"'.
+
+
+ - Function: select (READS[, WRITES[, EXCEPTS[, TIMEOUT]]])
+     Calls `select(2)' system call.  READS, WRITES, EXCEPTS are
+     specified arrays containing instances of the IO class (or its
+     subclass), or `nil'.
+
+     The TIMEOUT must be either an integer, `Float' (*note Float::),
+     `Time' (*note Time::), or `nil'.  If the TIMEOUT is `nil',
+     `select' would not time out.
+
+     `select' returns `nil' in case of timeout, otherwise returns an
+     array of 3 elements, which are subset of argument arrays.
+
+
+ - Function: sleep ([SEC])
+     Causes the script to sleep for SEC seconds, or forever if no
+     argument given.  May be interrupted by sending the process a
+     `SIGALRM' or `run' from other threads (if thread available).
+     Returns the number of seconds actually slept.  SEC may be a
+     floating-point number.
+
+
+ - Function: split ([SEP[, LIMIT]])
+     Return an array containing the fields of the string, using the
+     string SEP as a separator.  The maximum number of the fields can
+     be specified by LIMIT.
+
+
+ - Function: format (FORMAT...)
+ - Function: sprintf (FORMAT...)
+     Returns a string formatted according to a FORMAT like usual
+     printf conventions of the C language.  See `sprintf(3)' or
+     `printf(3)'.  In addition, `sprintf' accepts `%b' for binary.
+     Ruby does not have unsigned integers, so unsigned specifier,
+     such as %b, %o, or %x, converts negative integers into 2's
+     complement form like %`..f'.  supplying sign (`+', `-') or space
+     option for the unsigned specifier changes its behavior to
+     convert them in absolute value following `-' sign.
+
+
+ - Function: srand ([SEED])
+     Sets the random number seed for the `rand' (*note Ruby
+     Functions::).  If SEED is omitted, uses the current time etc. as
+     a seed.
+
+
+ - Function: sub (PATTERN[, REPLACE])
+ - Function: sub! (PATTERN[, REPLACE])
+     Searches a string held in the variable `$_' for a PATTERN, and
+     if found, replaces the first occurrence of the pattern with the
+     REPLACE and returns the replaced string.  `sub!' modifies the
+     original string in place, `sub' makes copy, and keeps the
+     original unchanged.  See also String#sub (*note String::).
+
+
+ - Function: syscall (NUM, ARG...)
+     Calls the system call specified as the first arguments, passing
+     remaining as arguments to the system call.  The arguments must be
+     either a string or an integer.
+
+
+ - Function: system (COMMAND...)
+     Perform COMMAND in the sub-process, wait for the sub-process to
+     terminate, then return true if it successfully exits, otherwise
+     false.  Actual exit status of the sub-process can be found in
+     `$?'.
+
+     If multiple arguments are given, `system' invokes command
+     directly, so that whitespaces and shell's meta-characters are not
+     processed by the shell.
+
+     See `exec' (*note Ruby Functions::) for the execution detail.
+
+
+ - Function: test (CMD, FILE [, FILE])
+     Does a file test. the CMD would be one of following:
+
+        * commands which takes one operand:
+
+         `?r'
+               File is readable by effective uid/gid.
+
+         `?w'
+               File is writable by effective uid/gid.
+
+         `?x'
+               File is executable by effective uid/gid.
+
+         `?o'
+               File is owned by effective uid.
+
+         `?R'
+               File is readable by real uid/gid.
+
+         `?W'
+               File is writable by real uid/gid.
+
+         `?X'
+               File is executable by real uid/gid.
+
+         `?O'
+               File is owned by real uid.
+
+         `?e'
+               File exists.
+
+         `?z'
+               File has zero size.
+
+         `?s'
+               File has non-zero size (returns size).
+
+         `?f'
+               File is a plain file.
+
+         `?d'
+               File is a directory.
+
+         `?l'
+               File is a symbolic link.
+
+         `?p'
+               File is a named pipe (FIFO).
+
+         `?S'
+               File is a socket.
+
+         `?b'
+               File is a block special file.
+
+         `?c'
+               File is a character special file.
+
+         `?u'
+               File has setuid bit set.
+
+         `?g'
+               File has setgid bit set.
+
+         `?k'
+               File has sticky bit set.
+
+
+         `?M'
+               File last modify time.
+
+         `?A'
+               File last access time
+
+         `?C'
+               File last status change time.
+
+        * commands which takes two operands:
+
+         `?='
+               Both files have same modify time.
+
+         `?>'
+               File1 is newer than file2.
+
+         `?<'
+               File1 is older than file2.
+
+         `?-'
+               File1 is a hard link to file2
+
+
+ - Function: throw (TAG[, VALUE])
+     Casts an non-local exit to the enclosing `catch' (*note Ruby
+     Functions::) waiting for TAG, or terminates the program if no
+     such `catch' waiting.  The TAG must be the name of the non-local
+     exit, which is either a symbol or a string.  `catch' may not
+     appear in the same method body.  the VALUE will be the return
+     value of the `catch'.  The default value is the `nil'.
+
+
+ - Function: trace_var (VARIABLE, COMMAND)
+ - Function: trace_var (VARIABLE) {...}
+     Sets the hook to the VARIABLE, which is called when the value of
+     the variable changed.  the VARIABLE must be specified by the
+     symbol.  the COMMAND is either a string or a procedure object.
+     To remove hooks, specify `nil' as a COMMAND or use `untrace_var'
+     (*note Ruby Functions::).
+
+
+ - Function: trap (SIGNAL, COMMAND)
+ - Function: trap (SIGNAL) {...}
+     Specifies the signal handler for the SIGNAL.  The handler
+     COMMAND must be either a string or a procedure object.  If the
+     COMMAND is a string `"SIG_IGN"' or `"IGNORE"', then specified
+     signal will be ignored (if possible).  If the COMMAND is a string
+     `"SIG_DFL"' or `"DEFAULT"', then system's default action will be
+     took for the signal.
+
+     The special signal 0 or `"EXIT"' is for the termination of the
+     script.  The signal handler for `EXIT' will be called just
+     before the interpreter terminates.
+
+
+ - Function: untrace_var (VARIABLE[, COMMAND])
+     Deletes the hook associated with the VARIABLE.  If the second
+     argument omitted, all the hooks will be removed.  `trace_var'
+     returns an array containing removed hooks.
+
+
+File: ruby.info,  Node: Pre-defined variables and constants,  Next: Pre-defined classes and modules,  Prev: Ruby Functions,  Up: Top
+
+Pre-defined variables and constants
+***********************************
+
+* Menu:
+
+* variables::
+* constants::
+*   ENV::
+
+
+File: ruby.info,  Node: variables,  Next: constants,  Up: Pre-defined variables and constants
+
+Pre-defined variables
+=====================
+
+ - Variable: $!
+     The exception information message.  `raise' (*note Ruby
+     Functions::) sets this variable.
+
+
+ - Variable: $@
+     The backtrace of the last exception, which is the array of the
+     string that indicates the point where methods invoked from.  The
+     elements in the format like:
+
+          "filename:line"
+
+     or
+
+          "filename:line:in `methodname'"
+
+     (Mnemonic: where exception occurred *at*.)
+
+
+ - Variable: $&
+     The string matched by the last successful pattern match in this
+     scope, or `nil' if the last pattern match failed.  (Mnemonic:
+     like & in some editors.)  This variable is read-only.
+
+
+ - Variable: $`
+     The string preceding whatever was matched by the last successful
+     pattern match in the current scope, or `nil' if the last pattern
+     match failed.  (Mnemonic: ` often precedes a quoted string.)
+     This variable is read-only.
+
+
+ - Variable: $'
+     The string following whatever was matched by the last successful
+     pattern match in the current scope, or `nil' if the last pattern
+     match failed.  (Mnemonic: ' often follows a quoted string.)
+
+
+ - Variable: $+
+     The last bracket matched by the last successful search pattern,
+     or `nil' if the last pattern match failed.  This is useful if
+     you don't know which of a set of alternative patterns matched.
+     (Mnemonic: be positive and forward looking.)
+
+
+ - Variable: $1, $2...
+     Contains the subpattern from the corresponding set of parentheses
+     in the last successful pattern matched, not counting patterns
+     matched in nested blocks that have been exited already, or `nil'
+     if the last pattern match failed.  (Mnemonic: like \digit.)
+     These variables are all read-only.
+
+
+ - Variable: $~
+     The information about the last match in the current scope.
+     Setting this variables affects the match variables like `$&',
+     `$+', `$1', `$2'.. etc.  The nth subexpression can be retrieved
+     by `$~[nth]'.  (Mnemonic: ~ is for match.)  This variable is
+     locally scoped.
+
+
+ - Variable: $=
+     The flag for case insensitive,  `nil' by default.  (Mnemonic: =
+     is for comparison.)
+
+
+ - Variable: $/
+     The input record separator, newline by default.  Works like
+     `awk''s RS variable.  If it is set to `nil', whole file will be
+     read at once.  (Mnemonic: / is used to delimit line boundaries
+     when quoting poetry.)
+
+
+ - Variable: $\
+     The output record separator for the `print' (*note Ruby
+     Functions::) and `IO#write' (*note IO::).  The default is `nil'.
+     (Mnemonic: It's just like /, but it's what you get "back" from
+     Ruby.)
+
+
+ - Variable: $,
+     The output field separator for the `print' (*note Ruby
+     Functions::).  Also, it is the default separator for
+     `Array#join' (*note Array::).  (Mnemonic: what is printed when
+     there is a , in your print statement.)
+
+
+ - Variable: $;
+     The default separator for ` String#split' (*note String::).
+
+
+ - Variable: $.
+     The current input line number of the last file that was read.
+
+
+ - Variable: $<
+     The virtual concatenation file of the files given by command line
+     arguments, or stdin (in case no argument file supplied).
+     `$<.file' returns the current filename.  (Mnemonic: $< is a
+     shell input source.)
+
+
+ - Variable: $>
+     The default output for `print' (*note Ruby Functions::),
+     `printf' (*note Ruby Functions::).  `$stdout' by default.
+     (Mnemonic: $> is for shell output.)
+
+
+ - Variable: $_
+     The last input line of string by `gets' or `readline'.  It is
+     set to `nil' if `gets'/`readline' meet `EOF'.  This variable is
+     locally scoped.  (Mnemonic: partly same as Perl.)
+
+
+ - Variable: $0
+     Contains the name of the file containing the Ruby script being
+     executed.  On some operating systems assigning to `$0' modifies
+     the argument area that the `ps(1)' program sees.  This is more
+     useful as a way of indicating the current program state than it
+     is for hiding the program you're running.  (Mnemonic: same as sh
+     and ksh.)
+
+
+ - Variable: $*
+     Command line arguments given for the script.  The options for
+     Ruby interpreter are already removed.  (Mnemonic: same as sh and
+     ksh.)
+
+
+ - Variable: $$
+     The process number of the Ruby running this script.  (Mnemonic:
+     same as shells.)
+
+
+ - Variable: $?
+     The status of the last executed child process.
+
+
+ - Variable: $:
+     The array contains the list of places to look for Ruby scripts
+     and binary modules by `load' (*note Ruby Functions::) or
+     `require' (*note Ruby Functions::).  It initially consists of
+     the arguments to any `-I (*note Options::)' command line
+     switches, followed by the default Ruby library, probabl
+     "/usr/local/lib/ruby", followed by ".", to represent the current
+     directory.  (Mnemonic: colon is the separators for PATH
+     environment variable.)
+
+
+ - Variable: $"
+     The array contains the module names loaded by `require' (*note
+     Ruby Functions::).  Used for prevent `require' (*note Ruby
+     Functions::) from load modules twice.  (Mnemonic: prevent files
+     to be doubly quoted(loaded).)
+
+
+ - Variable: $DEBUG
+     The status of the `-d (*note Options::)' switch.
+
+
+ - Variable: $FILENAME
+     Same as `$<.filename'.
+
+
+ - Variable: $LOAD_PATH
+     The alias to the `$:' (*note Pre-defined variables and
+     constants::).
+
+
+ - Variable: $stdin
+     The current standard input.
+
+
+ - Variable: $stdout
+     The current standard output.
+
+
+ - Variable: $stderr
+     The current standard error output.
+
+
+ - Variable: $VERBOSE
+     The verbose flag, which is set by the `-v (*note Options::)'
+     switch to the Ruby interpreter.
+
+
+option variables
+----------------
+
+   The variables which names are in the form of `$-?', where ?  is
+the option character, are called option variables and contains the
+information about interpreter command line options.
+
+ - Variable: $-0
+     The alias to the `$/' (*note Pre-defined variables and
+     constants::).
+
+
+ - Variable: $-a
+     True if option `-a' is set.  Read-only variable.
+
+
+ - Variable: $-d
+     The alias to the `$DEBUG' (*note Pre-defined variables and
+     constants::).
+
+
+ - Variable: $-F
+     The alias to the `$;' (*note Pre-defined variables and
+     constants::).
+
+
+ - Variable: $-i
+     In in-place-edit mode, this variable holds the extention,
+     otherwise `nil'.  Can be assigned to enable (or disable)
+     in-place-edit mode.
+
+
+ - Variable: $-I
+     The alias to the `$:' (*note Pre-defined variables and
+     constants::).
+
+
+ - Variable: $-l
+     True if option `-l'is set.  Read-only variable.
+
+
+ - Variable: $-p
+     True if option `-p'is set.  Read-only variable.
+
+
+ - Variable: $-v
+     The alias to the `$VERBOSE' (*note Pre-defined variables and
+     constants::).
+
+
+
+File: ruby.info,  Node: constants,  Next: ENV,  Prev: variables,  Up: Pre-defined variables and constants
+
+Pre-defined global constants
+============================
+
+ - Variable: TRUE
+     The typcal true value.  All non-false values (everything except
+     `nil' and `false') is true in Ruby.
+
+
+ - Variable: FALSE
+     The false itself.
+
+
+ - Variable: NIL
+     The nil itself.
+
+
+ - Variable: STDIN
+     The standard input.  The default value for `$stdin' (*note
+     Pre-defined variables and constants::).
+
+
+ - Variable: STDOUT
+     The standard output.  The default value for `$stdout' (*note
+     Pre-defined variables and constants::).
+
+
+ - Variable: STDERR
+     The standard error output.  The default value for `$stderr'
+     (*note Pre-defined variables and constants::).
+
+
+ - Variable: ENV
+     The hash-like object (*note ENV::) contains current environment
+     variables.  Setting a value in `ENV' changes the environment for
+     child processes.
+
+
+ - Variable: ARGF
+     The alias to the `$<' (*note Pre-defined variables and
+     constants::).
+
+
+ - Variable: ARGV
+     The alias to the `$*' (*note Pre-defined variables and
+     constants::).
+
+
+ - Variable: DATA
+     The file object of the script, pointing just after the
+     `__END__'.  Not defined unless the script is not read from the
+     file.
+
+
+ - Variable: VERSION
+     The Ruby version string.
+
+
+ - Variable: RUBY_RELEASE_DATE
+     The relase date string.
+
+
+ - Variable: RUBY_PLATFORM
+     The platform identifier.
+
+
+File: ruby.info,  Node: ENV,  Next: Pre-defined classes and modules,  Prev: constants,  Up: Pre-defined variables and constants
+
+ENV
+---
+
+   The object that represents environment variables.  It has almost
+equivalent interfaces to the Hash (*note Hash::) objects, except the
+keys and values of ENV must be strings.
+
+Included Modules:
+.................
+
+   - `Enumerable' (*note Enumerable::)
+
+Methods:
+........
+
+ - Method on `ENV': self [KEY]
+     Returns the value of the environment variable specified by the
+     KEY.  Returns `nil', if no such environment variable exists.
+
+
+ - Method on `ENV': self [KEY]= VALUE
+     Changes or sets the value of the environment variable specified
+     by the KEY to the VALUE.  If the VALUE is `nil', the environment
+     variable will be removed.
+
+
+ - Method on `ENV': delete (KEY)
+     Deletes the environment variable.  Returns nil if the variable
+     specified by the KEY does not exist.  In case the block is
+     supplied to this method, it will be evaluated when no environment
+     variable exists.
+
+
+ - Method on `ENV': delete_if {|KEY, VALUE|...}
+ - Method on `ENV': reject! {|KEY, VALUE|...}
+     Deletes environment variables, if the evaluated value of the
+     block with the array of `[key,value]' as an argument is true.
+
+
+ - Method on `ENV': each {|KEY, VALUE|...}
+ - Method on `ENV': each_pair {|KEY, VALUE|...}
+     Iterates over each pair of keys and values (`[key,value]') of
+     the environment variables.
+
+
+ - Method on `ENV': each_key {|KEY|...}
+     Iterates over each name of all environment variables.
+
+
+ - Method on `ENV': each_value {|VALUE|...}
+     Iterates over each value of all environment variables.
+
+
+ - Method on `ENV': empty?
+     Returns true if no environment variable defined.
+
+
+ - Method on `ENV': has_key? (VAL)
+ - Method on `ENV': key? (VAL)
+ - Method on `ENV': include? (VAL)
+     Returns true if there is the environment variable named VAL.
+
+
+ - Method on `ENV': has_value? (VALUE)
+ - Method on `ENV': value? (VALUE)
+     Returns true, if there exists any environment variable which has
+     the VALUE.
+
+
+ - Method on `ENV': indexes (KEY_1,..., KEY_N)
+     Returns an array of values of environment variables that names
+     are specified by arguments.
+
+
+ - Method on `ENV': keys
+     Returns an array of all environment variables.
+
+
+ - Method on `ENV': length
+ - Method on `ENV': size
+     Returns the number of environment variables.
+
+
+ - Method on `ENV': to_a
+     Returns an array of two element arrays of the environment
+     variables which is `[name,value]'.
+
+
+ - Method on `ENV': values
+     Returns an array of the values of all environment variables.
+
+
+File: ruby.info,  Node: Pre-defined classes and modules,  Next: Bundled Libraries,  Prev: Pre-defined variables and constants,  Up: Top
+
+Pre-defined classes and modules
+*******************************
+
+* Menu:
+
+* classes::                   Pre-defined classes
+* modules::                   Pre-defined modules
+
+
+File: ruby.info,  Node: classes,  Next: modules,  Up: Pre-defined classes and modules
+
+Pre-defined classes
+===================
+
+* Menu:
+
+* Object::                    Object
+*   Array::                   Array
+*   Data::                    Data
+*   Dir::                     Dir
+*   Exception::               Exception
+*     Interrupt::             Interrupt
+*     NotImplementError::     NotImplementError
+*     SignalException::       SignalException
+*     StandardError::         StandardError
+*       ArgumentError::       ArgumentError
+*       FloatDomainError::    FloatDomainError
+*       IOError::             IOError
+*         EOFError::          EOFError
+*       IndexError::          IndexError
+*       LoadError::           LoadError
+*       LocalJumpError::      LocalJumpError
+*       NameError::           NameError
+*       RuntimeError::        RuntimeError
+*       SecurityError::       SecurityError
+*       SyntaxError::         SyntaxError
+*       SystemCallError::     SystemCallError
+*         Errno__E*::         Errno__E*
+*       SystemStackError::    SystemStackError
+*       ThreadError::         ThreadError
+*       TypeError::           TypeError
+*       ZeroDivisionError::   ZeroDivisionError
+*     SystemExit::            SystemExit
+*     fatal::                 fatal
+*   Hash::                    Hash
+*   IO::                      IO
+*     File::                  File
+*   MatchingData::            MatchingData
+*   Module::                  Module
+*     Class::                 Class
+*   Numeric::                 Numeric
+*     Integer::               Integer
+*       Bignum::              Bignum
+*       Fixnum::              Fixnum
+*     Float::                 Float
+*   Proc::                    Proc
+*   Range::                   Range
+*   Regexp::                  Regexp
+*   String::                  String
+*   Struct::                  Struct
+*   Time::                    Time
+*   NilClass::                NilClass
+
+
+File: ruby.info,  Node: Object,  Next: Array,  Prev: Kernel,  Up: Pre-defined classes and modules
+
+Object
+------
+
+   The super class of all the Ruby class hierarchy.
+
+SuperClass:
+...........
+
+   - `Kernel' (*note Kernel::)
+
+Methods:
+........
+
+ - Method on `Object': self == OTHER
+     Checks if two objects are *equal*.  The default definition in
+     the `Kernel' class checks by object ID.  It should be redefined
+     in subclasses according to the characteristic of the class.
+
+
+ - Method on `Object': clone
+ - Method on `Object': dup
+     Returns the copy of the object.  For cloned object,
+
+          obj == obj.clone
+
+     `'
+
+     is always true, though
+
+          obj.equal?(obj.clone)
+
+     `'
+
+     is false most of the time.
+
+     the `dup' method is defined as:
+
+          def dup
+            self.clone
+          end
+
+     `clone' and `dup' copy the receiver, but they do not copy the
+     objects pointed by the receiver (i.e shallow copy).
+
+
+ - Method on `Object': display ([PORT])
+     Prints `self' to the PORT.  The PORT's default value is `$>'.
+
+          def display(out=$>)
+            out.print self
+          end
+          public :display
+
+
+ - Method on `Object': eql? (OTHER)
+     Checks if two objects are *equal*.  This method is used by
+     `Hash' (*note Hash::) to compare whether two keys are same.
+     When this method is redefined, the `hash' method should be
+     updated.
+
+     The default definition of the method `eql?' is like blow:
+
+          def eql?(other)
+            self == other
+          end
+
+
+ - Method on `Object': equal? (OTHER)
+     Checks if two objects have same object ID.  This method should
+     not be redefined in the subclass.
+
+
+ - Method on `Object': self =~ OTHER
+     Method for old style match like `obj =~ /RE/'.  The default
+     definitions is ``==' (*note Object::)'.
+
+
+ - Method on `Object': self === OTHER
+     This method is used to compare in `case' (*note Ruby Syntax::).
+     The default definitions is ``==' (*note Object::)'.
+
+
+ - Method on `Object': extend (module...)
+     Extends `self' by adding methods defined in MODULEs as
+     singleton-methods.
+
+
+ - Method on `Object': hash
+     Returns the integer hash value of the object.  It is used in the
+     `Hash' (*note Hash::) class to calculate the holding place of an
+     object.  The hash value of two objects must be equal, where
+     these two objects are equal by using `eql?' operator.  So,
+     whenever you redefine the definition of the `eql?' operator in
+     any class, don't forget to redefine `hash' method according to
+     the definition.
+
+
+ - Method on `Object': id
+     Returns the unique integer value for each object.
+
+
+ - Method on `Object': inspect
+     Returns the human-readable string representation of the receiver.
+
+
+ - Method on `Object': initialize (...)
+     The initialize method for the user-defined classes.  This method
+     will be called from `Class#new' (*note Class::) to initialize
+     the newly created object.  The default behavior is to do
+     nothing.  It is assumed that this method will be redefined in
+     the subclasses.  The argument to `Class#new' (*note Class::)
+     will be passed to the `initialize'
+
+     the method named `initialize' automatically falls under private
+     visibility.
+
+
+ - Method on `Object': instance_eval (EXPR)
+ - Method on `Object': instance_eval {...}
+     Evaluates the EXPR string in the object context.  If block
+     supplied for the method, the block is evaluated under the
+     receiver's context.  This allows to avoid compiling the string
+     everytime.
+
+     In INSTANCE_EVAL's context, `self' is bound to the object, so
+     that instance variables and methods of the receiver are accessed.
+
+
+ - Method on `Object': instance_of? (CLASS)
+     Returns true, if `self' is an instance of the specified CLASS.
+     It is always true, when `obj.kind_of?(c)' (*note Object::) is
+     true.
+
+
+ - Method on `Object': instance_variables ()
+     Returns the array of `self''s instance variable names.
+
+
+ - Method on `Object': kind_of? (CLASS)
+ - Method on `Object': is_a? (CLASS)
+     Returns true, if `self' is an instance of the specified CLASS,
+     or its subclass.
+
+
+ - Method on `Object': method_missing (MSG_ID, ...)
+     Will be called when the specified method is not defined for the
+     receiver.  The first argument, MSG_ID is the method name as a
+     symbol.  The second and later arguments are the arguments given
+     to the undefined method, if any.
+
+
+ - Method on `Object': methods
+     Returns the array of the public method names which defined in
+     the receiver.
+
+
+ - Method on `Object': nil?
+     Checks whether the receiver is `nil' or not.
+
+
+ - Method on `Object': private_methods
+     Returns the array of the private method names which defined in
+     the receiver.
+
+
+ - Method on `Object': remove_instance_variable (NAME)
+     Removes specified instance variable from the object.  It does not
+     raise any exception even if the object does not have named
+     instance variable.
+
+
+ - Method on `Object': respond_to? (MESG[,PRIV])
+     Returns true if the receiver has the public method named MESG.
+     MESG must be the symbol fixnum or the string.  It returns true
+     for private methods, if the optional argument PRIV given, and
+     its value is true,
+
+
+ - Method on `Object': send (SYMBOL[, ARGS...])
+     calls the method specified by the SYMBOL, with ARGS.
+
+
+ - Method on `Object': singleton_method_added (ID)
+     Will be called when the singleton method defined for the
+     receiver.
+
+
+ - Method on `Object': singleton_methods
+     Returns the array of the singleton method names which defined in
+     the receiver.
+
+
+ - Method on `Object': taint
+     Turns on `taint mark' of the object.
+
+
+ - Method on `Object': tainted?
+     Returns true if the string is `tainted'.
+
+
+ - Method on `Object': to_s
+     Returns the string representation of the `self'.  This method is
+     used internally by `print' (*note Ruby Functions::) and
+     `sprintf' (*note Ruby Functions::).
+
+
+ - Method on `Object': to_a
+     Converts the `self' into an array.  Returns an array of 1
+     element contains `self' for classes would not be converted into
+     an array naturally.
+
+
+ - Method on `Object': type
+     Returns the receiver's class.
+
+
+ - Method on `Object': untaint
+     Turns off `taint mark' of the object.  Programmers should be
+     responsible for the security issue caused by removing the taint
+     mark.  The mark can't be removed if the security level ($SAFE)
+     is greater than or equals to level 3.
+

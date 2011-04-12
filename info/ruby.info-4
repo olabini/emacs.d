@@ -1,0 +1,1853 @@
+This is ruby.info, produced by makeinfo version 4.0 from Ruby.texi.
+
+INFO-DIR-SECTION Programming Languages
+START-INFO-DIR-ENTRY
+* ruby: (ruby).                 Ruby Language Reference Manual (English)
+END-INFO-DIR-ENTRY
+
+     This Info file was converted from the Ruby Language Reference
+     Manual (HTML), automatically.
+
+     The original HTML document is below.
+
+     <http://www.ruby-lang.org/en/man-1.4/>
+     for `Ruby' Version 1.4.6
+     written by Yukihiro Matsumoto <matz@zetabits.com>
+     Last modified: Mon Feb 23 16:01:41 1998
+
+     So, this document is matz's, too.
+
+
+File: ruby.info,  Node: Module,  Next: Class,  Prev: MatchingData,  Up: Pre-defined classes and modules
+
+Module
+------
+
+   The class of the modules.
+
+SuperClass:
+...........
+
+   - `Object' (*note Object::)
+
+Methods:
+........
+
+ - Method on `Module': self < OTHER
+ - Method on `Module': self <= OTHER
+ - Method on `Module': self > OTHER
+ - Method on `Module': self >= OTHER
+     Comparison operators.  `self' > OTHER returns `true', if `self'
+     is the superclass or included modules of the OTHER.
+
+
+ - Method on `Module': self === OBJ
+     Returns `true', if OBJ is the instance of the `self', or its
+     descendants.  That means `case' (*note Ruby Syntax::) can be
+     used for type check for for classes or modules.
+
+
+ - Method on `Module': alias_method (NEW,OLD)
+     Gives alias to methods.  Differences between this method and
+     `alias' (*note Ruby Syntax::) are:
+
+        * specifies method by String or ID (Integer).
+
+        * no global variable aliasing by this method.
+
+
+ - Method on `Module': append_features (MODULE_OR_CLASS)
+     Append features (mothods and constants) to the receiver.
+     `Module#include' (*note Module::) is defined using this method.
+
+
+ - Method on `Module': attr (NAME[, ASSIGNABLE])
+     Defines new attribute and its access method to read, which are
+     named `NAME' to the module.  The access method definition is like
+     this:
+
+          def attr; @attr; end
+
+     The optional second argument ASSIGNABLE is given, and its value
+     is true, then the write method to the attribute is also defined.
+     The write access method definition is like this:
+
+          def attr=(val); @attr = val; end
+
+     By re-defining the access method, accessing attribute can be
+     altered.  For example, defining the write access method like
+     below, the assigned value can be printed.
+
+          attr("test", true)
+          def test=(val)
+            print("test was ", @test, "\n")
+            print("and now is ", @test = val, "\n")
+          end
+
+
+ - Method on `Module': attr_reader (NAME, ...)
+     Defines the reader method for the specified attribute(s).
+
+
+ - Method on `Module': attr_writer (NAME, ...)
+     Defines the writer method for the specified attribute(s).
+
+
+ - Method on `Module': attr_accessor (NAME, ...)
+     Defines both reader and writer methods for the specified
+     attribute(s).
+
+
+ - Method on `Module': ancestors
+     Returns the list of the modules include in the receiver.
+
+
+ - Method on `Module': class_eval (SRC)
+ - Method on `Module': class_eval {...}
+     The aliass to the module_eval (*note Module::).
+
+
+ - Method on `Module': constants
+     Returns an array that holds names of the constants defined in the
+     receiver.
+
+
+ - Method on `Module': const_get (NAME)
+     Returns the value of the specified constant.  When specified
+     constant is not defined, the `NameError' exception be raised.
+
+
+ - Method on `Module': const_set (NAME, VALUE)
+     Defines the specified constant in the module.  If the specified
+     constant is already defined, the `NameError' exception is raised.
+
+
+ - Method on `Module': extend_object (OBJECT)
+     Append features (mothods and constants) to the specified object.
+     `Object#extend' (*note Object::) is defined using this method,
+     so that redefining this method overrides extention behavior for
+     the module.
+
+
+ - Method on `Module': include (MODULE...)
+     Includes the modules specified to add methods and constants to
+     the receiver module or class.  `include' is for the Mix-in,
+     which is disciplined multiple inheritance.
+
+
+ - Method on `Module': included_modules
+     Returns the list of the modules include in the receiver.
+
+
+ - Method on `Module': instance_methods
+     Returns the names of the public methods defined in the receiver.
+
+
+ - Method on `Module': method_added (ID)
+     Will be called when a method defined for the receiver.
+
+
+ - Method on `Module': method_defined? (ID)
+     Returns true, if the instance of the Module has the method
+     specified by the ID.
+
+
+ - Method on `Module': module_eval (EXPR)
+ - Method on `Module': module_eval {...}
+     Evaluates the EXPR string in the module's context.  If block
+     supplied for the method, the block is evaluated under the
+     module's context.
+
+     In MODULE_EVAL()'s context:
+
+        * SELF
+
+        * instance variables
+
+        * constants
+
+        * method definitions
+
+     are treated as if it appears in the module's definition body.
+     But local variables are shared with EVAL()'s outer scope.
+
+
+ - Method on `Module': module_function (NAME...)
+     Makes the methods specified by NAMEs into `module function's.
+     the `module function's are the method which is also the
+     singleton method of a module (or a class).  For example, methods
+     defined in the `Math' (*note Math::) module are the `module
+     function's.
+
+
+ - Method on `Module': name ()
+     Returns the module's name.
+
+
+ - Method on `Module': private (NAME...)
+     If no argument is supplied, changes the default visibility in the
+     class/method definition as private.
+
+     Examples:
+
+          module Foo
+            def foo1() 1 end      # the default is the public
+            private               # the default changed to private
+            def foo2() 2 end      # foo2 is the private method
+          end
+          
+          foo = Foo.new
+          foo.foo1
+                 => 1
+          foo.foo2
+                 error--> private method `foo2' called #<Foo:0x4011ad8c>(Foo)
+
+     With the arguments, it makes the specified methods to be private.
+
+
+ - Method on `Module': private_instance_methods
+     Returns the names of the private methods defined in the receiver.
+
+
+ - Method on `Module': protected (NAME...)
+     If no argument is supplied, changes the default visibility in the
+     class/method definition as public,  where `protected' means the
+     method can only be called from the method defined in the same
+     class or its subclass.  The check will be done in run-time, not
+     compile-time.
+
+     With the arguments, it makes the specified methods to be
+     protected.
+
+
+ - Method on `Module': public [NAME...]
+     If no argument is supplied, changes the default visibility in the
+     class/method definition as public.
+
+     With the arguments, it makes the specified methods to be private.
+
+     Exapmles:
+
+          def foo() 1 end
+          foo
+                 => 1
+          self.foo        # the toplevel default is private
+                 error--> private method `foo' called for "main"(Object)
+          
+          def bar() 2 end
+          public :bar     # visibility changed (all access allowed)
+          bar
+                 => 2
+          self.bar
+                 => 2
+
+
+ - Method on `Module': private_class_method (NAME, ...)
+ - Method on `Module': public_class_method (NAME, ...)
+     Changes visibility of the class methods (class's singleton
+     methods).
+
+
+ - Method on `Module': remove_const (NAME)
+     Removes definition of the named constant.  Raises `NameError',
+     if specified constant is not defined in the module.  Some
+     constants defined in the `Object' class, like predefined classes
+     are not allowed to be removed, so removing these constants raises
+     `NameError' also.
+
+
+ - Method on `Module': remove_method (NAME)
+     Removes the named method from the module.  Raises `NameError',
+     if specified method is not defined in the module.
+
+
+ - Method on `Module': undef_method (NAME)
+     Cancels the method definition specified by NAME, which is the
+     string or ID (Integer).
+
+
+Class Methods:
+..............
+
+ - Class Method on `Module': nesting
+     Returns the nesting of the class/module definitions at the
+     calling point.
+
+
+ - Class Method on `Module': new
+     Creates an anonymous module.
+
+
+File: ruby.info,  Node: Class,  Next: Numeric,  Prev: Module,  Up: Pre-defined classes and modules
+
+Class
+-----
+
+   The class of the classes.  To tell the truth, each class have the
+unnamed class (which is the meta-class of the class), the class
+`Class' is the class of these meta-classes.  It is complicated, but
+it is not important for using Ruby.
+
+SuperClass:
+...........
+
+   - `Module' (*note Module::)
+
+Methods:
+........
+
+ - Method on `Class': ancestors
+     Returns the list of the superclass and inclded modules with
+     precedence.
+
+
+ - Method on `Class': method_defined? (ID)
+     Returns true, if the instance of the Class has the method
+     specified by the ID.
+
+
+ - Method on `Class': inherited (SUBCLASS)
+     Will be called when a subclass of the receiver created.  The
+     argument is the newly created subclass.
+
+
+ - Method on `Class': new (...)
+     Creates an instance of the class.  This arguments to this method
+     will pass to the `initialize'.
+
+
+ - Method on `Class': name ()
+     Returns the class name.
+
+
+ - Method on `Class': superclass
+     Returns the superclass of the class.
+
+
+Class Methods:
+..............
+
+ - Class Method on `Class': new ([SUPERCLASS])
+     Creates an anonymous class, which superclass is specified by
+     SUPERCLASS.  The default value for the SUPERCLASS is the class
+     `Object'.
+
+
+File: ruby.info,  Node: Numeric,  Next: Integer,  Prev: Class,  Up: Pre-defined classes and modules
+
+Numeric
+-------
+
+   `Numeric' is the abstract class for the numbers.
+
+SuperClass:
+...........
+
+   - `Object' (*note Object::)
+
+Included Modules:
+.................
+
+   - `Comparable' (*note Comparable::)
+
+Methods:
+........
+
+ - Method on `Numeric': + self
+     Returns `self'.
+
+
+ - Method on `Numeric': - self
+     Returns negation of `self'.
+
+
+ - Method on `Numeric': self <=> other
+     Returns -1, 0, or 1 depending on whether the left argument is
+     numerically less than, equal to, or greater than the right
+     argument.
+
+
+ - Method on `Numeric': abs
+     Returns absolute value of `self'.
+
+
+ - Method on `Numeric': chr
+     Returns the string that contains the character represented by
+     that `Integer(self)' in the ASCII character set.  For example,
+     `65.chr' is `"A"'.
+
+
+ - Method on `Numeric': coerce (NUMBER)
+     Converts `self' and the NUMBER into mutually calculatable
+     numbers.
+
+
+ - Method on `Numeric': divmod (OTHER)
+     Returns a pair of the quotient and remainder by OTHER.
+
+
+ - Method on `Numeric': integer?
+     Returns true if the receiver is integer.
+
+
+ - Method on `Numeric': nonzero?
+     Returns `false' on zero, the `self' otherwise.
+
+
+ - Method on `Numeric': to_f
+     Converts `self' into a floating-point number.
+
+
+ - Method on `Numeric': to_i
+     Returns an integer converted from `self'.
+
+
+ - Method on `Numeric': zero?
+     Returns `true' on zero.
+
+
+File: ruby.info,  Node: Integer,  Next: Bignum,  Prev: Numeric,  Up: Pre-defined classes and modules
+
+Integer
+-------
+
+   The abstract class for integers, which has two subclasses ` (*note
+Fixnum::)Fixnum' and ` (*note Bignum::)Bignum'. In Ruby, both kinds
+of integers are mixable, and converted automatically according to the
+value.  Integers can be treated as infinite bit strings for bit
+operations.
+
+SuperClass:
+...........
+
+   - `Numeric' (*note Numeric::)
+
+Included Modules:
+.................
+
+   - `Precision' (*note Precision::)
+
+Class Methods:
+..............
+
+ - Class Method on `Integer': induced_from (NUM)
+     Converts NUM into `Integer'.
+
+
+Methods:
+........
+
+ - Method on `Integer': self [NTH]
+     Returns 1 if NTH bit of the integer set, otherwise 0.
+
+
+ - Method on `Integer': chr
+     Returns the string contains a character represented by that
+     number in the character set.  For example, `65.chr' returns the
+     string `"A"'.
+
+     The number must be within 0 to 255.
+
+
+ - Method on `Integer': downto (MIN) {...}
+     Iterates from `self' to MIN, decrementing by 1.
+
+
+ - Method on `Integer': integer?
+     Returns true.
+
+
+ - Method on `Integer': size
+     Returns the approximate size of the integer in byte.
+
+
+ - Method on `Integer': step (MAX, STEP) {...}
+     Iterates from `self' to MAX, adding STEP each time.
+
+
+ - Method on `Integer': succ
+     Returns the "next" value of the integer.
+
+
+ - Method on `Integer': times {...}
+     Iterates `self' times. `Self' may be rounded into integer.
+
+
+ - Method on `Integer': to_i
+     Returns the receiver, since Integers do not need any conversion.
+
+
+ - Method on `Integer': upto (MAX) {...}
+     Iterates from `self' to MAX, incrementing by 1.
+
+
+File: ruby.info,  Node: Bignum,  Next: Fixnum,  Prev: Integer,  Up: Pre-defined classes and modules
+
+Bignum
+------
+
+   The class for long integers, limited only by memory size.  Bignums
+converted into fixnums automatically if the value fits in, or vise
+versa.  For the purpose of shift and mask operations, a binary
+representation is assumed, and negative numbers are represented in a
+2's complement, which gives the illusion of an infinite string of
+sign bits extending to the left.  Mixed calculation of Floats and
+Bignums, sometimes makes an error.
+
+SuperClass
+..........
+
+   - Integer (*note Integer::)
+
+Methods:
+........
+
+ - Method on `Bignum': self + OTHER
+ - Method on `Bignum': self - OTHER
+ - Method on `Bignum': self * OTHER
+ - Method on `Bignum': self / OTHER
+ - Method on `Bignum': self % OTHER
+ - Method on `Bignum': self ** OTHER
+     Arithmetic operators. Addition, subtraction, multiplication,
+     division, remainder, power, respectively.
+
+
+ - Method on `Bignum': ~ self
+ - Method on `Bignum': self | OTHER
+ - Method on `Bignum': self & OTHER
+ - Method on `Bignum': self ^ OTHER
+     Bit manipulations.  Bit reverse, bit or, bit and, bit xor,
+     respectively.
+
+
+ - Method on `Bignum': self << BITS
+ - Method on `Bignum': self >> BITS
+     Shift operators,  shift `bits'-bit to left and right,
+     respectively.
+
+
+ - Method on `Bignum': divmod (OTHER)
+     Returns an array contains the division and the modulo.
+
+
+File: ruby.info,  Node: Fixnum,  Next: Float,  Prev: File,  Up: Pre-defined classes and modules
+
+Fixnum
+------
+
+   The class for the fixed range integers fit in the machine's
+pointer, which is 31 bits length on most machines.  Fixnums are
+immediate values.  If the result of the operations on fixnums exceed
+the range, it will automatically expanded to bignums (*note Bignum::).
+
+SuperClass:
+...........
+
+   - `Integer' (*note Integer::)
+
+Methods:
+........
+
+ - Method on `Fixnum': self + OTHER
+ - Method on `Fixnum': self - OTHER
+ - Method on `Fixnum': self * OTHER
+ - Method on `Fixnum': self / OTHER
+ - Method on `Fixnum': self % OTHER
+ - Method on `Fixnum': self ** OTHER
+     Arithmetic operations.
+
+
+ - Method on `Fixnum': ~ self
+ - Method on `Fixnum': self | OTHER
+ - Method on `Fixnum': self & OTHER
+ - Method on `Fixnum': self ^ OTHER
+ - Method on `Fixnum': self << BITS
+ - Method on `Fixnum': self >> BITS
+     Bit operations
+
+
+ - Method on `Fixnum': id2name
+     Returns a corresponding strings to the number.  If there is no
+     corresponding symbol to the integer, it returns `nil'.
+
+
+ - Method on `Fixnum': remainder (other)
+     Returns remainder of the numbers.  In case either number is
+     negative, the evaluated value differs from that of the operator
+     `%'.
+
+            13 %  4  =>  1
+            13 % -4  => -3
+           -13 %  4  =>  3
+           -13 % -4  => -1
+          
+            13.remainder(4)    =>  1
+            13.remainder(-4)   =>  1
+          (-13).remainder(4)   => -1
+          (-13).remainder(-4)  => -1
+
+
+File: ruby.info,  Node: Float,  Next: Proc,  Prev: Fixnum,  Up: Pre-defined classes and modules
+
+Float
+-----
+
+   The class of floating-point numbers
+
+SuperClass:
+...........
+
+   - `Numeric' (*note Numeric::)
+
+Included Modules:
+.................
+
+   - `Precision' (*note Precision::)
+
+Class Methods:
+..............
+
+ - Class Method on `Float': induced_from (NUM)
+     Converts NUM into `Float'.
+
+
+Methods:
+........
+
+ - Method on `Float': self + OTHER
+ - Method on `Float': self - OTHER
+ - Method on `Float': self * OTHER
+ - Method on `Float': self / OTHER
+ - Method on `Float': self % OTHER
+ - Method on `Float': self ** OTHER
+     Arithmetic operations.
+
+
+ - Method on `Float': self == OTHER
+ - Method on `Float': self < OTHER
+ - Method on `Float': self <= OTHER
+ - Method on `Float': self > OTHER
+ - Method on `Float': self >= OTHER
+     Floating-point comparison.
+
+
+ - Method on `Float': ceil
+     Returns the smallest integer value not less than SELF.
+
+
+ - Method on `Float': floor
+     Returns the largest integer value not greater than SELF.
+
+
+ - Method on `Float': round
+     Rounds `self' to closest integer.
+
+
+ - Method on `Float': to_f
+     Returns the receiver, since Floats do not need any conversion.
+
+
+File: ruby.info,  Node: Proc,  Next: Range,  Prev: Float,  Up: Pre-defined classes and modules
+
+Proc
+----
+
+   The `Proc' is the procedure object, which is the encapsulated
+block with context, such as local variables and stack frames.  The
+`Proc' object acts like an unnamed function except it does not have
+its own local variable scope. (Although, local variables which appear
+first in the block can have distinct value for each `Proc'.) The non
+local jump such as `return', `break', `next', `redo', `retry' raise
+the exceptions, once returned from `Proc' creation methods.
+
+SuperClass:
+...........
+
+   - `Object' (*note Object::)
+
+Class Methods:
+..............
+
+ - Class Method on `Proc': new
+     Wraps the block with context and creates a new procedure object.
+
+
+Methods:
+........
+
+ - Method on `Proc': self [ARG...]
+ - Method on `Proc': call (ARG...)
+     Executes the procedure wrapped in the object.  Arguments to the
+     `call' are assigned to the block parameter.
+
+
+File: ruby.info,  Node: Range,  Next: Regexp,  Prev: Proc,  Up: Pre-defined classes and modules
+
+Range
+-----
+
+   The `Range' class describes the interval.  The range object is
+created by the range operator (`..' or `...').  The range object
+created by `..' operator include end.  The range object created by
+`...' operator does not include end.
+
+   For example:
+
+     for i in 1..5
+       ...
+     end
+
+   iterates over 1 to 5, including 5.  On the other hand, `1...5'
+iterates over 1 through 4.
+
+   The both operands for the range operator must be comparable with
+`<=>' opeator.  In addition they must have `succ' method for `each'
+operation.
+
+   Note That an interval contains both ends.
+
+SuperClass:
+...........
+
+   - `Object' (*note Object::)
+
+Included Modules:
+.................
+
+   - `Enumerable' (*note Enumerable::)
+
+Class Methods:
+..............
+
+ - Class Method on `Range': new (FIRST,LAST[, exclude_end])
+     Creates the range object from FIRST to LAST.  Optional third
+     argument specifies whether the range include LAST or not.  If
+     the third argument is ommitted, the range will include the LAST
+
+
+Methods:
+........
+
+ - Method on `Range': self === OTHER
+     Returns true if `other' is within the range.  This operator is
+     mostly used by the `case' statement.
+
+
+ - Method on `Range': each {|ITEM| ...}
+     Iterates over each item within the range.
+
+
+ - Method on `Range': exclude_end?
+     Returns true if the range will exclude the end.
+
+
+ - Method on `Range': first
+ - Method on `Range': begin
+     Returns the start point of the range.
+
+
+ - Method on `Range': last
+ - Method on `Range': end
+     Returns the end point of the range.
+
+
+ - Method on `Range': length
+ - Method on `Range': size
+     Returns length of the range (last - first + 1).
+
+
+File: ruby.info,  Node: Regexp,  Next: String,  Prev: Range,  Up: Pre-defined classes and modules
+
+Regexp
+------
+
+   The `Regexp' is the class for regular expression matching.
+Regular expression literals are enclosed by slashes like:
+
+     /^this is regexp/
+
+   In other way, you can create the regular expression object using:
+
+     Regexp.new(string)
+
+SuperClass:
+...........
+
+   - `Object' (*note Object::)
+
+Class Methods:
+..............
+
+ - Class Method on `Regexp': compile (STRING[, CASEFOLD])
+ - Class Method on `Regexp': new (STRING[, OPTIONS])
+     Compiles the STRING into a regular expression object.  If second
+     argument given, and its value is true, then the created regexp
+     object becomes case-insensitive.  the value of the second
+     argument is Fixnum, it must be bitwise-or of
+     `Regexp::IGNORECASE' and `Regexp::EXTENDED'.
+
+
+ - Class Method on `Regexp': quote (STRING)
+     Insert escape characters before regular expression special
+     characters in the `string'.  Returns the newly created  strings.
+
+
+Methods:
+........
+
+ - Method on `Regexp': self =~ STRING
+ - Method on `Regexp': self === STRING
+     Returns an index of the matching place in the string, if matched.
+     Returns `nil' if not matched.  The index of the first character
+     is 0.
+
+
+ - Method on `Regexp': ~ self
+     Matches with the value of the default variable (`$_').  Behaves
+     like:
+
+          self =~ $_
+
+
+ - Method on `Regexp': casefold?
+     Returns true if the Regexp is compiled as case-insensitive.
+
+
+ - Method on `Regexp': source
+     Returns the orginal string form of the regular expression.
+
+
+File: ruby.info,  Node: String,  Next: Struct,  Prev: Regexp,  Up: Pre-defined classes and modules
+
+String
+------
+
+   The `String' class represents the arbitrary length of byte string.
+
+   Some methods for the `String' class which have the name ends with
+`!', modify the contents of the strings.  The methods without `!'
+make copy of the string and modify them.  So, they are more slower
+but safer.  For example:
+
+     f = "string"
+     print f, f.sub("str", "ski"), f
+            => string, skiing, string
+     print f, f.sub!("str", "ski"), f
+            => skiing, skiing, skiing
+
+SuperClass:
+...........
+
+   - `Object' (*note Object::)
+
+Included Modules:
+.................
+
+   - `Comparable' (*note Comparable::)
+
+   - `Enumerable' (*note Enumerable::)
+
+Class Methods:
+..............
+
+ - Class Method on `String': new (STRING)
+     Returns a newly created string object which has same contents to
+     the STRING.
+
+
+Methods:
+........
+
+ - Method on `String': self + OTHER
+     Returns newly created concatenated string.
+
+
+ - Method on `String': self * TIMES
+     Reputation of the string.  For example, `"x" * 4' returns
+     `"xxxx"'.
+
+
+ - Method on `String': self % ARGS
+     Formats from the string.  Works just like: `sprintf(self,
+     *args)'.
+
+
+ - Method on `String': self == OTHER
+ - Method on `String': self > OTHER
+ - Method on `String': self >= OTHER
+ - Method on `String': self < OTHER
+ - Method on `String': self <= OTHER
+     String comparison.  If the value of the variable `$=' is not
+     false, comparison done by case-insensitive.
+
+
+ - Method on `String': self === OTHER
+     Same as operator ``==''.  Used for `case' comparison.
+
+
+ - Method on `String': self << OTHER
+     Appends OTHER's value to the string contents.
+
+
+ - Method on `String': self =~ OTHER
+     String match.  Returns an index of the match if any, or `nil'.
+     If the argument OTHER is a string, it will be compiled into a
+     regular expression.
+
+
+ - Method on `String': ~ self
+     Same as `$_ =~ self'.
+
+
+ - Method on `String': self [NTH]
+     Retrieves the NTH character from a string.
+
+
+ - Method on `String': self [START..LAST]
+     Returns a substring from START to LAST, including both ends.
+
+
+ - Method on `String': self [START, LENGTH]
+     Returns a substring of LENGTH characters from START.
+
+
+ - Method on `String': self [NTH] = VAL
+     Changes the NTH character of the string into VAL.  If the
+     strings is freezed, exception will occur.
+
+
+ - Method on `String': self [START..LAST] = VAL
+     Replace the substring from START to LAST with VAL.
+
+
+ - Method on `String': self [START, LEN] = VAL
+     Replace the substring LENGTH characters from START with VAL.
+
+
+ - Method on `String': self <=> other
+     Returns -1, 0, or 1 depending on whether the left argument is
+     less than, equal to, or greater than the right argument in the
+     dictionary order.
+
+
+ - Method on `String': <<(OTHER)
+ - Method on `String': concat (OTHER)
+     Appends the contents of the OTHER.
+
+
+ - Method on `String': capitalize
+ - Method on `String': capitalize!
+     Changes the first character in the string to uppercase
+     character, if it is an alphabet.
+
+     `capitalize!' returns nil, if it does not modify the receiver.
+
+
+ - Method on `String': chop
+ - Method on `String': chop!
+     Chops off the last character of the string (2 characters if the
+     last characters are "\r\n").  `chop!' modifies the receiver.
+
+     `chop!' returns nil, if it does not modify the receiver.
+
+
+ - Method on `String': chomp ([RS])
+ - Method on `String': chomp! ([RS])
+     Chops off the line ending of the string, which is specified by
+     the RS.  The default value of the `rs' is the value of the
+     variable `$/'.
+
+     `chomp!' modifies the receiver, and returns nil, if it does not
+     modify the receiver.
+
+
+ - Method on `String': clone
+ - Method on `String': dup
+     Returns a newly created string object which has the save value
+     to the string.  `clone' returns the complete copy of the original
+     string including freeze status and instance variables.  On the
+     other hand, `dup' copies the string contents only.
+
+
+ - Method on `String': crypt (SALT)
+     Returns an encoded string using `crypt(3)'.  SALT is the
+     arbitrary string longer than 2 bytes.
+
+
+ - Method on `String': delete (STR)
+ - Method on `String': delete! (STR)
+     Deletes every characters included in `str' from the string.
+     Deleting characters in STR is in the form of `tr(1)'.  For
+     example, ``a-c'' is the range from `a' to `c', `^' at the
+     beginning means complement of the character set.
+
+     `delete!' returns nil, if it does not modify the receiver.
+
+
+ - Method on `String': downcase
+ - Method on `String': downcase!
+     Replaces all uppercase characters to lowercase characters.
+     Little bit faster than `tr("A-Z", "a-z")'.
+
+     `downcase!' returns nil, if it does not modify the receiver.
+
+
+ - Method on `String': dump
+     Replaces all non-printable characters into backslash notations.
+     The condition `str == eval(str.dump)' is guaranteed.
+
+
+ - Method on `String': each_byte {|BYTE|...}
+     Iterates over each byte of the string.
+
+
+ - Method on `String': each ([RS]) {|LINE|...}
+ - Method on `String': each_line ([RS]) {|LINE|...}
+     Iterates over each line in the string.  The value of the RSis
+     the line separator, which default is the value of the variable
+     `$/'.
+
+
+ - Method on `String': empty?
+     Returns true, if the string is empty (i.e. 0 length string).
+
+
+ - Method on `String': freeze
+     Prohibits modification of the string.  Modification to the
+     freezed string raises an exception.
+
+
+ - Method on `String': frozen?
+     Returns true if the string is frozen.
+
+
+ - Method on `String': gsub (PATTERN, REPLACE)
+ - Method on `String': gsub! (PATTERN, REPLACE)
+     Replaces all matching substrings with the PATTERN to the
+     REPLACE.  In REPLACE, `&' and ``\0'' replaced to the matching
+     substring, `\digit' replaced to the contents of the
+     corresponding parenthesis.  `\`', `\'', and `\+' replaced to
+     pre-match, post-match substring, and contents of the last
+     parenthesis respectively.
+
+     *Notice*: `$<digits>' are not available for the REPLACE string,
+     since it is evaluated *before*, match happens.
+
+     The method `gsub!' modifies the original string.  If no match
+     found `gsub!' returns `nil'.  On the other hand, `gsub' modifies
+     the copy of the string.  If no match found, `gsub' returns the
+     unmodified original string.
+
+
+ - Method on `String': gsub (PATTERN) {...}
+ - Method on `String': gsub! (PATTERN) {...}
+     If `gsub' and `gsub!' are called with the block, replace all
+     matching substring to the value of the block.  The matching
+     substring will be given to the block.
+
+
+ - Method on `String': hex
+     Interprets the string as a hexadecimal string and returns the
+     corresponding integer value.
+
+
+ - Method on `String': index (SUBSTR[, POS])
+     Returns the index of the SUBSTR in the string, or `nil' if not
+     found.  Optional second argument POS is given, start lookup from
+     there.
+
+
+ - Method on `String': intern
+     Returns unique integer corresponding the string.  The string
+     must not contain the null character ('\0').
+
+
+ - Method on `String': length
+ - Method on `String': size
+     Returns the length of the string in bytes.
+
+
+ - Method on `String': ljust (WIDTH)
+ - Method on `String': rjust (WIDTH)
+ - Method on `String': center (WIDTH)
+     Returns left filled, right filled, centered string,
+     respectively.  If the string is longer than WIDTH, returns the
+     string itself without modification.
+
+
+ - Method on `String': oct
+     Interprets the string as a octal string and returns the
+     corresponding integer value.  Returns 0 if the string is not in
+     octal.  The octal string is the pattern of `/^[0-7]+/'.
+
+
+ - Method on `String': reverse
+ - Method on `String': reverse!
+     Returns the reversed string of the original string.
+
+
+ - Method on `String': replace (OTHER)
+     Copis the content of OTHER into the string.
+
+
+ - Method on `String': rindex (SUBSTR[, POS])
+     Returns the index of the last occurrence of the SUBSTR, or `nil'
+     if not found.  If optional second argument POS given, `rindex'
+     returns the last occurrence at or before that position.
+
+
+ - Method on `String': scan (PATTERN)
+ - Method on `String': scan (PATTERN) {...}
+     Returns the array of arrays which contain subpatterns
+     corresponding parentheses in the PATTERN.  Match will be done
+     repeatedly to the end of the string.  When called with the
+     block, subpatterns are passed to the block as parameters.
+
+
+ - Method on `String': split ([SEP[, LIMIT]])
+     Return an array containing the fields of the string, using the
+     string or regexp SEP as a separator.  If SEP is omitted, the
+     value of the variable `$;' will be used as default.  If the
+     value of `$;' is `nil', splits the string on whitespace (after
+     skipping any leading whitespace).  Anything matching SEP is
+     taken to be a delimiter separating the fields.  (Note that the
+     delimiter may be longer than one character.)
+
+     If LIMIT is unspecified, trailing null fields are stripped
+     (which potential users of pop() would do well to remember).  If
+     LIMIT is specified and is not negative, splits into no more than
+     that many fields (though it may split into fewer).  If LIMIT is
+     negative, it is treated as if an arbitrarily large LIMIT had
+     been specified.
+
+     A pattern matching the null string (not to be confused with a
+     null pattern `//', which is just one member of the set of
+     patterns matching a null string) will split the string into
+     separate characters at each point it matches that way.  For
+     example:
+
+          print 'hi there'.split(/ */).join(':');
+
+     produces the output 'h:i:t:h:e:r:e'.
+
+
+ - Method on `String': squeeze ([STR])
+ - Method on `String': squeeze! ([STR])
+     Squeezes sequences of the same characters which is included in
+     the STR.
+
+     `squeezes!' returns nil, if it does not modify the receiver.
+
+
+ - Method on `String': strip
+ - Method on `String': strip!
+     Removes leading and trailing whitespace from the string.
+
+     `strip!' returns nil, if it does not modify the receiver.
+
+
+ - Method on `String': sub (PATTERN, REPLACE)
+ - Method on `String': sub! (PATTERN, REPLACE)
+     Replaces the first matching substrings with the PATTERN to the
+     REPLACE.  In REPLACE, `&' and ``\0'' replaced to the matching
+     substring, `\digit' replaced to the contents of the
+     corresponding parenthesis.
+
+     *Notice*: `$<digits>' are not available for the REPLACE string,
+     since it is evaluated *before*, match happens.
+
+     The method `sub!' modifies the original string.  If no match
+     found, `sub!' returns `nil'.  On the other hand, `sub' modifies
+     the copy of the string.  If no match found, `sub' returns the
+     unmodified original string.
+
+
+ - Method on `String': sub (PATTERN) {...}
+ - Method on `String': sub! (PATTERN) {...}
+     If `gsub' and `gsub!' are called with the block, replace the
+     first matching substring to the value of the block.  You can use
+     `$<digits>' in the iterator block, for the block is evaluated
+     *after* the match.  The matching substring will be given to the
+     block.
+
+
+ - Method on `String': succ
+ - Method on `String': succ!
+     Returns the *succeeding* string from `self', which is like:
+
+          "aa".succ => "ab"
+          "99".succ => "100"
+          "a9".succ => "b0"
+          "Az".succ => "Ba"
+          "zz".succ => "aaa"
+
+
+ - Method on `String': sum ([BITS])
+     Calculates BITS-bit checksum of the string.  Default is 16-bit
+     checksum.  For example, the following computes the same number
+     as the System V sum program:
+
+          sum = 0
+          while gets
+            sum += $_.sum
+          end
+          sum %= 65536
+
+
+ - Method on `String': swapcase
+ - Method on `String': swapcase!
+     Replaces all lowercase characters to uppercase characters, and
+     all uppercase characters to lowercase characters.
+
+     `swapcase!' returns nil, if it does not modify the receiver.
+
+
+ - Method on `String': to_f
+     Converts the string into `Float' (*note Float::).
+
+
+ - Method on `String': to_i
+     Interprets the string as a decimal string and returns the
+     corresponding integer value.
+
+
+ - Method on `String': tr (SEARCH, REPLACE)
+ - Method on `String': tr! (SEARCH, REPLACE)
+     Translates all occurrences of the characters found in SEARCH,
+     with the corresponding character in REPLACE.  The first
+     character in the SEARCH is ``^'', characters not in the SEARCH
+     are translated.
+
+     `tr!' returns nil, if it does not modify the receiver.
+
+
+ - Method on `String': tr_s (SEARCH, REPLACE)
+ - Method on `String': tr_s! (SEARCH, REPLACE)
+     Translates all occurrences of the characters found in SEARCH,
+     with the corresponding character in REPLACE, then squeezes
+     sequences of the same characters within the replaced characters.
+     The first character in the SEARCH is ``^'', characters not in
+     the SEARCH are translated.
+
+     `tr_s!' returns nil, if it does not modify the receiver.
+
+
+ - Method on `String': unpack (TEMPLATE)
+     Unpacks packed string data (probably made by `Array#pack' (*note
+     Array::)), and expanded array value.  The TEMPLATE has the same
+     format as in the `Array#pack', as follows this:
+
+    `a'
+          ASCII string(null padded)
+
+    `A'
+          ASCII string(space padded)
+
+    `b'
+          bit string(ascending bit order)
+
+    `B'
+          bit string(descending bit order)
+
+    `h'
+          hex string(low nibble first)
+
+    `H'
+          hex string(high nibble first)
+
+    `c'
+          char
+
+    `C'
+          unsigned char
+
+    `s'
+          short
+
+    `S'
+          unsigned short
+
+    `i'
+          int
+
+    `I'
+          unsigned int
+
+    `l'
+          long
+
+    `L'
+          unsigned long
+
+    `m'
+          string encoded in base64
+
+    `n'
+          short in "network" byte-order
+
+    `N'
+          long in "network" byte-order
+
+    `v'
+          short in "VAX" (little-endian) byte-order
+
+    `V'
+          long in "VAX" (little-endian) byte-order
+
+    `f'
+          single-precision float in the native format
+
+    `d'
+          A double-precision float in the native format
+
+    `p'
+          A pointer to a null-terminated string.
+
+    `P'
+          A pointer to a structure (fixed-length string).
+
+    `u'
+          uuencoded string
+
+    `x'
+          skip a byte
+
+    `X'
+          back up a byte
+
+    `@'
+          moves to absolute position
+
+
+ - Method on `String': upcase
+ - Method on `String': upcase!
+     Replaces all lowercase characters to downcase characters.
+     Little bit faster than `tr("a-z", "A-Z")'.
+
+     `upcase!' returns nil, if it does not modify the receiver.
+
+
+ - Method on `String': upto (MAX) {...}
+     Iterates from `self' to MAX, giving the *next* string each time.
+     (See `succ' (*note String::)) This method used internally in
+     `Range#each' (*note Range::), that makes
+
+               for i in "a" .. "ba"
+                 print i, "\n"
+               end
+
+     print `a, b, c,...z,aa,...az, ba'.
+
+
+File: ruby.info,  Node: Struct,  Next: Time,  Prev: String,  Up: Pre-defined classes and modules
+
+Struct
+------
+
+   The structure class.  `Struct.new' creates the new subclass of the
+`Struct' class and returns it.  Each subclass has access methods for
+the structure attributes.
+
+SuperClass:
+...........
+
+   - `Object' (*note Object::)
+
+Included Modules:
+.................
+
+   - `Enumerable' (*note Enumerable::)
+
+Class Methods:
+..............
+
+ - Class Method on `Struct': new (NAME, MEMBER...)
+     Creates the new subclass of the `Struct' class, which is named
+     NAME and returns it.  Each subclass has access methods for the
+     structure attributes.  For example:
+
+          dog = Struct.new("Dog", :name, :age)
+          fred = dog.new("fred", 5)
+          fred.age=6
+          printf "name:%s age:%d", fred.name, fred.age
+
+     prints `"name:fred age:6"'.
+
+     The structure NAME should start with captal letter, since it is
+     class constant name under the `Struct' class.
+
+
+Class Methods for each structure:
+.................................
+
+ - Class Method on `Struct': new (VALUE...)
+ - Class Method on `Struct': [VALUE...]
+     Creates a structure.  The arguments are initial value of the
+     structure.  The number of arguments must be same to the number of
+     attributes of the structure.
+
+
+ - Class Method on `Struct': members
+     Returns an array of the struct member names.
+
+
+Methods:
+........
+
+ - Method on `Struct': self [NTH]
+     Returns the value of the NTH attribute.  If NTH is string,
+     returns the value of the named attribute.
+
+
+ - Method on `Struct': each
+     Iterates over each value of the struct member.
+
+
+ - Method on `Struct': members
+     Returns an array of the struct member names.
+
+
+ - Method on `Struct': values
+ - Method on `Struct': to_a
+     Returns the attributes of the structure as an array.  For
+     example, the following code prints your passwd entry.
+
+          print Etc.getpwuid.values.join(":"), "\n"
+
+
+
+File: ruby.info,  Node: Time,  Next: NilClass,  Prev: Struct,  Up: Pre-defined classes and modules
+
+Time
+----
+
+   The `Time' class represents the time value and its operations.
+`Time.now' returns the current time object.  The timestamps of the
+files returned by `File#stat' (*note File::) are instances of this
+class.
+
+SuperClass:
+...........
+
+   - `Object' (*note Object::)
+
+Included Modules:
+.................
+
+   - `Comparable' (*note Comparable::)
+
+Class Methods:
+..............
+
+ - Class Method on `Time': now
+ - Class Method on `Time': now
+     Returns the current time object.
+
+
+ - Class Method on `Time': at (TIME)
+     Creates the time object at TIME. The argument TIME must be
+     either the instance of the `Time' class or the number, which is
+     considered as seconds since `00:00:00 GMT, January 1, 1970'.
+
+
+ - Class Method on `Time': gm (YEAR, MONTH, DAY, HOUR, MIN, SEC)
+     Returns the `Time' object specified by the arguments in GMT.
+     The arguments after the second one can be omitted.  The default
+     value for the omitted argument is the lowest value for that
+     argument.
+
+     If the `month' argument is a fixnum, it must be from 1(January)
+     to 12(December).  If it is string, it must be the English month
+     name or the number starting from 1(January) to 12(December).
+
+     If the number of arguments are equals to that of elements of
+     Time#to_a (*note Time::), `Time.gm' understands them properly,
+     even if they are in the little endian (seconds comes first)
+     format.
+
+
+ - Class Method on `Time': local (YEAR, MONTH, DAY, HOUR, MIN, SEC)
+ - Class Method on `Time': mktime (YEAR, MONTH, DAY, HOUR, MIN, SEC)
+     Returns the `Time' object specified by the arguments in
+     localtime.  The arguments after the second one can be omitted.
+     The default value for the omitted argument is the lowest value
+     for that argument.
+
+
+ - Class Method on `Time': times
+     Returns the user and system CPU times structure (*note
+     Struct::), which attributes are:
+
+          utime           # user time
+          stime           # system time
+          cutime          # user time of children
+          cstime          # system time of children
+
+     Times are floating-point numbers and are measured in seconds.
+     (See `times(3)')
+
+
+Methods:
+........
+
+ - Method on `Time': self + OTHER
+     Returns the time object which is later than `self' by OTHER.
+
+
+ - Method on `Time': self - OTHER
+     Returns the diff of the time in float, if the OTHER if the time
+     object.  If the OTHER is the numeric value, it returns the time
+     object earlier than `self' than OTHER.
+
+
+ - Method on `Time': self <=> OTHER
+     Comparison of the times.  OTHER must be a time object or an
+     integer or a floating-point number.  Numbers are considered as
+     seconds since `00:00:00 GMT, January 1, 1970'.
+
+
+ - Method on `Time': asctime
+ - Method on `Time': ctime
+ - Method on `Time': to_s
+     Converts the time into the string form like `ctime(3)'.
+
+
+ - Method on `Time': gmtime
+     Sets timezone of the time object to GMT.  The time object
+     operates time in GMT thereafter.  To print time in GMT:
+
+          print Time.now.gmtime, "\n"
+
+     `gmtime' returns `self'.
+
+
+ - Method on `Time': localtime
+     Sets timezone of the time object to localtime, which is default.
+     Returns time object itself.
+
+
+ - Method on `Time': to_i
+ - Method on `Time': tv_sec
+     Returns the time since the epoch, `00:00:00 GMT, January 1,
+     1970', measured in seconds.
+
+
+ - Method on `Time': sec
+ - Method on `Time': min
+ - Method on `Time': hour
+ - Method on `Time': mday
+ - Method on `Time': day
+ - Method on `Time': mon
+ - Method on `Time': month
+ - Method on `Time': year
+ - Method on `Time': wday
+ - Method on `Time': yday
+ - Method on `Time': zone
+ - Method on `Time': isdst
+     Returns the internal values of the time object.  All methods
+     return an integer value, except `zone', which returns the
+     timezone name string.  (c.f. `localtime(3)')
+
+     Notice: Unlike tm struct, month returns 1 for January, year
+     returns 1998 for year 1998, and yday start with 1 (not 0).
+
+
+ - Method on `Time': strftime (FORMAT)
+     Returns formatted string from the time object.  Format
+     specifiers are as follows:
+
+    `%A'
+          full weekday name(Sunday, Monday...)
+
+    `%a'
+          abbreviated weekday name(Sun, Mon...)
+
+    `%B'
+          full month name(January, February...)
+
+    `%b'
+          abbreviated month name(Jan, Feb...)
+
+    `%c'
+          date and time representation
+
+    `%d'
+          day of the month in decimal(01-31)
+
+    `%H'
+          hour using a 24-hour clock(00-23)
+
+    `%I'
+          hour using a 12-hour clock(01-12)
+
+    `%j'
+          day of the year(001-366)
+
+    `%M'
+          minutes(00-59)
+
+    `%m'
+          month in decimal(01-12)
+
+    `%p'
+          Either AM or PM
+
+    `%S'
+          second in decimal(00-61)
+
+    `%U'
+          week number, first Sunday as the first day of the first
+          week(00-53)
+
+    `%W'
+          week number, first Monday as the first day of the first
+          week(00-53)
+
+    `%w'
+          day of the week in number. Sunday being 0(0-6)
+
+    `%X'
+          time representation without date
+
+    `%x'
+          date representation without time
+
+    `%Y'
+          year
+
+    `%y'
+          year without century(00-99)
+
+    `%Z'
+          timezone
+
+    `%%'
+          %itself
+
+
+ - Method on `Time': to_a
+     Converts tm struct into an array, whose elements are in order of:
+
+        * sec
+
+        * min
+
+        * hour
+
+        * mday
+
+        * mon
+
+        * year
+
+        * wday
+
+        * yday
+
+        * isdst
+
+        * zone
+
+
+ - Method on `Time': to_f
+     Converts the time (in seconds from the epoch) into a
+     floating-point number.
+
+
+ - Method on `Time': usec
+ - Method on `Time': tv_usec
+     Returns micro second part of the time object.
+
+
+File: ruby.info,  Node: NilClass,  Prev: Time,  Up: Pre-defined classes and modules
+
+NilClass
+--------
+
+   The class of `nil'.  The `nil' is the sole instance of this class.
+The `nil' is false, along with the `false' object.  Any other objects
+are true.
+
+   *Notice:* This class is for internal use only.  The constant `Nil'
+is not defined, and can not be accessed from Ruby scripts.
+
+SuperClass:
+...........
+
+   - `Object' (*note Object::)
+
+
+File: ruby.info,  Node: modules,  Prev: classes,  Up: Pre-defined classes and modules
+
+Pre-defined modules
+===================
+
+* Menu:
+
+* Comparable::                Comparable
+* Enumerable::                Enumerable
+* Errno::                     Errno
+* FileTest::                  FileTest
+* GC::                        GC
+* Kernel::                    Kernel
+* Marshal::                   Marshal
+* Math::                      Math
+* ObjectSpace::               ObjectSpace
+* Precision::                 Precision
+* Process::                   Process
+
+
+File: ruby.info,  Node: Comparable,  Next: Enumerable,  Up: Pre-defined classes and modules
+
+Comparable
+----------
+
+   `Comparable' is the Mix-in for comparable classes.  The including
+class must provide the basic comparison operator ``<=>''.  The other
+comparing operators are defined in this module using operator ``<=>''.
+
+Methods:
+........
+
+ - Method on `Comparable': self == other
+     Returns true if `self' and the OTHER have same values.
+
+
+ - Method on `Comparable': self > other
+     Returns true if `self' is greater than the OTHER.
+
+
+ - Method on `Comparable': self >= OTHER
+     Returns true if `self' is greater than or equals to the OTHER.
+
+
+ - Method on `Comparable': self < OTHER
+     Returns true if `self' is less than the OTHER.
+
+
+ - Method on `Comparable': self <= OTHER
+     Returns true if `self' is less than or equals to the OTHER.
+
+
+ - Method on `Comparable': between? (min, max)
+     Returns true if SELF is in between MIN and MAX.
+
+
+File: ruby.info,  Node: Enumerable,  Next: FileTest,  Prev: Comparable,  Up: Pre-defined classes and modules
+
+Enumerable
+----------
+
+   ENUMERABLE is the Mix-in module for the enumeration.  The
+including class must provide the method `each'.  All methods provided
+by `Enumerable' are defined using `each'.
+
+Methods:
+........
+
+ - Method on `Enumerable': collect {|ITEM|...}
+     Returns an array of the result of the block evaluation over each
+     item.
+
+
+ - Method on `Enumerable': each_with_index {|ITEM,INDEX|...}
+     Iterates over each element with its index.
+
+
+ - Method on `Enumerable': find {|ITEM|...}
+ - Method on `Enumerable': detect {|ITEM|...}
+     Returns the first item which satisfies the block condition (i.e.
+     the block's return value is true).
+
+
+ - Method on `Enumerable': find_all {|ITEM|...}
+ - Method on `Enumerable': select {|ITEM|...}
+     Returns an array of all items which satisfy the block condition.
+
+
+ - Method on `Enumerable': grep (pattern)
+ - Method on `Enumerable': grep (pattern) {|ITEM|...}
+     Returns an array of all items which satisfy ``PATTERN=== item''.
+     If is called with the block, `grep' evaluates the block over
+     every item matched.
+
+
+ - Method on `Enumerable': member? (VAL)
+ - Method on `Enumerable': include? (VAL)
+     Returns true if there is an item which equals to VAL.
+     Comparison is done by the operator ``==''.
+
+
+ - Method on `Enumerable': index (VAL)
+     Returns the index of the item which equals to VAL using operator
+     ``==''.  The index of the first item is 0.  Returns `nil' if
+     there is no matching item.  It is meaningless for non-ordered
+     enumerables.
+
+
+ - Method on `Enumerable': length
+ - Method on `Enumerable': size
+     Returns the number of items.
+
+
+ - Method on `Enumerable': min
+     Returns the smallest item assuming all items are `Comparable'
+     (*note Comparable::).
+
+
+ - Method on `Enumerable': min {|A, B|...}
+     Returns the smallest item using the evaluated value of the block.
+
+
+ - Method on `Enumerable': max
+     Returns the greatest item assuming all items are `Comparable'
+     (*note Comparable::).
+
+
+ - Method on `Enumerable': max {|A, B|...}
+     Returns the greatest item using the evaluated value of the block.
+
+
+ - Method on `Enumerable': reject {|ITEM|...}
+     Returns an array of all items which does not satisfy the block
+     condition.
+
+
+ - Method on `Enumerable': sort
+ - Method on `Enumerable': sort {|A, B|...}
+     Returns the sorted array of the items.  If the block is given,
+     it must compare two items just like `<=>'.
+
+
+ - Method on `Enumerable': to_a
+ - Method on `Enumerable': entries
+     Converts an Enumerable to an array.
+
+
+File: ruby.info,  Node: Errno,  Next: FileTest,  Prev: Enumerable,  Up: Pre-defined classes and modules
+
+Errno
+-----
+
+   The module for the system call exceptions.
+
+
+File: ruby.info,  Node: Errno__E*,  Next: SystemStackError,  Prev: SystemCallError,  Up: classes
+
+Errno::E*
+---------
+
+   The exception classes corresponding each `errno'.  For the detail,
+see `man errno'.
+
+SuperClass:
+...........
+
+   - `SystemCallError' (*note Exception Classes::)
+
+Constants:
+..........
+
+ - Class Constant of `Errno': E *::Errno
+     The `errno' value for the exception.
+

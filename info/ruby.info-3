@@ -1,0 +1,1834 @@
+This is ruby.info, produced by makeinfo version 4.0 from Ruby.texi.
+
+INFO-DIR-SECTION Programming Languages
+START-INFO-DIR-ENTRY
+* ruby: (ruby).                 Ruby Language Reference Manual (English)
+END-INFO-DIR-ENTRY
+
+     This Info file was converted from the Ruby Language Reference
+     Manual (HTML), automatically.
+
+     The original HTML document is below.
+
+     <http://www.ruby-lang.org/en/man-1.4/>
+     for `Ruby' Version 1.4.6
+     written by Yukihiro Matsumoto <matz@zetabits.com>
+     Last modified: Mon Feb 23 16:01:41 1998
+
+     So, this document is matz's, too.
+
+
+File: ruby.info,  Node: Array,  Next: Data,  Prev: Object,  Up: Pre-defined classes and modules
+
+Array
+-----
+
+   The elements of an array are arbitrary Ruby objects.  Arrays are
+formed by placing comma separated list of expressions in square
+brackets like:
+
+     [1, 2, 3]
+
+SuperClass:
+...........
+
+   - `Object' (*note Object::)
+
+Included Modules:
+.................
+
+   - Enumerable (*note Enumerable::)
+
+Class Methods:
+..............
+
+ - Class Method on `Array': Array [ITEM...]
+     Creates a newly created array with arguments as elements.
+
+
+ - Class Method on `Array': new ([SIZE[,VAL]])
+     Creates a newly created array with specified size.  If SIZE is
+     not specified, returns an empty array.  VAL is the initial value
+     of the elements.  The default initial value is NIL.
+
+
+Methods:
+........
+
+ - Method on `Array': self [NTH]
+     Retrieves the NTH item from an array.  Index starts from zero.
+     If index is the negative, counts backward from the end of the
+     array.  The index of the last element is -1.  Returns `nil', if
+     the NTH element is not exist in the array.
+
+     See also `self[NTH] = VAL' (*note Array::).
+
+
+ - Method on `Array': self [START..END]
+     Returns an array containing the objects from START to END,
+     including both ends.  If `...' is used (instead of `..'), then
+     END is not included.  if END is larger than the length of the
+     array, it will be rounded to the length.  If START is out of an
+     array range , returns `nil'.  And if START is larger than END
+     with in array range, returns empty array (`[]').
+
+     See also `self[START..END] = VAL' (*note Array::).
+
+
+ - Method on `Array': self [START, LENGTH]
+     Returns an array containing LENGTH items from START.  Returns
+     `nil' if LENGTH is negative.
+
+     See also `self[START, LENGTH] = VAL' (*note Array::).
+
+
+ - Method on `Array': self [NTH] = VAL
+     Changes the NTH element of the array into VAL.  If NTH is larger
+     than array length, the array shall be extended automatically.
+     Extended region shall be initialized by `nil'.
+
+     See also `self[NTH]' (*note Array::).
+
+
+ - Method on `Array': self [START..END] = VAL
+     Replace the items from START to END with VAL.  If `...' is used
+     (instead of `..') then END is not included.  If VAL is not an
+     array, the type of VAL will be converted into the Array using
+     `to_a' method.
+
+     See also `self[START..END]' (*note Array::).
+
+
+ - Method on `Array': self [START, LENGTH] = VAL
+     Replace the LENGTH items from START with VAL.  If VAL is not an
+     array, the type of VAL will be converted into the Array using
+     `to_a'.
+
+     See also `self[START, LENGTH]' (*note Array::).
+
+     Example:
+
+          ary = [1, 2, 3, 4, 5]
+          ary[0..2] = [0, 0] # Changed to [0, 0, 4, 5]
+          ary[1, 0] = [7]    # Changed to [0, 7, 0, 4, 5]
+
+
+ - Method on `Array': self + OTHER
+     The array concatenation.
+
+
+ - Method on `Array': self * TIMES
+     The array repetition.
+
+
+ - Method on `Array': self - OTHER
+     The array subtraction.  Returns a new array contains elements of
+     the original, except which belongs OTHER also.  Duplicate items
+     will be removed.
+
+
+ - Method on `Array': self & OTHER
+     Returns a new array which contains elements belong to both
+     arrays.  Duplicate items will be removed.
+
+
+ - Method on `Array': self | OTHER
+     The array join.  Returns a new array which contains elements
+     belong to either SELF or OTHER.  Duplicate items will be removed.
+
+
+ - Method on `Array': self << OBJ
+     Append a new item with value OBJ to the end of the array.  This
+     method returns the array itself, so that can be chained like:
+
+          array << obj1 << obj2
+
+
+ - Method on `Array': self <=> other
+     Returns -1, 0, or 1 depending on whether the left argument is
+     less than, equal to, or greater than the right argument,
+     comparing each elements by using `<=>'.
+
+
+ - Method on `Array': assoc (KEY)
+     Searches in the array of arrays, looking for the array whose
+     first element equals (compared by `==') to KEY.
+
+          a = [[1,2],[2,4],[3,6]]
+          a.assoc(2)              # => [2, 4]
+
+
+ - Method on `Array': clear
+     Makes the length of the array to zero.
+
+
+ - Method on `Array': concat (OTHER)
+     Append a items in the OTHER array to the end of the array.
+
+
+ - Method on `Array': compact
+ - Method on `Array': compact!
+     Removes all `nil's from the array.
+
+     `compact!' returns nil, if it does not modify the array.
+
+
+ - Method on `Array': delete (VAL)
+     Delete the item which matches to VAL.  If the block supplied, it
+     will be evaluated when no item matches to VAL.
+
+
+ - Method on `Array': delete_at (POS)
+     Removes an element at the position specified by the argument
+     POS. Returns the removed element.
+
+
+ - Method on `Array': delete_if {...}
+ - Method on `Array': reject! {|X|...}
+     Removes elements, which evaluated result of the block is true.
+
+
+ - Method on `Array': clone
+ - Method on `Array': dup
+     Returns a newly created array which has the same elements to the
+     receiver.  `clone' returns the complete copy of the original
+     array including freeze status and instance variables.  On the
+     other hand, `dup' copies the array contents only.
+
+
+ - Method on `Array': each {...}
+     Iterates over each item of the array.
+
+
+ - Method on `Array': each_index {...}
+     Iterates over each index of the array elements, that is:
+
+          `(0...ary.size).each {}'
+
+
+ - Method on `Array': empty?
+     Returns true if the array is empty.
+
+
+ - Method on `Array': fill (VAL)
+ - Method on `Array': fill (VAL, START[, LENGTH])
+ - Method on `Array': fill (VAL, START..END)
+     Fill range of the array with VAL.  If no range specified, whole
+     array will be filled with VAL.
+
+
+ - Method on `Array': filter {|ITEM| ..}
+     Replaces each item with the value returned from the block.
+
+
+ - Method on `Array': flatten
+ - Method on `Array': flatten!
+     Flattens the nested array.  `flatten!' modifies the receiver,
+     and returns `nil' if the array is not nested.
+
+
+ - Method on `Array': freeze
+     Prohibits modification of the array.  Modification to the freezed
+     array raises an exception.
+
+
+ - Method on `Array': frozen
+     Returns true if the array is frozen.
+
+
+ - Method on `Array': include? (VAL)
+     Returns true if the array contains VAL.
+
+
+ - Method on `Array': index (VAL)
+     Returns the index of the item which equals to VAL.  If no item
+     found, returns NIL.
+
+
+ - Method on `Array': indexes (INDEX_1,..., INDEX_N)
+ - Method on `Array': indices (INDEX_1,..., INDEX_N)
+     Returns an array contains items at each index specified by each
+     argument.
+
+
+ - Method on `Array': join ([SEP])
+     Joins the elements in the array into a single string with fields
+     separated by the value of SEP, and returns the string.  If SEP
+     is not supplied,  the value of `$,' (*note Pre-defined variables
+     and constants::) is used as the default.
+
+
+ - Method on `Array': length
+ - Method on `Array': size
+     Returns length of the array.
+
+
+ - Method on `Array': nitems
+     Returns the number of non-nil items.
+
+
+ - Method on `Array': pack (TEMPLATE)
+     Packs the array into a binary structure, returning the string
+     containing the structure.  The `template' is a sequence of
+     characters that give the order and type of values, as follows:
+
+    `a'
+          ASCII string(null padded)
+
+    `A'
+          ASCII string(space padded)
+
+    `b'
+          bit string(ascending bit order)
+
+    `B'
+          bit string(descending bit order)
+
+    `h'
+          hex string(low nibble first)
+
+    `H'
+          hex string(high nibble first)
+
+    `c'
+          char
+
+    `C'
+          unsigned char
+
+    `s'
+          short
+
+    `S'
+          unsigned short
+
+    `i'
+          int
+
+    `I'
+          unsigned int
+
+    `l'
+          long
+
+    `L'
+          unsigned long
+
+    `m'
+          string encoded in base64
+
+    `n'
+          short in "network" byte-order
+
+    `N'
+          long in "network" byte-order
+
+    `v'
+          short in "VAX" (little-endian) byte-order
+
+    `V'
+          long in "VAX" (little-endian) byte-order
+
+    `f'
+          single-precision float in the native format
+
+    `d'
+          A double-precision float in the native format
+
+    `p'
+          A pointer to a null-terminated string.
+
+    `P'
+          A pointer to a structure (fixed-length string).
+
+    `u'
+          uuencoded string
+
+    `x'
+          null byte
+
+    `X'
+          back up a byte
+
+    `@'
+          moves to absolute position
+
+
+ - Method on `Array': pop
+     Pops and returns the last value of the array, shortening the
+     array by one.  If there is no element in the array, returns
+     `nil'.
+
+
+ - Method on `Array': push (OBJ...)
+     Appends OBJ to the last of the array.
+
+
+ - Method on `Array': rassoc (VALUE)
+     Searches in the array of arrays, looking for the array whose
+     second element equals (compared by `==') to VALUE.
+
+          a = [[1,2],[2,4],[3,6]]
+          a.rassoc(2)             # => [1, 2]
+
+
+ - Method on `Array': replace (OTHER)
+     Copis the content of OTHER into the array.
+
+
+ - Method on `Array': reverse
+     Returns the array of the items in reverse order.
+
+
+ - Method on `Array': reverse!
+     Replaces the items in reverse order.
+
+
+ - Method on `Array': reverse_each {...}
+     Iterates over each item of the array in reverse order.
+
+
+ - Method on `Array': rindex (VAL)
+     Returns the index of the last item which equals to VAL.  If no
+     item matched, returns NIL.
+
+
+ - Method on `Array': shift
+     Removes and returns the first element of the array, and moves
+     other elements down.  Returns `nil' for empty array.
+
+
+ - Method on `Array': sort
+ - Method on `Array': sort {|A, B|...}
+ - Method on `Array': sort!
+ - Method on `Array': sort! {|A, B|...}
+     Sorts the array.  If `sort' is called with the block, it
+     evaluate the block with two parameters, and use the result to
+     compare.  Without the block, it compares elements with the
+     operator `<=>'.  `sort' returns a newly created sorted array,
+     and `sort!' executes sort in place.
+
+
+ - Method on `Array': uniq
+ - Method on `Array': uniq!
+     Removes duplicate items from the array.
+
+     `uniq!' returns nil, if it does not modify the array.
+
+
+ - Method on `Array': unshift (OBJ)
+     Inserts OBJ to the front of the array.
+
+
+File: ruby.info,  Node: Data,  Next: Dir,  Prev: Array,  Up: Pre-defined classes and modules
+
+Data
+----
+
+   The wrapper class for the C pointer.  Used mostly by the extension
+libraries.
+
+SuperClass:
+...........
+
+   - `Object' (*note Object::)
+
+
+File: ruby.info,  Node: Dir,  Next: Hash,  Prev: Data,  Up: Pre-defined classes and modules
+
+Dir
+---
+
+   The class for the directory stream.
+
+SuperClass:
+...........
+
+   - `Object' (*note Object::)
+
+Included Modules:
+.................
+
+   - `Enumerable' (*note Enumerable::)
+
+Class Methods:
+..............
+
+ - Class Method on `Dir': self [PATTERN]
+ - Class Method on `Dir': glob (PATTERN)
+     Expands a wild-card PATTERN, then returns the results in an
+     array of strings.
+
+     Wild-cards are:
+
+    `*'
+          Matches any string, including the null string
+
+    `?'
+          Matches any single character
+
+    `[ ]'
+          Matches any one of enclosed  character.  A pair of
+          characters separated by a `-' sign denotes a range.  If the
+          first character following `[' is a `^', then any character
+          not enclosed is matched.
+
+    `{ }'
+          Expanded to combinations of comma separating string within
+          braces.  For example, `foo{a,b,c}' will be expanded into
+          three strings, `fooa', `foob', `fooc'.  The generated names
+          need not to be exist.
+
+
+ - Class Method on `Dir': chdir (PATH)
+     Changes the current directory to the PATH.
+
+
+ - Class Method on `Dir': chroot (PATH)
+     Changes the root directory to PATH.  See `chroot(2)'.  Only the
+     super-user may change the root directory
+
+     There is no way to back up the old root directory.
+
+
+ - Class Method on `Dir': getwd
+ - Class Method on `Dir': pwd
+     Returns the absolute pathname of the current directory.
+
+
+ - Class Method on `Dir': foreach (PATH)
+     iterates over the items in the directory specified by `path'.
+     It works like:
+
+          dir = Dir.open(PATH)
+          begin
+            dir.each {
+              ...
+            }
+          ensure
+            dir.close
+          end
+
+
+ - Class Method on `Dir': mkdir (PATH[, MODE])
+     Creates a directory named PATH.  the permission of a newly
+     created directory specified by MODE.  The default mode is
+     `0777', which will be modified by users `umask' `(mode &
+     ~umask)'.
+
+
+ - Class Method on `Dir': open (PATH)
+     Opens the directory stream corresponding to the directory PATH.
+
+
+ - Class Method on `Dir': delete (PATH)
+ - Class Method on `Dir': rmdir (PATH)
+ - Class Method on `Dir': unlink (PATH)
+     Deletes the directory, which must be empty.
+
+
+Methods:
+........
+
+ - Method on `Dir': close
+     Closes the directory stream.  Later operation to the directory
+     stream raises an exception.
+
+
+ - Method on `Dir': each {|ITEM|...}
+     Gives each item in the directory as the block parameter.
+
+
+ - Method on `Dir': read
+     Returns the next item in the directory stream.
+
+
+ - Method on `Dir': rewind
+     Resets the position of the directory stream to the beginning of
+     the directory.
+
+
+ - Method on `Dir': seek (POS)
+     Sets the location of the directory stream to the POS.  The POS
+     must be an offset returned by ` (*note Dir::)Dir#tell'.
+
+
+ - Method on `Dir': tell
+     Returns the current position of the directory stream.
+
+
+File: ruby.info,  Node: Exception Classes,  Next: Hash,  Prev: Dir,  Up: Pre-defined classes and modules
+
+Exception Classes
+-----------------
+
+* Menu:
+
+* Exception::                 Exception
+* Interrupt::                 Interrupt
+* NotImplementError::         NotImplementError
+* SignalException::           SignalException
+* StandardError::             StandardError
+* SystemExit::                SystemExit
+* fatal::                     fatal
+* ArgumentError::             ArgumentError
+* FloatDomainError::          FloatDomainError
+* IndexError::                IndexError
+* IOError::                   IOError
+* LoadError::                 LoadError
+* LocalJumpError::            LocalJumpError
+* NameError::                 NameError
+* RuntimeError::              RuntimeError
+* SecurityError::             SecurityError
+* SyntaxError::               SyntaxError
+* SystemCallError::           SystemCallError
+* SystemStackError::          SystemStackError
+* TypeError::                 TypeError
+* ThreadError::               ThreadError
+* ZeroDivisionError::         ZeroDivisionError
+* EOFError::                  EOFError
+
+
+File: ruby.info,  Node: Exception,  Next: Interrupt,  Up: Exception Classes
+
+Exception
+.........
+
+   The ancester of the all exceptions.
+
+SuperClass:
+...........
+
+   `Object' (*note Object::)
+
+Class Methods:
+..............
+
+ - Class Method on `Exception': exception ([ERROR_MESSAGE = ""])
+ - Class Method on `Exception': new ([ERROR_MESSAGE = ""])
+     Creates a new exception object.  The error_message string can be
+     supplied as the optional argument.  The default exception
+     handler at top leve, will show this error_message.
+
+     `exception' is used internally by `raise' (*note Ruby
+     Functions::).
+
+
+Methods:
+........
+
+ - Method on `Exception': backtrace
+     Returns backtrace information as the array of the strings in the
+     following format.
+
+        - `"#{sourcefile}:#{sourceline}:in `#{method}'"'
+
+          (within methods)
+
+        - `"#{sourcefile}:#{sourceline}"'
+
+          (at top level)
+
+ - Method on `Exception': exception
+     Return self.  This method is used internally by  `raise' (*note
+     Ruby Functions::).
+
+
+ - Method on `Exception': message
+ - Method on `Exception': to_s
+ - Method on `Exception': to_str
+     Returns the error message string.
+
+
+ - Method on `Exception': set_backtrace (ERRINFO)
+     Sets the backtrace information of the exception.  ERRINFO must
+     be the array of the strings.
+
+
+
+File: ruby.info,  Node: Interrupt,  Next: NotImplementError,  Prev: Exception,  Up: Exception Classes
+
+Interrupt
+.........
+
+   The exception for the untrapped `SIGINT'.
+
+SuperClass:
+...........
+
+   - `Exception' (*note Exception::)
+
+
+File: ruby.info,  Node: NotImplementError,  Next: SignalException,  Prev: Interrupt,  Up: Exception Classes
+
+NotImplementError
+.................
+
+   The exception raised when unimplemented feature was invoked.
+
+SuperClass:
+...........
+
+   - `Exception' (*note Exception::)
+
+
+File: ruby.info,  Node: SignalException,  Next: StandardError,  Prev: NotImplementError,  Up: Exception Classes
+
+SignalException
+...............
+
+   The exception raised by the signals (except SIGINT).
+
+SuperClass:
+...........
+
+   - `Exception' (*note Exception::)
+
+
+File: ruby.info,  Node: StandardError,  Next: SystemExit,  Prev: SignalException,  Up: Exception Classes
+
+StandardError
+.............
+
+   The `rescue' class without class specifified will catch the
+subclasses of this exception class.
+
+SuperClass:
+...........
+
+   - `Exception' (*note Exception::)
+
+
+File: ruby.info,  Node: SystemExit,  Next: fatal,  Prev: StandardError,  Up: Exception Classes
+
+SystemExit
+..........
+
+   Raised by `exit' to terminate the interpreter.
+
+SuperClass:
+...........
+
+   - `Exception' (*note Exception::)
+
+
+File: ruby.info,  Node: fatal,  Next: ArgumentError,  Prev: SystemExit,  Up: Exception Classes
+
+fatal
+.....
+
+   The fatal error, which can not be caught nor handled.  e.g.:
+
+   * No more memory available
+
+   * Thread dead-lock happened
+
+   * Could not move to the directory specified by options -X and -X.
+
+   * Could not perform inplace edit by some reasons
+
+SuperClass:
+...........
+
+   - `Exception' (*note Exception::)
+
+
+File: ruby.info,  Node: ArgumentError,  Next: FloatDomainError,  Prev: fatal,  Up: Exception Classes
+
+ArgumentError
+.............
+
+   The exception raised when some problem found with methods
+arguments. E.g.
+
+     `Math.sqrt(-1)'
+
+SuperClass:
+...........
+
+   - `StandardError' (*note StandardError::)
+
+
+File: ruby.info,  Node: FloatDomainError,  Next: IndexError,  Prev: ArgumentError,  Up: Exception Classes
+
+FloatDomainError
+................
+
+   Raised by the floating point number operation with infinite number
+or NaN.
+
+SuperClass:
+...........
+
+   - `StandardError' (*note StandardError::)
+
+
+File: ruby.info,  Node: IndexError,  Next: IOError,  Prev: FloatDomainError,  Up: Exception Classes
+
+IndexError
+..........
+
+   Raised when index out of range.
+
+SuperClass:
+...........
+
+   - `StandardError' (*note StandardError::)
+
+
+File: ruby.info,  Node: IOError,  Next: LoadError,  Prev: IndexError,  Up: Exception Classes
+
+IOError
+.......
+
+   Raised when I/O error happened.
+
+SuperClass:
+...........
+
+   - `StandardError' (*note StandardError::)
+
+
+File: ruby.info,  Node: LoadError,  Next: LocalJumpError,  Prev: IOError,  Up: Exception Classes
+
+LoadError
+.........
+
+   Raised when `load' or `require' failed.
+
+SuperClass:
+...........
+
+   - `StandardError' (*note StandardError::)
+
+
+File: ruby.info,  Node: LocalJumpError,  Next: NameError,  Prev: LoadError,  Up: Exception Classes
+
+LocalJumpError
+..............
+
+   raised by local jumps (`return', `break', `next', `redo', `retry')
+from a `Proc' (*note Proc::) object which is brought out of its
+original scope.
+
+SuperClass:
+...........
+
+   - `StandardError' (*note StandardError::)
+
+
+File: ruby.info,  Node: NameError,  Next: RuntimeError,  Prev: LocalJumpError,  Up: Exception Classes
+
+NameError
+.........
+
+   Raised by accessing an undefined identifier.
+
+SuperClass:
+...........
+
+   - `StandardError' (*note StandardError::)
+
+
+File: ruby.info,  Node: RuntimeError,  Next: SecurityError,  Prev: NameError,  Up: Exception Classes
+
+RuntimeError
+............
+
+   The default exception caused by `raise' (*note Ruby Functions::)
+without specifying an exception.
+
+SuperClass:
+...........
+
+   - `StandardError' (*note StandardError::)
+
+
+File: ruby.info,  Node: SecurityError,  Next: SyntaxError,  Prev: RuntimeError,  Up: Exception Classes
+
+SecurityError
+.............
+
+   Raised by security problem with tainted data.
+
+SuperClass:
+...........
+
+   - `StandardError' (*note StandardError::)
+
+
+File: ruby.info,  Node: SyntaxError,  Next: SystemCallError,  Prev: SecurityError,  Up: Exception Classes
+
+SyntaxError
+...........
+
+   Raised by a syntax error.
+
+SuperClass:
+...........
+
+   - `StandardError' (*note StandardError::)
+
+
+File: ruby.info,  Node: SystemCallError,  Next: SystemStackError,  Prev: SyntaxError,  Up: Exception Classes
+
+SystemCallError
+...............
+
+   The exceptions for system call failures.  This is the abstract
+super class for the actual system call exception classes, which are
+defined under the `Errno' module (*note Errno::).
+
+SuperClass:
+...........
+
+   - `StandardError' (*note StandardError::)
+
+Methods:
+........
+
+ - Method on `SystemCallError': errno
+     Returns the `errno' passed from the OS.
+
+
+
+File: ruby.info,  Node: SystemStackError,  Next: TypeError,  Prev: SystemCallError,  Up: Exception Classes
+
+SystemStackError
+................
+
+   Raised when stack level becomes too deep.
+
+SuperClass:
+...........
+
+   - `StandardError' (*note StandardError::)
+
+
+File: ruby.info,  Node: TypeError,  Next: ThreadError,  Prev: SystemStackError,  Up: Exception Classes
+
+TypeError
+.........
+
+   Raised by the type problem.  Mostly caused by C extensions.
+
+SuperClass:
+...........
+
+   - `StandardError' (*note StandardError::)
+
+
+File: ruby.info,  Node: ThreadError,  Next: ZeroDivisionError,  Prev: TypeError,  Up: Exception Classes
+
+ThreadError
+...........
+
+   Raised by the follwing `Thread' (*note The Thread Library::)errors:
+
+   * try to `join' the current thread.
+
+   * `join' causes dead lock.
+
+   * try to `wakeup' the dead thread.
+
+   * try to `stop' a sole thread.
+
+   * try to create a thread without the block.
+
+   * global jump out of thread by `throw' (*note Ruby Functions::)
+     happened.
+
+   * exit from the thread block by `return'.
+
+SuperClass:
+...........
+
+   - `StandardError' (*note StandardError::)
+
+
+File: ruby.info,  Node: ZeroDivisionError,  Next: EOFError,  Prev: ThreadError,  Up: Exception Classes
+
+ZeroDivisionError
+.................
+
+   Raised by a division by zero.
+
+SuperClass:
+...........
+
+   - `StandardError' (*note StandardError::)
+
+
+File: ruby.info,  Node: EOFError,  Prev: ZeroDivisionError,  Up: Exception Classes
+
+EOFError
+........
+
+   Raised when EOF is reached.
+
+SuperClass:
+...........
+
+   - `IOError' (*note IOError::)
+
+
+File: ruby.info,  Node: Hash,  Next: IO,  Prev: Dir,  Up: Pre-defined classes and modules
+
+Hash
+----
+
+   The class for associative arrays or hash tables.  The hash table
+can contain the association from any kind of object to any kind of
+object.  The hash table allocation can be done by the hash expression:
+
+     {a=>b,...}
+
+   The hash value for the key value is calculated using method `
+(*note Object::)Kernel#hash'.  Since the hash value of the key should
+not be changed, instances of the classes like ` (*note
+Array::)Array', `Hash' (*note Hash::), etc. are not suited for the
+key.  When the `string' (*note String::) used as the key, hash table
+copies and freeze it and use copied string as the key string.
+Attempt to Modify the freezed key strings raises an exception.
+
+SuperClass:
+...........
+
+   - `Object' (*note Object::)
+
+Included Modules:
+.................
+
+   - `Enumerable' (*note Enumerable::)
+
+Class Methods:
+..............
+
+ - Class Method on `Hash': Hash [KEY, VALUE...]
+     Creates a new hash table, interpreting arguments as key - value
+     pair.  The number of arguments must be times of two.
+
+
+ - Class Method on `Hash': new ([IFNONE])
+     Creates a new, empty hash table.  IFNONE is the default value
+     for the non-registered key.
+
+
+Methods:
+........
+
+ - Method on `Hash': self [KEY]
+     Returns the value associated to the KEY.  Returns the default
+     value (or `nil'), if `key' is not registered in the hash table.
+
+
+ - Method on `Hash': self [KEY]= VALUE
+     Adds binding of KEY to VALUE.  If the VALUE is `nil', the
+     binding from KEY will be removed.  That means the hash table
+     cannot holds the association to `nil'.
+
+
+ - Method on `Hash': clear
+     Makes the hash table empty.
+
+
+ - Method on `Hash': default
+     Returns the default value for the hash table.
+
+
+ - Method on `Hash': default =(VALUE)
+     Sets the default value for the hash table.
+
+
+ - Method on `Hash': delete (KEY)
+     Deletes the association from `key'. Returns `nil' if KEY is not
+     found in the hash table.
+
+     If the block supplied to the method, it will be evaluated when no
+     association matches to KEY.
+
+
+ - Method on `Hash': delete_if {|KEY, VALUE|...}
+ - Method on `Hash': reject! {|KEY, VALUE|...}
+     Deletes association from hash table, if the evaluated value of
+     the block with the array of `[key,value]' as an argument is true.
+
+
+ - Method on `Hash': dup
+     Returns a newly created hash table which has the save keys and
+     values to the receiver.  `clone' returns the complete copy of the
+     original hash table, including freeze status and instance
+     variables.  On the other hand, `dup' copies the hash table
+     containts.
+
+
+ - Method on `Hash': each {|KEY, VALUE|...}
+ - Method on `Hash': each_pair {|KEY, VALUE|...}
+     Iterates over each pair of keys and values (`[key,value]') of
+     the hash.
+
+
+ - Method on `Hash': each_key {|KEY|...}
+     Iterates over each key in the hash table.
+
+
+ - Method on `Hash': each_value {|VALUE|...}
+     Iterates over each value in the hash table.
+
+
+ - Method on `Hash': empty?
+     Returns true, if hash table is empty.
+
+
+ - Method on `Hash': fetch (KEY[,DEFAULT])
+     Returns the value associated to the KEY.  Returns DEFAULT, if
+     KEY is not registered in the hash table.  If a block is given,
+     evaluates and returns its value on value absence.
+
+
+ - Method on `Hash': freeze
+     Prohibits modification of the hash table.  Modification to the
+     freezed string raises an exception.
+
+
+ - Method on `Hash': frozen
+     Returns true if the hash table is frozen.
+
+
+ - Method on `Hash': has_key? (KEY)
+ - Method on `Hash': key? (KEY)
+ - Method on `Hash': include? (KEY)
+     Returns true if hash table has KEY in the associations.
+
+
+ - Method on `Hash': has_value? (VALUE)
+ - Method on `Hash': value? (VALUE)
+     Returns true if hash table has VALUE in the associations.
+
+
+ - Method on `Hash': index (VAL)
+     Returns the key corresponding to VAL.  Returns `nil' if there is
+     no matching value.
+
+
+ - Method on `Hash': indexes (KEY_1,..., KEY_N)
+ - Method on `Hash': indices (KEY_1,..., KEY_N)
+     Returns an array of values which keys are specified by arguments.
+
+
+ - Method on `Hash': keys
+     Returns an array of keys in the hash table.
+
+
+ - Method on `Hash': length
+ - Method on `Hash': size
+     Returns the number of associations in the hash table.
+
+
+ - Method on `Hash': invert
+     Returns the value-to-key mapping of the hash.
+
+
+ - Method on `Hash': replace (OTHER)
+     Copis the content of OTHER into the hash.
+
+
+ - Method on `Hash': shift
+     Removes and returns an association from the hash table.  The
+     association is in the form `[key,value]'.
+
+
+ - Method on `Hash': store (KEY,VALUE)
+     Adds binding of KEY to VALUE.
+
+
+ - Method on `Hash': to_a
+     Returns an array of two element arrays of associations which is
+     `[key,value]'.
+
+
+ - Method on `Hash': update (OTHER)
+     Merges the contents of another hash, overriding existing keys.
+
+
+ - Method on `Hash': values
+     Returns an array of the values in the hash table.
+
+
+File: ruby.info,  Node: IO,  Next: File,  Prev: Hash,  Up: Pre-defined classes and modules
+
+IO
+--
+
+   The `IO' class provides the basic IO feature.
+
+SuperClass:
+...........
+
+   - `Object' (*note Object::)
+
+Included Modules:
+.................
+
+   - `Enumerable' (*note Enumerable::)
+
+Class Methods:
+..............
+
+ - Class Method on `IO': foreach (PATH[, RS])
+     Iterates over each line from the IO port specified by `path'.
+     It works like:
+
+          port = open(PATH)
+          begin
+            port.each_line {
+              ...
+            }
+          ensure
+            port.close
+          end
+
+     Lines are separated by the value of the optional argument RS,
+     which default value is defined by the variable `$/' (*note
+     Pre-defined variables and constants::).
+
+
+ - Class Method on `IO': new (FD[,MODE])
+     Creates a stream associated with the file descriptor FD.
+
+
+ - Class Method on `IO': popen (COMMAND [, MODE])
+     Performs the COMMAND as a sub-process, and associates pipes to
+     the standard input/output of the sub-process.  The MODE argument
+     specifies the mode for the opened IO port, which is either `"r"',
+     `"r+"', `"w"', `"w+"', `"a"', `"a+"'.  If MODE omitted, the
+     default is `"r"'
+
+     If the command name is `"-"', Ruby forks, and create pipe-line
+     to the child process.
+
+
+ - Class Method on `IO': pipe
+     Opens a pair of connected pipes like the corresponding system
+     call, and returns them in the array of two elements (read-side
+     first, write-side next).
+
+
+ - Class Method on `IO': readlines (PATH[, RS])
+     Reads entire lines from the IO port specified by `path' and
+     returns an array containing the lines read.  It works like:
+
+          port = open(PATH)
+          begin
+            port.each_line {
+              ...
+            }
+          ensure
+            port.close
+          end
+
+     Lines are separated by the value of the optional argument RS,
+     which default value is defined by the variable `$/' (*note
+     Pre-defined variables and constants::).
+
+
+ - Class Method on `IO': select (READS[, WRITES[, EXCEPTS[,
+          TIMEOUT]]])
+     Calls `select(2)' system call.  READS, WRITES, EXCEPTS are
+     specified arrays containing instances of the IO class (or its
+     subclass), or `nil'.
+
+     The TIMEOUT must be either an integer, Float, `Time' (*note
+     Time::), or `nil'.  If the TIMEOUT is `nil', `select' would not
+     time out.
+
+     `select' returns `nil' in case of timeout, otherwise returns an
+     array of 3 elements, which are subset of argument arrays.
+
+
+Methods:
+........
+
+ - Method on `IO': self << OBJECT
+     Output OBJECT to the IO port.  If OBJECT is not a string, it
+     will be converted into the string using `to_s'.  This method
+     returns self, so that the code below works:
+
+          $stdout << 1 << " is a " << Fixnum << "\n"
+
+
+ - Method on `IO': binmode
+     Changes the stream into binary mode.  This is useful only under
+     MSDOS.  There's no way to reset to ascii mode except re-opening
+     the stream.
+
+
+ - Method on `IO': close
+     Closes the IO port.  All operations on the closed IO port will
+     raise an exception.  IO ports are automatically closed when they
+     are garbage-collected.
+
+
+ - Method on `IO': closed?
+     Returns true if the IO port closed.
+
+
+ - Method on `IO': each ([RS]) {|LINE|...}
+ - Method on `IO': each_line ([RS]) {|LINE|...}
+     Iterates over each line from the IO port.  The IO port must be
+     opened in read-mode. (See `open' (*note Ruby Functions::))
+
+     Lines are separated by the value of the optional argument RS,
+     which default value is defined by the variable `$/' (*note
+     Pre-defined variables and constants::).
+
+
+ - Method on `IO': each_byte {|CH|...}
+     Reads byte by byte from the IO port.  The IO port must be opened
+     in read-mode. (See `open' (*note Ruby Functions::))
+
+
+ - Method on `IO': eof
+ - Method on `IO': eof?
+     Returns true it the stream reaches end of file.
+
+
+ - Method on `IO': fcntl (CMD, ARG)
+     Performs system call `fcntl' on the IO object.  See `fcntl(2)'
+     for detail.
+
+     If the ARG is a number, the numeric value is passed to the
+     system call.  If the `arg' is a string, it is treated as the
+     packed structure.  The default ARG value is 0.
+
+
+ - Method on `IO': fileno
+ - Method on `IO': to_i
+     Returns the file descriptor number of the IO port.
+
+
+ - Method on `IO': flush
+     Flushes the internal buffer of the IO port.
+
+
+ - Method on `IO': getc
+     Reads the next character from the IO port, and returns an fixnum
+     corresponding that character.  Returns `nil' at the end of file.
+
+
+ - Method on `IO': gets ([RS])
+     Reads a line from the IO port, or `nil' on end of file. Works
+     mostly same as `each' (*note IO::), but `gets' does not iterate.
+
+     Lines are separated by the value of the optional argument RS,
+     which default value is defined by the variable `$/' (*note
+     Pre-defined variables and constants::).
+
+     The line read is set to the variable `$_' (*note Pre-defined
+     variables and constants::).
+
+
+ - Method on `IO': ioctl (CMD, ARG)
+     Performs system call `ioctl' on the IO object.  See `ioctl(2)'
+     for detail.
+
+     If the ARG is a number, the numeric value is passed to the
+     system call.  If the `arg' is a string, it is treated as the
+     packed structure.  The default ARG value is 0.
+
+
+ - Method on `IO': isatty
+ - Method on `IO': tty?
+     Returns true if the IO port connected to the tty.
+
+
+ - Method on `IO': lineno
+     Returns the current line number of the IO.
+
+
+ - Method on `IO': lineno = NUMBER
+     Sets the line number of the IO.
+
+
+ - Method on `IO': pos
+     Returns the current position of the file pointer.
+
+
+ - Method on `IO': pos = POS
+     Moves the file pointer to the POS.
+
+
+ - Method on `IO': print ARG...
+     Outputs arguments to the IO port.
+
+
+ - Method on `IO': printf (FORMAT, ARG...)
+     Output arguments to the IO port with formatting like `printf' in
+     C language.
+
+
+ - Method on `IO': putc (C)
+     Writes the character C to the stream.
+
+
+ - Method on `IO': puts (OBJ...)
+     Outputs an OBJ to the IO port, then newline for each arguments.
+
+
+ - Method on `IO': read [LENGTH]
+     Attempts to read LENGTH bytes of data from the IO port.  If no
+     LENGTH given, reads all data until `EOF'.
+
+     returns NIL at `EOF'.
+
+
+ - Method on `IO': readchar
+     Reads a character from the IO port, just like `getc' (*note
+     IO::), but raises an `EOFError' exception at the end of file.
+
+
+ - Method on `IO': readline ([RS])
+     Reads a line from the IO port, just like `gets' (*note IO::),
+     but raises an `EOFError' exception at the end of file.
+
+     Each lines is separated by the value of the optional argument
+     RS, which default value is defined by the variable `$/' (*note
+     Pre-defined variables and constants::).
+
+     The line read is set to the variable `$_' just like `IO#gets'.
+
+
+ - Method on `IO': readlines ([RS])
+     Reads entire lines from the IO port and returns an array
+     containing the lines read.
+
+     Lines are separated by the value of the optional argument RS,
+     which default value is defined by the variable `$/' (*note
+     Pre-defined variables and constants::).
+
+
+ - Method on `IO': reopen (IO)
+     Reconnect `self' to IO.  It also changes the class of the stream.
+
+
+ - Method on `IO': rewind
+     Resets the position of the file pointer to the beginning of the
+     file.
+
+
+ - Method on `IO': seek (OFFSET, WHENCE)
+     Moves the file pointer to the OFFSET.  The value for WHENCE are
+     0 th set the file pointer to OFFSET, 1 to set it to current plus
+     OFFSET, 2 to set it to EOF plus offset.
+
+
+ - Method on `IO': stat
+     Returns the status info of the file in the `Stat' structure
+     (*note Struct::), which has attributes as follows:
+
+          dev             # device number of file-system
+          ino             # i-node number
+          mode            # file mode
+          nlink           # number of hard links
+          uid             # user ID of owner
+          gid             # group ID of owner
+          rdev            # device type (special files only)
+          size            # total size, in bytes
+          blksize         # preferred blocksize for file-system I/O
+          blocks          # number of blocks allocated
+          atime           # time of last access
+          mtime           # time of last modification
+          ctime           # time of last i-node change
+
+     For more detail, see `stat(2)'.  Some fields are filled with 0,
+     if that field is not supported on your system.
+
+
+ - Method on `IO': sync
+     Returns the `sync' mode of the IO port.  When the `sync' mode is
+     true, the internal buffer will be flushed, everytime something
+     written to the output port.
+
+
+ - Method on `IO': sync = NEWSTATE
+     Sets the `sync' mode of the IO port.
+
+
+ - Method on `IO': sysread (LENGTH)
+     Attempts to read LENGTH bytes of data from the IO port, using
+     the system call read(2).  It bypasses stdio, so mixing this with
+     other kinds of reads/eof checks may cause confusion.
+
+
+ - Method on `IO': syswrite (STRING)
+     Attempts to write data from the STRING to the IO port, using the
+     write(2) system call.  It bypasses stdio, so mixing this with
+     prints may cause confusion.
+
+
+ - Method on `IO': tell
+     Returns the current position of the file pointer.
+
+
+ - Method on `IO': write (STR)
+     Outputs the string to the IO port.  Returns the number of bytes
+     written.
+
+
+ - Method on `IO': ungetc (C)
+     Pushes `c' back to the stream.  Only one push-back is guaranteed.
+
+
+File: ruby.info,  Node: File,  Next: MatchingData,  Prev: IO,  Up: Pre-defined classes and modules
+
+File
+----
+
+   The class for accessing files.  Normally, created by `open' (*note
+Ruby Functions::).  This class has singleton-methods that the
+`FileTest' (*note FileTest::) class has.
+
+SuperClass:
+...........
+
+   - `IO' (*note IO::)
+
+Class Methods:
+..............
+
+ - Class Method on `File': atime (FILENAME)
+     Returns the last accessed time of the file.
+
+
+ - Class Method on `File': basename (FILENAME[, SUFFIX])
+     Returns the last slash-delimited component of the FILENAME.  If
+     SUFFIX is supplied and is identical to the end of name, it is
+     removed from filename.
+
+     Example:
+
+          basename("ruby/ruby.c")
+                  => "ruby.c"
+          basename("ruby/ruby.c", ".c")
+                  => "ruby"
+
+
+ - Class Method on `File': ctime (FILENAME)
+     Returns the last status change time of the file.
+
+
+ - Class Method on `File': chmod (MODE, PATH, FILE...)
+     Change the mode of the `file's to the MODE.  Returns the number
+     of the file it processed.  See `chmod(2)'.
+
+
+ - Class Method on `File': chown (OWNER, GROUP, FILE...)
+     Change the owner and the groups of the `file's to the OWNER.
+     Only super-user can change the owner of the file.  Returns the
+     number of the file it processed.
+
+     The owner and the group can leave unchanged with supplying `nil'
+     or `-1' to as the argument.
+
+
+ - Class Method on `File': dirname (FILENAME)
+     Returns all but the final slash-delimited component of FILENAME.
+     Returns `"."' (meaning the current directory), if FILENAME is a
+     single component.
+
+
+ - Class Method on `File': expand_path (PATH[,DEFAULT_DIR])
+     Converts PATH to absolute, and canonicalized path.
+
+     Second arg DEFAULT_DIR is directory to start with if PATH is
+     relative (does not start with slash); if DEFAULT_DIR is nil or
+     missing, the current directory of the process is used.
+
+     An initial `~' expands to your home directory.  An initial
+     `~USER' expands to USER's home directory.
+
+          expand_path("..")
+                 => "/home/matz/work"
+          expand_path("~")
+                 => "/home/matz"
+          expand_path("~matz")
+                 => "/home/matz"
+
+
+ - Class Method on `File': ftype (FILENAME)
+     Returns a string which describes the type of the file.  The
+     string is either:
+
+          `"file"'
+          `"directory"'
+          `"characterSpecial"'
+          `"blockSpecial"'
+          `"fifo"'
+          `"link"'
+          `"socket"'
+
+
+ - Class Method on `File': join (ITEM...)
+     Combines file names using `File::Separator'.
+
+     It works just like:
+
+
+               [items,..].join(File::Separator)
+
+
+
+ - Class Method on `File': link (OLD, NEW)
+     Creates a new hard link to old (existing) file.  See `link(2)'.
+
+
+ - Class Method on `File': lstat (FILENAME)
+     Does the same thing as the `stat' (*note File::), but stats a
+     symbolic link instead of the file the symbolic link points to.
+
+
+ - Class Method on `File': mtime (FILENAME)
+     Returns the last modified time of the file.
+
+
+ - Class Method on `File': open (PATH[, MODE])
+ - Class Method on `File': new (PATH[, MODE])
+     Opens the file specified by PATH, and returns a `File' object
+     associated with that file.
+
+     The MODE argument specifies the mode for the opened file, which
+     is either `"r"', `"r+"', `"w"', `"w+"', `"a"', `"a+"'.  See
+     `fopen(3)'.  If MODE omitted, the default is `"r"'.
+
+     if MODE is a integer, it is considered like the second argument
+     to `open(2)'.  One of the flags must be either `RDONLY',
+     `WRONLY' or `RDWR'.  Flags may also be bitwise-or'd with one or
+     more of `APPEND', `CREAT', `EXCL', `NONBLOCK', `TRUNC', `NOCTTY',
+     `BINARY'.
+
+     If a new file is created as part of opening it, permissions (an
+     integer) is used to set the permissions for the new file in
+     conjunction with the process's file mode creation mask.
+     Permissions defaults to 0666.
+
+     If `open' is called with block, the block will be executed with
+     a newly opened file object.  The file object will be closed
+     automatically after executing the block.
+
+
+ - Class Method on `File': readlink (PATH)
+     Returns the symbolic link path as a string.
+
+
+ - Class Method on `File': rename (FROM, TO)
+     Renames file, moving it across the directories if required.  See
+     `rename(2)'.  If TO-file already exists, it will be overwritten.
+
+
+ - Class Method on `File': size (PATHNAME)
+     Returns the size of the file specified by the PATHNAME in bytes.
+
+
+ - Class Method on `File': split (PATHNAME)
+     Splits the PATHNAME in a pair `[HEAD, TAIL]', where TAIL is the
+     last pathname component and HEAD is everything leading up to
+     that.
+
+
+ - Class Method on `File': stat (FILENAME)
+     Returns the status info of the FILENAME in the `Stat' structure
+     (*note Struct::), which has attributes as follows:
+
+          dev             # device number of file-system
+          ino             # i-node number
+          mode            # file mode
+          nlink           # number of hard links
+          uid             # user ID of owner
+          gid             # group ID of owner
+          rdev            # device type (special files only)
+          size            # total size, in bytes
+          blksize         # preferred blocksize for file-system I/O
+          blocks          # number of blocks allocated
+          atime           # time of last access
+          mtime           # time of last modification
+          ctime           # time of last i-node change
+
+     For more detail, see `stat(2)'.  Some fields are filled with 0,
+     if that field is not supported on your system.
+
+
+ - Class Method on `File': symlink (OLD, NEW)
+     Created a NEW symbolic link to the OLD-file.
+
+
+ - Class Method on `File': truncate (PATH, LENGTH)
+     truncate the file specified by PATH to at most LENGTH byte.
+
+
+ - Class Method on `File': unlink (FILE...)
+ - Class Method on `File': delete (FILE...)
+     Deletes FILEs.  Returns the number of files successfully
+     deleted.   Use `Dir.rmdir' (*note Dir::) instead to delete
+     directories.
+
+
+ - Class Method on `File': umask ([UMASK])
+     Changes umask of the user.  Returns the current mask.  If UMASK
+     is not specified, just current returns the current mask value.
+
+
+ - Class Method on `File': utime (ATIME, MTIME, FILE...)
+     Change the access and modification times on each FILEs.  Returns
+     the number of files successfully changed.  The first two
+     arguments must be either the number or the instance of the
+     `Time' (*note Time::) class.
+
+     In addition, the `File' class has class methods defined in
+     `FileTest' (*note FileTest::).
+
+
+Methods:
+........
+
+ - Method on `File': atime
+     Returns the last accessed time of the file.
+
+
+ - Method on `File': ctime
+     Returns the last status change time of the file.
+
+
+ - Method on `File': chmod (MODE)
+     Change the mode of the `file's to the MODE.  See `chmod(2)'.
+
+
+ - Method on `File': chown (OWNER, GROUP)
+     Change the owner and the groups of the `file's to the OWNER.
+     Only super-user can change the owner of the file.  The owner and
+     the group can be unchanched with supplying `nil' or `-1' to as
+     the argument.
+
+
+ - Method on `File': eof
+ - Method on `File': eof?
+     Returns true, if the file pointer reached at the end of file.
+
+
+ - Method on `File': flock (OPERATION)
+     Applys or removes an advisory lock on the file.  `flock()'
+     returns false if `LOCK_NB' supplied as the operation and the
+     call would block.  Valid operations are given below:
+
+    `LOCK_SH'
+          Shared lock.  More than one process may hold a shared lock
+          for a given file at a given time.
+
+    `LOCK_EX'
+          Exclusive lock.  Only one process may hold an exclusive
+          lock for a given file at a given time.
+
+    `LOCK_UN'
+          Unlock.
+
+    `LOCK_NB'
+          Don't block when locking.  May be specified (by or'ing)
+          along with one of the other operations.
+
+     These constants are defined under the class `File'.
+
+
+ - Method on `File': lstat
+     Does the same thing as the `stat' (*note File::), but stats a
+     symbolic link instead of the file the symbolic link points to.
+
+
+ - Method on `File': mtime
+     Returns the last modified time of the file.
+
+
+ - Method on `File': reopen (IO)
+     Reconnect `self' to IO.  It also changes the class of the stream.
+
+
+ - Method on `File': reopen (PATH, MODE)
+     Opens and reconnects the file specified by PATH, with MODE.
+
+
+ - Method on `File': path
+     Returns pathname of the opened file.
+
+
+ - Method on `File': stat
+     Returns the status info of the file in the `Stat' structure
+     (*note Struct::).
+
+
+ - Method on `File': truncate (LENGTH)
+     truncate the file to at most LENGTH byte.  The file must be
+     opened in the write mode.
+
+
+Constants:
+..........
+
+ - Class Constant of `File': Separator
+     The separating character of the file path, which is normally
+     `"/"'.
+
+
+File: ruby.info,  Node: MatchingData,  Next: Module,  Prev: File,  Up: Pre-defined classes and modules
+
+MatchingData
+------------
+
+   The status of the regular expression match.  The value of the
+variable `$~' (*note Pre-defined variables and constants::) is the
+instance of this class.
+
+SuperClass:
+...........
+
+   - `Object' (*note Object::)
+
+Methods:
+........
+
+ - Method on `MatchingData': size
+ - Method on `MatchingData': length
+     Returns the number of the subpatterns (i.e. $~.to_a.size).
+
+
+ - Method on `MatchingData': offset (N)
+     Returns the offsets ([start, end]) of the nth subpattern.  0
+     means the whole match.
+
+
+ - Method on `MatchingData': begin (N)
+     Returns the starting offset of the nth match.  0 means the whole
+     match.
+
+
+ - Method on `MatchingData': end (N)
+     Returns the end offset of the nth match.  0 means the whole
+     match.
+
+
+ - Method on `MatchingData': to_a
+     Returns the array of the subpatterns, which is [$&, $1, $2,...].
+
+
+ - Method on `MatchingData': self [N]
+     Returns the nth subpattern.
+
+
+ - Method on `MatchingData': pre_match
+     Returns the string preceding the match (i.e. $`).
+
+
+ - Method on `MatchingData': post_match
+     Returns the string following the match (i.e. $').
+
+
+ - Method on `MatchingData': string
+     Returns the string where the match was performed.
+

@@ -1,0 +1,856 @@
+This is ruby.info, produced by makeinfo version 4.0 from Ruby.texi.
+
+INFO-DIR-SECTION Programming Languages
+START-INFO-DIR-ENTRY
+* ruby: (ruby).                 Ruby Language Reference Manual (English)
+END-INFO-DIR-ENTRY
+
+     This Info file was converted from the Ruby Language Reference
+     Manual (HTML), automatically.
+
+     The original HTML document is below.
+
+     <http://www.ruby-lang.org/en/man-1.4/>
+     for `Ruby' Version 1.4.6
+     written by Yukihiro Matsumoto <matz@zetabits.com>
+     Last modified: Mon Feb 23 16:01:41 1998
+
+     So, this document is matz's, too.
+
+
+File: ruby.info,  Node: glossary_N,  Next: glossary_O,  Prev: glossary_M,  Up: Ruby Glossary
+
+N
+=
+
+
+File: ruby.info,  Node: glossary_O,  Next: glossary_P,  Prev: glossary_N,  Up: Ruby Glossary
+
+O
+=
+
+
+File: ruby.info,  Node: glossary_P,  Next: glossary_Q,  Prev: glossary_O,  Up: Ruby Glossary
+
+P
+=
+
+   - Perl
+
+     Hmm.. Sounds familiar.  What's that?
+
+
+
+File: ruby.info,  Node: glossary_Q,  Next: glossary_R,  Prev: glossary_P,  Up: Ruby Glossary
+
+Q
+=
+
+
+File: ruby.info,  Node: glossary_R,  Next: glossary_S,  Prev: glossary_Q,  Up: Ruby Glossary
+
+R
+=
+
+   - Ruby
+
+     The name of the object-oriented script language and its
+     interpreter.  The name `ruby' is not an acronym.  It's named
+     after the red precious stone, which is the birthsone of July.
+     Notice pearl(Perl) is the birthstone of June.
+
+
+
+File: ruby.info,  Node: glossary_S,  Next: glossary_T,  Prev: glossary_R,  Up: Ruby Glossary
+
+S
+=
+
+
+File: ruby.info,  Node: glossary_T,  Next: glossary_U,  Prev: glossary_S,  Up: Ruby Glossary
+
+T
+=
+
+
+File: ruby.info,  Node: glossary_U,  Next: glossary_V,  Prev: glossary_T,  Up: Ruby Glossary
+
+U
+=
+
+
+File: ruby.info,  Node: glossary_V,  Next: glossary_W,  Prev: glossary_U,  Up: Ruby Glossary
+
+V
+=
+
+
+File: ruby.info,  Node: glossary_W,  Next: glossary_X,  Prev: glossary_V,  Up: Ruby Glossary
+
+W
+=
+
+
+File: ruby.info,  Node: glossary_X,  Next: glossary_Y,  Prev: glossary_W,  Up: Ruby Glossary
+
+X
+=
+
+
+File: ruby.info,  Node: glossary_Y,  Next: glossary_Z,  Prev: glossary_X,  Up: Ruby Glossary
+
+Y
+=
+
+
+File: ruby.info,  Node: glossary_Z,  Prev: glossary_Y,  Up: Ruby Glossary
+
+Z
+=
+
+
+File: ruby.info,  Node: Variable Index,  Next: Function Index,  Prev: Ruby Glossary,  Up: Top
+
+Variable Index
+**************
+
+* Menu:
+
+* $:                                     variables.
+* $!:                                    variables.
+* $":                                    variables.
+* $$:                                    variables.
+* $&:                                    variables.
+* $':                                    variables.
+* $*:                                    variables.
+* $+:                                    variables.
+* $,:                                    variables.
+* $-0:                                   variables.
+* $-a:                                   variables.
+* $-d:                                   variables.
+* $-F:                                   variables.
+* $-I:                                   variables.
+* $-i:                                   variables.
+* $-l:                                   variables.
+* $-p:                                   variables.
+* $-v:                                   variables.
+* $.:                                    variables.
+* $/:                                    variables.
+* $0:                                    variables.
+* $1,:                                   variables.
+* $::                                    variables.
+* $;:                                    variables.
+* $<:                                    variables.
+* $=:                                    variables.
+* $>:                                    variables.
+* $?:                                    variables.
+* $\:                                    variables.
+* $_:                                    variables.
+* $`:                                    variables.
+* $DEBUG:                                variables.
+* $FILENAME:                             variables.
+* $LOAD_PATH:                            variables.
+* $stderr:                               variables.
+* $stdin:                                variables.
+* $stdout:                               variables.
+* $VERBOSE:                              variables.
+* $~:                                    variables.
+* ARGF:                                  constants.
+* ARGV:                                  constants.
+* DATA:                                  constants.
+* E <1>:                                 Math.
+* E:                                     Errno__E*.
+* ENV:                                   constants.
+* FALSE:                                 constants.
+* NIL:                                   constants.
+* PI:                                    Math.
+* PRIO_PGRP:                             Process.
+* PRIO_PROCESS:                          Process.
+* PRIO_USER:                             Process.
+* RUBY_PLATFORM:                         constants.
+* RUBY_RELEASE_DATE:                     constants.
+* Separator:                             File.
+* STDERR:                                constants.
+* STDIN:                                 constants.
+* STDOUT:                                constants.
+* TRUE:                                  constants.
+* VERSION:                               constants.
+* WNOHANG:                               Process.
+* WUNTRACED:                             Process.
+
+
+File: ruby.info,  Node: Function Index,  Prev: Variable Index,  Up: Top
+
+Function Index
+**************
+
+* Menu:
+
+* + on Numeric:                          Numeric.
+* - on Numeric:                          Numeric.
+* << on String:                          String.
+* [ on Struct:                           Struct.
+* `:                                     Ruby Functions.
+* abort_on_exception on Thread:          Thread.
+* abs on Numeric:                        Numeric.
+* accept on Socket:                      Socket.
+* accept on TCPServer:                   TCPServer.
+* accept on UNIXServer:                  UNIXServer.
+* add_finalizer on ObjectSpace:          ObjectSpace.
+* addr on IPSocket:                      IPSocket.
+* addr on UNIXSocket:                    UNIXSocket.
+* alias_method on Module:                Module.
+* alive? on Thread:                      Thread.
+* ancestors on Class:                    Class.
+* ancestors on Module:                   Module.
+* append_features on Module:             Module.
+* Array:                                 Ruby Functions.
+* Array on Array:                        Array.
+* asctime on Time:                       Time.
+* assoc on Array:                        Array.
+* at on Time:                            Time.
+* at_exit:                               Ruby Functions.
+* atan2 on Math:                         Math.
+* atime on File:                         File.
+* attr on Module:                        Module.
+* attr_accessor on Module:               Module.
+* attr_reader on Module:                 Module.
+* attr_writer on Module:                 Module.
+* autoload:                              Ruby Functions.
+* backtrace on Exception:                Exception.
+* basename on File:                      File.
+* begin on MatchingData:                 MatchingData.
+* begin on Range:                        Range.
+* between? on Comparable:                Comparable.
+* bind on Socket:                        Socket.
+* bind on UDPSocket:                     UDPSocket.
+* binding:                               Ruby Functions.
+* binmode on IO:                         IO.
+* blockdev? on FileTest:                 FileTest.
+* call on Proc:                          Proc.
+* call_finalizer on ObjectSpace:         ObjectSpace.
+* caller:                                Ruby Functions.
+* capitalize on String:                  String.
+* capitalize! on String:                 String.
+* casefold? on Regexp:                   Regexp.
+* catch:                                 Ruby Functions.
+* ceil on Float:                         Float.
+* center on String:                      String.
+* chardev? on FileTest:                  FileTest.
+* chdir on Dir:                          Dir.
+* chmod on File:                         File.
+* chomp:                                 Ruby Functions.
+* chomp on String:                       String.
+* chomp!:                                Ruby Functions.
+* chomp! on String:                      String.
+* chop:                                  Ruby Functions.
+* chop on String:                        String.
+* chop!:                                 Ruby Functions.
+* chop! on String:                       String.
+* chown on File:                         File.
+* chr on Integer:                        Integer.
+* chr on Numeric:                        Numeric.
+* chroot on Dir:                         Dir.
+* class_eval on Module:                  Module.
+* clear on Array:                        Array.
+* clear on DBM:                          DBM.
+* clear on Hash:                         Hash.
+* clone on Array:                        Array.
+* clone on Object:                       Object.
+* clone on String:                       String.
+* close on DBM:                          DBM.
+* close on Dir:                          Dir.
+* close on IO:                           IO.
+* closed? on IO:                         IO.
+* coerce on Numeric:                     Numeric.
+* collect on Enumerable:                 Enumerable.
+* compact on Array:                      Array.
+* compact! on Array:                     Array.
+* compile on Regexp:                     Regexp.
+* concat on Array:                       Array.
+* concat on String:                      String.
+* connect on Socket:                     Socket.
+* connect on UDPSocket:                  UDPSocket.
+* const_get on Module:                   Module.
+* const_set on Module:                   Module.
+* constants on Module:                   Module.
+* cos on Math:                           Math.
+* crypt on String:                       String.
+* ctime on File:                         File.
+* ctime on Time:                         Time.
+* current on Thread:                     Thread.
+* day on Time:                           Time.
+* default on Hash:                       Hash.
+* delete on Array:                       Array.
+* delete on DBM:                         DBM.
+* delete on Dir:                         Dir.
+* delete on ENV:                         ENV.
+* delete on File:                        File.
+* delete on Hash:                        Hash.
+* delete on String:                      String.
+* delete! on String:                     String.
+* delete_at on Array:                    Array.
+* delete_if on Array:                    Array.
+* delete_if on DBM:                      DBM.
+* delete_if on ENV:                      ENV.
+* delete_if on Hash:                     Hash.
+* detect on Enumerable:                  Enumerable.
+* directory? on FileTest:                FileTest.
+* dirname on File:                       File.
+* disable on GC:                         GC.
+* display on Object:                     Object.
+* divmod on Bignum:                      Bignum.
+* divmod on Numeric:                     Numeric.
+* downcase on String:                    String.
+* downcase! on String:                   String.
+* downto on Integer:                     Integer.
+* dump on Marshal:                       Marshal.
+* dump on String:                        String.
+* dup on Array:                          Array.
+* dup on Hash:                           Hash.
+* dup on Object:                         Object.
+* dup on String:                         String.
+* each on Array:                         Array.
+* each on DBM:                           DBM.
+* each on Dir:                           Dir.
+* each on ENV:                           ENV.
+* each on Hash:                          Hash.
+* each on IO:                            IO.
+* each on Range:                         Range.
+* each on String:                        String.
+* each on Struct:                        Struct.
+* each_byte on IO:                       IO.
+* each_byte on String:                   String.
+* each_index on Array:                   Array.
+* each_key on DBM:                       DBM.
+* each_key on ENV:                       ENV.
+* each_key on Hash:                      Hash.
+* each_line on IO:                       IO.
+* each_line on String:                   String.
+* each_object on ObjectSpace:            ObjectSpace.
+* each_pair on ENV:                      ENV.
+* each_pair on Hash:                     Hash.
+* each_value on DBM:                     DBM.
+* each_value on ENV:                     ENV.
+* each_value on Hash:                    Hash.
+* each_with_index on Enumerable:         Enumerable.
+* egid on Process:                       Process.
+* empty? on Array:                       Array.
+* empty? on DBM:                         DBM.
+* empty? on ENV:                         ENV.
+* empty? on Hash:                        Hash.
+* empty? on Queue:                       Queue.
+* empty? on String:                      String.
+* enable on GC:                          GC.
+* end on MatchingData:                   MatchingData.
+* end on Range:                          Range.
+* entries on Enumerable:                 Enumerable.
+* eof on File:                           File.
+* eof on IO:                             IO.
+* eof? on File:                          File.
+* eof? on IO:                            IO.
+* eql? on Object:                        Object.
+* equal? on Object:                      Object.
+* errno on SystemCallError:              SystemCallError.
+* euid on Process:                       Process.
+* eval:                                  Ruby Functions.
+* exception on Exception:                Exception.
+* exclude_end? on Range:                 Range.
+* exec:                                  Ruby Functions.
+* executable? on FileTest:               FileTest.
+* executable_real? on FileTest:          FileTest.
+* exist? on FileTest:                    FileTest.
+* exit:                                  Ruby Functions.
+* exit on Thread:                        Thread.
+* exit!:                                 Ruby Functions.
+* exp on Math:                           Math.
+* expand_path on File:                   File.
+* extend on Object:                      Object.
+* extend_object on Module:               Module.
+* fail:                                  Ruby Functions.
+* fcntl on IO:                           IO.
+* fetch on Hash:                         Hash.
+* file? on FileTest:                     FileTest.
+* fileno on IO:                          IO.
+* fill on Array:                         Array.
+* filter on Array:                       Array.
+* finalizers on ObjectSpace:             ObjectSpace.
+* find on Enumerable:                    Enumerable.
+* find_all on Enumerable:                Enumerable.
+* first on Range:                        Range.
+* flatten on Array:                      Array.
+* flatten! on Array:                     Array.
+* Float:                                 Ruby Functions.
+* flock on File:                         File.
+* floor on Float:                        Float.
+* flush on IO:                           IO.
+* for_fd on Socket:                      Socket.
+* foreach on Dir:                        Dir.
+* foreach on IO:                         IO.
+* fork:                                  Ruby Functions.
+* fork on Thread:                        Thread.
+* format:                                Ruby Functions.
+* freeze on Array:                       Array.
+* freeze on Hash:                        Hash.
+* freeze on String:                      String.
+* frexp on Math:                         Math.
+* frozen on Array:                       Array.
+* frozen on Hash:                        Hash.
+* frozen? on String:                     String.
+* ftype on File:                         File.
+* garbage_collect on GC:                 GC.
+* garbage_collect on ObjectSpace:        ObjectSpace.
+* getaddress on IPSocket:                IPSocket.
+* getc on IO:                            IO.
+* gethostbyaddr on Socket:               Socket.
+* gethostbyname on Socket:               Socket.
+* gethostbyname on TCPSocket:            TCPSocket.
+* getpeername on BasicSocket:            BasicSocket.
+* getpgrp on Process:                    Process.
+* getpriority on Process:                Process.
+* gets:                                  Ruby Functions.
+* gets on IO:                            IO.
+* getservbyname on Socket:               Socket.
+* getsockname on BasicSocket:            BasicSocket.
+* getsockopt on BasicSocket:             BasicSocket.
+* getwd on Dir:                          Dir.
+* gid on Process:                        Process.
+* glob on Dir:                           Dir.
+* global_variables:                      Ruby Functions.
+* gm on Time:                            Time.
+* gmtime on Time:                        Time.
+* grep on Enumerable:                    Enumerable.
+* grpowned? on FileTest:                 FileTest.
+* gsub:                                  Ruby Functions.
+* gsub on String:                        String.
+* gsub!:                                 Ruby Functions.
+* gsub! on String:                       String.
+* has_key? on DBM:                       DBM.
+* has_key? on ENV:                       ENV.
+* has_key? on Hash:                      Hash.
+* has_value? on DBM:                     DBM.
+* has_value? on ENV:                     ENV.
+* has_value? on Hash:                    Hash.
+* Hash on Hash:                          Hash.
+* hash on Object:                        Object.
+* hex on String:                         String.
+* hour on Time:                          Time.
+* id on Object:                          Object.
+* id2name on Fixnum:                     Fixnum.
+* include on Module:                     Module.
+* include? on Array:                     Array.
+* include? on DBM:                       DBM.
+* include? on Enumerable:                Enumerable.
+* include? on ENV:                       ENV.
+* include? on Hash:                      Hash.
+* included_modules on Module:            Module.
+* index on Array:                        Array.
+* index on Enumerable:                   Enumerable.
+* index on Hash:                         Hash.
+* index on String:                       String.
+* indexes on Array:                      Array.
+* indexes on DBM:                        DBM.
+* indexes on ENV:                        ENV.
+* indexes on Hash:                       Hash.
+* indices on Array:                      Array.
+* indices on DBM:                        DBM.
+* indices on Hash:                       Hash.
+* induced_from on Float:                 Float.
+* induced_from on Integer:               Integer.
+* induced_from on Precision:             Precision.
+* inherited on Class:                    Class.
+* initialize on Object:                  Object.
+* inspect on Object:                     Object.
+* instance_eval on Object:               Object.
+* instance_methods on Module:            Module.
+* instance_of? on Object:                Object.
+* instance_variables on Object:          Object.
+* Integer:                               Ruby Functions.
+* integer? on Integer:                   Integer.
+* integer? on Numeric:                   Numeric.
+* intern on String:                      String.
+* invert on Hash:                        Hash.
+* ioctl on IO:                           IO.
+* is_a? on Object:                       Object.
+* isatty on IO:                          IO.
+* isdst on Time:                         Time.
+* iterator?:                             Ruby Functions.
+* join on Array:                         Array.
+* join on File:                          File.
+* join on Thread:                        Thread.
+* key? on DBM:                           DBM.
+* key? on ENV:                           ENV.
+* key? on Hash:                          Hash.
+* keys on DBM:                           DBM.
+* keys on ENV:                           ENV.
+* keys on Hash:                          Hash.
+* kill on Process:                       Process.
+* kill on Thread:                        Thread.
+* kind_of? on Object:                    Object.
+* lambda:                                Ruby Functions.
+* last on Range:                         Range.
+* ldexp on Math:                         Math.
+* length on Array:                       Array.
+* length on DBM:                         DBM.
+* length on Enumerable:                  Enumerable.
+* length on ENV:                         ENV.
+* length on Hash:                        Hash.
+* length on MatchingData:                MatchingData.
+* length on Queue:                       Queue.
+* length on Range:                       Range.
+* length on String:                      String.
+* lineno on IO:                          IO.
+* link on File:                          File.
+* listen on Socket:                      Socket.
+* ljust on String:                       String.
+* load:                                  Ruby Functions.
+* load on Marshal:                       Marshal.
+* local on Time:                         Time.
+* local_variables:                       Ruby Functions.
+* localtime on Time:                     Time.
+* lock on Mutex:                         Mutex.
+* locked? on Mutex:                      Mutex.
+* log on Math:                           Math.
+* log10 on Math:                         Math.
+* loop:                                  Ruby Functions.
+* lstat on File:                         File.
+* max on Enumerable:                     Enumerable.
+* mday on Time:                          Time.
+* member? on Enumerable:                 Enumerable.
+* members on Struct:                     Struct.
+* message on Exception:                  Exception.
+* method_added on Module:                Module.
+* method_defined? on Class:              Class.
+* method_defined? on Module:             Module.
+* method_missing on Object:              Object.
+* methods on Object:                     Object.
+* min on Enumerable:                     Enumerable.
+* min on Time:                           Time.
+* mkdir on Dir:                          Dir.
+* mktime on Time:                        Time.
+* module_eval on Module:                 Module.
+* module_function on Module:             Module.
+* mon on Time:                           Time.
+* month on Time:                         Time.
+* mtime on File:                         File.
+* name on Class:                         Class.
+* name on Module:                        Module.
+* nesting on Module:                     Module.
+* new on Array:                          Array.
+* new on Class:                          Class.
+* new on Exception:                      Exception.
+* new on File:                           File.
+* new on Hash:                           Hash.
+* new on IO:                             IO.
+* new on Module:                         Module.
+* new on Mutex:                          Mutex.
+* new on Proc:                           Proc.
+* new on Queue:                          Queue.
+* new on Range:                          Range.
+* new on Regexp:                         Regexp.
+* new on Socket:                         Socket.
+* new on String:                         String.
+* new on Struct:                         Struct.
+* new on TCPServer:                      TCPServer.
+* new on TCPSocket:                      TCPSocket.
+* new on Thread:                         Thread.
+* new on UDPSocket:                      UDPSocket.
+* new on UNIXSocket:                     UNIXSocket.
+* nil? on Object:                        Object.
+* nitems on Array:                       Array.
+* nonzero? on Numeric:                   Numeric.
+* now on Time:                           Time.
+* oct on String:                         String.
+* offset on MatchingData:                MatchingData.
+* open:                                  Ruby Functions.
+* open on DBM:                           DBM.
+* open on Dir:                           Dir.
+* open on File:                          File.
+* open on Socket:                        Socket.
+* open on TCPServer:                     TCPServer.
+* open on TCPSocket:                     TCPSocket.
+* open on UDPSocket:                     UDPSocket.
+* open on UNIXSocket:                    UNIXSocket.
+* owned? on FileTest:                    FileTest.
+* p:                                     Ruby Functions.
+* pack on Array:                         Array.
+* pair on Socket:                        Socket.
+* pass on Thread:                        Thread.
+* path on File:                          File.
+* path on UNIXSocket:                    UNIXSocket.
+* peeraddr on IPSocket:                  IPSocket.
+* peeraddr on UNIXSocket:                UNIXSocket.
+* pid on Process:                        Process.
+* pipe on IO:                            IO.
+* pipe? on FileTest:                     FileTest.
+* pop on Array:                          Array.
+* pop on Queue:                          Queue.
+* popen on IO:                           IO.
+* pos on IO:                             IO.
+* post_match on MatchingData:            MatchingData.
+* ppid on Process:                       Process.
+* pre_match on MatchingData:             MatchingData.
+* prec on Precision:                     Precision.
+* prec_f on Precision:                   Precision.
+* prec_i on Precision:                   Precision.
+* print:                                 Ruby Functions.
+* print on IO:                           IO.
+* printf:                                Ruby Functions.
+* printf on IO:                          IO.
+* private on Module:                     Module.
+* private_class_method on Module:        Module.
+* private_instance_methods on Module:    Module.
+* private_methods on Object:             Object.
+* proc:                                  Ruby Functions.
+* protected on Module:                   Module.
+* public on Module:                      Module.
+* public_class_method on Module:         Module.
+* push on Array:                         Array.
+* push on Queue:                         Queue.
+* putc:                                  Ruby Functions.
+* putc on IO:                            IO.
+* puts on IO:                            IO.
+* pwd on Dir:                            Dir.
+* quote on Regexp:                       Regexp.
+* raise:                                 Ruby Functions.
+* raise on Thread:                       Thread.
+* rand:                                  Ruby Functions.
+* rassoc on Array:                       Array.
+* read on Dir:                           Dir.
+* read on IO:                            IO.
+* readable? on FileTest:                 FileTest.
+* readable_real? on FileTest:            FileTest.
+* readchar on IO:                        IO.
+* readline:                              Ruby Functions.
+* readline on IO:                        IO.
+* readlines:                             Ruby Functions.
+* readlines on IO:                       IO.
+* readlink on File:                      File.
+* recv on BasicSocket:                   BasicSocket.
+* recvfrom on Socket:                    Socket.
+* recvfrom on TCPSocket:                 TCPSocket.
+* recvfrom on UDPSocket:                 UDPSocket.
+* recvfrom on UNIXSocket:                UNIXSocket.
+* reject on Enumerable:                  Enumerable.
+* reject! on Array:                      Array.
+* reject! on ENV:                        ENV.
+* reject! on Hash:                       Hash.
+* remainder on Fixnum:                   Fixnum.
+* remove_const on Module:                Module.
+* remove_finalizer on ObjectSpace:       ObjectSpace.
+* remove_instance_variable on Object:    Object.
+* remove_method on Module:               Module.
+* rename on File:                        File.
+* reopen on File:                        File.
+* reopen on IO:                          IO.
+* replace on Array:                      Array.
+* replace on Hash:                       Hash.
+* replace on String:                     String.
+* require:                               Ruby Functions.
+* respond_to? on Object:                 Object.
+* reverse on Array:                      Array.
+* reverse on String:                     String.
+* reverse! on Array:                     Array.
+* reverse! on String:                    String.
+* reverse_each on Array:                 Array.
+* rewind on Dir:                         Dir.
+* rewind on IO:                          IO.
+* rindex on Array:                       Array.
+* rindex on String:                      String.
+* rjust on String:                       String.
+* rmdir on Dir:                          Dir.
+* round on Float:                        Float.
+* run on Thread:                         Thread.
+* scan on String:                        String.
+* sec on Time:                           Time.
+* seek on Dir:                           Dir.
+* seek on IO:                            IO.
+* select:                                Ruby Functions.
+* select on Enumerable:                  Enumerable.
+* select on IO:                          IO.
+* self on Array:                         Array.
+* self on Bignum:                        Bignum.
+* self on Comparable:                    Comparable.
+* self on DBM:                           DBM.
+* self on Dir:                           Dir.
+* self on ENV:                           ENV.
+* self on Fixnum:                        Fixnum.
+* self on Float:                         Float.
+* self on Hash:                          Hash.
+* self on Integer:                       Integer.
+* self on IO:                            IO.
+* self on MatchingData:                  MatchingData.
+* self on Module:                        Module.
+* self on Numeric:                       Numeric.
+* self on Object:                        Object.
+* self on Proc:                          Proc.
+* self on Range:                         Range.
+* self on Regexp:                        Regexp.
+* self on String:                        String.
+* self on Struct:                        Struct.
+* self on Thread:                        Thread.
+* self on Time:                          Time.
+* send on BasicSocket:                   BasicSocket.
+* send on Object:                        Object.
+* send on UDPSocket:                     UDPSocket.
+* set_backtrace on Exception:            Exception.
+* setgid? on FileTest:                   FileTest.
+* setpgrp on Process:                    Process.
+* setpriority on Process:                Process.
+* setsid on Process:                     Process.
+* setsockopt on BasicSocket:             BasicSocket.
+* setuid? on FileTest:                   FileTest.
+* shift on Array:                        Array.
+* shift on DBM:                          DBM.
+* shift on Hash:                         Hash.
+* shutdown on BasicSocket:               BasicSocket.
+* sin on Math:                           Math.
+* singleton_method_added on Object:      Object.
+* singleton_methods on Object:           Object.
+* size on Array:                         Array.
+* size on DBM:                           DBM.
+* size on Enumerable:                    Enumerable.
+* size on ENV:                           ENV.
+* size on File:                          File.
+* size on Hash:                          Hash.
+* size on Integer:                       Integer.
+* size on MatchingData:                  MatchingData.
+* size on Range:                         Range.
+* size on String:                        String.
+* size? on FileTest:                     FileTest.
+* sleep:                                 Ruby Functions.
+* socket? on FileTest:                   FileTest.
+* socketpair on Socket:                  Socket.
+* sort on Array:                         Array.
+* sort on Enumerable:                    Enumerable.
+* sort! on Array:                        Array.
+* source on Regexp:                      Regexp.
+* split:                                 Ruby Functions.
+* split on File:                         File.
+* split on String:                       String.
+* sprintf:                               Ruby Functions.
+* sqrt on Math:                          Math.
+* squeeze on String:                     String.
+* squeeze! on String:                    String.
+* srand:                                 Ruby Functions.
+* start on GC:                           GC.
+* start on Thread:                       Thread.
+* stat on File:                          File.
+* stat on IO:                            IO.
+* status on Thread:                      Thread.
+* step on Integer:                       Integer.
+* sticky? on FileTest:                   FileTest.
+* stop on Thread:                        Thread.
+* stop? on Thread:                       Thread.
+* store on Hash:                         Hash.
+* strftime on Time:                      Time.
+* String:                                Ruby Functions.
+* string on MatchingData:                MatchingData.
+* strip on String:                       String.
+* strip! on String:                      String.
+* sub:                                   Ruby Functions.
+* sub on String:                         String.
+* sub!:                                  Ruby Functions.
+* sub! on String:                        String.
+* succ on Integer:                       Integer.
+* succ on String:                        String.
+* succ! on String:                       String.
+* sum on String:                         String.
+* superclass on Class:                   Class.
+* swapcase on String:                    String.
+* swapcase! on String:                   String.
+* symlink on File:                       File.
+* symlink? on FileTest:                  FileTest.
+* sync on IO:                            IO.
+* synchronize on Mutex:                  Mutex.
+* syscall:                               Ruby Functions.
+* sysread on IO:                         IO.
+* system:                                Ruby Functions.
+* syswrite on IO:                        IO.
+* taint on Object:                       Object.
+* tainted? on Object:                    Object.
+* tan on Math:                           Math.
+* tell on Dir:                           Dir.
+* tell on IO:                            IO.
+* test:                                  Ruby Functions.
+* throw:                                 Ruby Functions.
+* times on Integer:                      Integer.
+* times on Time:                         Time.
+* to_a on Enumerable:                    Enumerable.
+* to_a on ENV:                           ENV.
+* to_a on Hash:                          Hash.
+* to_a on MatchingData:                  MatchingData.
+* to_a on Object:                        Object.
+* to_a on Struct:                        Struct.
+* to_a on Time:                          Time.
+* to_f on Float:                         Float.
+* to_f on Numeric:                       Numeric.
+* to_f on String:                        String.
+* to_f on Time:                          Time.
+* to_i on Integer:                       Integer.
+* to_i on IO:                            IO.
+* to_i on Numeric:                       Numeric.
+* to_i on String:                        String.
+* to_i on Time:                          Time.
+* to_s on Exception:                     Exception.
+* to_s on Object:                        Object.
+* to_s on Time:                          Time.
+* to_str on Exception:                   Exception.
+* tr on String:                          String.
+* tr! on String:                         String.
+* tr_s on String:                        String.
+* tr_s! on String:                       String.
+* trace_var:                             Ruby Functions.
+* trap:                                  Ruby Functions.
+* truncate on File:                      File.
+* try_lock on Mutex:                     Mutex.
+* tty? on IO:                            IO.
+* tv_sec on Time:                        Time.
+* tv_usec on Time:                       Time.
+* type on Object:                        Object.
+* uid on Process:                        Process.
+* umask on File:                         File.
+* undef_method on Module:                Module.
+* ungetc on IO:                          IO.
+* uniq on Array:                         Array.
+* uniq! on Array:                        Array.
+* unlink on Dir:                         Dir.
+* unlink on File:                        File.
+* unlock on Mutex:                       Mutex.
+* unpack on String:                      String.
+* unshift on Array:                      Array.
+* untaint on Object:                     Object.
+* untrace_var:                           Ruby Functions.
+* upcase on String:                      String.
+* upcase! on String:                     String.
+* update on Hash:                        Hash.
+* upto on Integer:                       Integer.
+* upto on String:                        String.
+* usec on Time:                          Time.
+* utime on File:                         File.
+* value on Thread:                       Thread.
+* value? on DBM:                         DBM.
+* value? on ENV:                         ENV.
+* value? on Hash:                        Hash.
+* values on DBM:                         DBM.
+* values on ENV:                         ENV.
+* values on Hash:                        Hash.
+* values on Struct:                      Struct.
+* wait on Process:                       Process.
+* waitpid on Process:                    Process.
+* wakeup on Thread:                      Thread.
+* wday on Time:                          Time.
+* writable? on FileTest:                 FileTest.
+* writable_real? on FileTest:            FileTest.
+* write on IO:                           IO.
+* yday on Time:                          Time.
+* year on Time:                          Time.
+* zero? on FileTest:                     FileTest.
+* zero? on Numeric:                      Numeric.
+* zone on Time:                          Time.
+* ~ on Bignum:                           Bignum.
+* ~ on Fixnum:                           Fixnum.
+* ~ on Regexp:                           Regexp.
+* ~ on String:                           String.
+
+

@@ -1,0 +1,74 @@
+                == F# mode for Emacs ==
+
+
+
+This is the first release of this fsharp-mode. It contains bugs,
+but I hope it will be useful to some people (actually, it is at
+least for me). The code is messy. I'm sorry, I've merged and patched
+OCaml-mode and Python-mode together.
+
+
+ 1) Installation
+
+
+I have the following lines in my .emacs file.
+Just copy them and adapt values, it should work.
+
+(setq load-path (cons "~/.emacs.d/fsharp" load-path))
+(setq auto-mode-alist
+      (cons '("\\.fs[iylx]?$" . fsharp-mode) auto-mode-alist))
+(autoload 'fsharp-mode "fsharp" "Major mode for editing F# code." t)
+(autoload 'run-fsharp "inf-fsharp" "Run an inferior F# process." t)
+
+
+To set the path to te compiler and the interactive mode, you
+can use this:
+
+(setq inferior-fsharp-program "c:\\pathto\\fsi.exe\"")
+(setq fsharp-compiler "\"c:\\pathto\\fsc.exe\"")
+
+
+ 2) Features
+
+- Interactive F# buffer
+- Indentation
+- Syntax highlighter
+
+
+ 3) Bindings
+
+
+Here are a few useful bindings:
+
+- C-c C-r       Evaluate region
+- C-c C-e       Evaluate current toplevel phrase
+- C-M-x         Evaluate current toplevel phrase
+- C-M-h         Mark current toplevel phrase
+- C-c C-s       Show interactive buffer
+- C-c C-c       Compile with fsc
+- C-c C-a       Open alternate file (.fsi or .fs)
+- C-c l         Shift region to left
+- C-c r         Shift region to right
+
+
+
+Known bugs:
+ - there are problems with paths with a space. You can add fsc to the
+path and call "fsc.exe". Or create a .bat/.sh script file to call
+the real file. Or fix the bug and send me the patch. :)
+
+
+If you have problems with installation, please ask me.
+
+Please don't report bugs!
+Please fix them!
+
+Please don't send feature requests!
+Please send patches!
+
+
+If you can help, feel contact me (laurentlb [at] le-brun.eu)
+
+
+-- 
+ Laurent.

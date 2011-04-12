@@ -1,0 +1,1872 @@
+This is ruby.info, produced by makeinfo version 4.0 from Ruby.texi.
+
+INFO-DIR-SECTION Programming Languages
+START-INFO-DIR-ENTRY
+* ruby: (ruby).                 Ruby Language Reference Manual (English)
+END-INFO-DIR-ENTRY
+
+     This Info file was converted from the Ruby Language Reference
+     Manual (HTML), automatically.
+
+     The original HTML document is below.
+
+     <http://www.ruby-lang.org/en/man-1.4/>
+     for `Ruby' Version 1.4.6
+     written by Yukihiro Matsumoto <matz@zetabits.com>
+     Last modified: Mon Feb 23 16:01:41 1998
+
+     So, this document is matz's, too.
+
+
+File: ruby.info,  Node: FileTest,  Next: GC,  Prev: Enumerable,  Up: Pre-defined classes and modules
+
+FileTest
+--------
+
+   `FileTest' is the collection of the file test functions.  It can
+be used for inclusion.
+
+Module Functions:
+.................
+
+ - Module Function on `FileTest': blockdev? (FILE)
+     Returns true if the file specified by the FILE is the block
+     special file.
+
+
+ - Module Function on `FileTest': chardev? (FILE)
+     Returns true if the file specified by the FILE is the character
+     special file.
+
+
+ - Module Function on `FileTest': executable? (FILENAME)
+     Returns true if the file specified by the FILENAME is executable
+     by the effective user/group id.
+
+
+ - Module Function on `FileTest': executable_real? (FILENAME)
+     Returns true if the file specified by the FILENAME is executable
+     by the real user/group id.
+
+
+ - Module Function on `FileTest': exist? (FILE)
+     Returns true if the file specified by the FILE exists.
+
+
+ - Module Function on `FileTest': grpowned? (FILE)
+     Returns true if the file specified by the FILE has gid of
+     effective group.
+
+
+ - Module Function on `FileTest': directory? (FILE)
+     Returns true if the file specified by the FILE is a directory.
+
+
+ - Module Function on `FileTest': file? (FILE)
+     Returns true if the file specified by the FILE is a regular file.
+
+
+ - Module Function on `FileTest': pipe? (FILE)
+     Returns true if the file specified by the FILE is a named pipe
+     (FIFO).
+
+
+ - Module Function on `FileTest': socket? (FILE)
+     Returns true if the file specified by the FILE is a socket.
+
+
+ - Module Function on `FileTest': owned? (FILE)
+     Returns true if the file specified by the FILE is owned by you.
+
+
+ - Module Function on `FileTest': readable? (FILENAME)
+     Returns true if the file specified by the FILENAME is readable
+     by you.
+
+
+ - Module Function on `FileTest': readable_real? (FILENAME)
+     Returns true if the file specified by the FILENAME is readable
+     by your real uid/gid.
+
+
+ - Module Function on `FileTest': setuid? (FILE)
+     Returns true if the setuid bit of the file specified by the FILE
+     is set.
+
+
+ - Module Function on `FileTest': setgid? (FILE)
+     Returns true if the setgid bit of the file specified by the FILE
+     is set.
+
+
+ - Module Function on `FileTest': size? (FILE)
+     Returns the size of the file specified by the FILE.  Returns
+     `nil' if it does not exist or is empty.
+
+
+ - Module Function on `FileTest': sticky? (FILE)
+     Returns true if the sticky bit of the file specified by the FILE
+     is set.
+
+
+ - Module Function on `FileTest': symlink? (FILE)
+     Returns true if the file specified by the FILE is a symbolic
+     link.
+
+
+ - Module Function on `FileTest': writable? (FILENAME)
+     Returns true if the file specified by the FILENAME is writable
+     by you.
+
+
+ - Module Function on `FileTest': writable_real? (FILENAME)
+     Returns true if the file specified by the FILENAME is writable
+     by your real uid/gid.
+
+
+ - Module Function on `FileTest': zero? (FILE)
+     Returns true if the file specified by the FILE exists, and the
+     size of the file is 0.
+
+
+File: ruby.info,  Node: GC,  Next: Kernel,  Prev: FileTest,  Up: Pre-defined classes and modules
+
+GC
+--
+
+   GC is the module to control garbage collection feature of the Ruby
+interpreter.
+
+Methods:
+........
+
+ - Method on `GC': garbage_collect
+     Starts garbage collecting.  Same as
+
+          GC.start
+
+
+Module Methods:
+...............
+
+ - Module Method on `GC': disable
+     Disables garbage collection.
+
+
+ - Module Method on `GC': enable
+     Enables garbage collection.
+
+
+ - Module Method on `GC': start
+     Start garbage collection.
+
+
+File: ruby.info,  Node: Kernel,  Next: Marshal,  Prev: GC,  Up: Pre-defined classes and modules
+
+Kernel
+------
+
+   The module included by the `Object' (*note Object::) class, which
+defines the methods available for all classed. The methods described
+in the built-infunctions (*note Ruby Functions::) section are defined
+in this module.
+
+
+File: ruby.info,  Node: Marshal,  Next: Math,  Prev: Kernel,  Up: Pre-defined classes and modules
+
+Marshal
+-------
+
+   The module for reading and writing Ruby object in a binary format.
+This format is machine independent.  It can dump most of Ruby
+objects, there are several exceptional objects like `IOs' (*note
+IO::).  Dumping such objects raises TypeError exception.
+
+module functions:
+.................
+
+ - Method on `Marshal': dump (OBJ[,PORT][,LIMIT])
+     Dumps object recursively.  Dumping some kind of instances of the
+     classes like Class, Module, IO, Data, etc. will raises TypeError
+     exception.
+
+     PORTmust be the instance of the `IO' or its subclass.  If PORT
+     is ommited `dump' returns the dumped image string.
+
+     If the dumping object defines ``_dump'' method, DUMP calls that
+     method to dump with the limit argument.  It must return the
+     dumped image string.  If ``_dump'' method is provided, the class
+     must provide the reverse method named ``_load'' as its singleton
+     method, which is called with dumped image string, and should
+     return the retsored object.
+
+     The LIMIT argument specified the level of the recursive
+     traverse. the default limit value is 100.  In case negative limit
+     value is specified, no limit will checked for dumping.
+
+
+ - Method on `Marshal': load (PORT[, PROC])
+     Creates new object from PORT, which is either IO or String.  If
+     optional second argument PROC is specified,  the proc will
+     called with every created object as an argument.  It can be
+     used, for example, schema evolution.
+
+
+File: ruby.info,  Node: Math,  Next: ObjectSpace,  Prev: Marshal,  Up: Pre-defined classes and modules
+
+Math
+----
+
+   The modules for the floating point arithmetic.  The MATH module
+has methods and modules methods of the same definitions in same names.
+
+   Example:
+
+     pi = Math.atan2(1, 1)*4;
+     include Math
+     pi2 = atan2(1, 1)*4
+
+Module Functions:
+.................
+
+ - Module Function on `Math': atan2 (Y, X)
+     Returns the arc tangent of the two variable X and Y in radian,
+     which is between -PI and PI.
+
+
+ - Module Function on `Math': cos (X)
+ - Module Function on `Math': sin (X)
+ - Module Function on `Math': tan (X)
+     Returns the cosine, sine, tangent, respectively, of x, where x
+     is given in radians, which is between -1 and 1.
+
+
+ - Module Function on `Math': exp (X)
+     Returns the value of e raised to the power of X.
+
+
+ - Module Function on `Math': frexp (X)
+     Returns the nomalized fraction and an the exponent.
+
+
+ - Module Function on `Math': ldexp (X,EXP)
+     Returns the result of multiplying the floating-point number x by
+     2 raised to the power of EXP.
+
+
+ - Module Function on `Math': log (X)
+     Returns the natural logarithm of X.
+
+
+ - Module Function on `Math': log10 (X)
+     Returns the base-10 logarithm of X.
+
+
+ - Module Function on `Math': sqrt (X)
+     Returns non-negative square root of X.  It raises an exception,
+     if X is negative.
+
+
+Constants:
+..........
+
+ - Class Constant of `Math': PI
+     The pi.
+
+
+ - Class Constant of `Math': E
+     The e.
+
+
+File: ruby.info,  Node: ObjectSpace,  Next: Precision,  Prev: Math,  Up: Pre-defined classes and modules
+
+ObjectSpace
+-----------
+
+   The module to iterate over living objects.
+
+Module Functions:
+.................
+
+ - Module Function on `ObjectSpace': add_finalizer (PROC)
+     Sets the PROC as the finalizer.  When the object that specified
+     by `call_finalizer' (*note ObjectSpace::) are going to be
+     recycled, the finalizers are called with their ID's (c.f
+     Object#id (*note Object::)).
+
+
+ - Module Function on `ObjectSpace': call_finalizer (OBJ)
+     Set the finalizer flag for the object.  The finalizers are
+     called when objects that the flag set are going to recycle.
+
+
+ - Module Function on `ObjectSpace': finalizers
+     Returns the list of the finalizers.
+
+
+ - Module Function on `ObjectSpace': each_object ([CLASS_OR_MODULE])
+     Iterates over all living objects which is instance of the
+     CLASS_OR_MODULE.  Without an argument, it iterates over all
+     existing objects.
+
+
+ - Module Function on `ObjectSpace': garbage_collect
+     Starts collecting objects which is no longer accessed from
+     anywhere.
+
+
+ - Module Function on `ObjectSpace': remove_finalizer (PROC)
+     Removes the PROC from the finalizers.
+
+
+File: ruby.info,  Node: Precision,  Up: Top
+
+Precision
+---------
+
+   `Precision' is a `Mix-in' for concrete numerical classes with
+precision.  Here, `precision' means the fineness of approximation of
+a real number, so, this module should not be included into non-subset
+of real, e.g. abstract numerical, complex, matrix.
+
+Class Methods:
+..............
+
+ - Class Method on `Precision': induced_from (NUMBER)
+     Creates an ojbect which is converted from `NUMBER'.  Since it
+     raise TypeError in default, redefine before uses.  Note that a
+     use of `prec' (*note Precision::) in a redefinition may causes
+     an infinite loop.
+
+
+Method:
+.......
+
+ - Method on `Precision': prec (KLASS)
+     Converts `self' into a object of KLASS.  In default, `prec'
+     invokes `KLASS.induced_from (*note Precision::)(self)' and
+     returns its value. So, if `KLASS.induced_from' doesn't
+     correspond to the class of self, it is neccessary to redefine
+     this `prec'.
+
+
+ - Method on `Precision': prec_i
+     Returns an integer converted from `self'.  It is equivalent to
+     `prec (*note Precision::)(INTEGER)'.
+
+
+ - Method on `Precision': prec_f
+     Returns a floating-point number converted from `self'.  It is
+     equivalent to `prec (*note Precision::)(FLOAT)'.
+
+
+File: ruby.info,  Node: Process,  Next: Bundled Libraries,  Prev: Precision,  Up: Pre-defined classes and modules
+
+Process
+-------
+
+   The module for operating (UNIX) processes.  Like `Math' (*note
+Math::) module, all methods defined in this module are module
+functions (*note Module::).
+
+   Notice the `Process' is not a class for process object, but the
+module for methods to operate processes.
+
+Module Attributes:
+..................
+
+ - Module Attribute on `Process': egid
+     Returns the current effective group ID of the process.
+
+
+ - Module Attribute on `Process': egid = GID
+     Sets the current effective group ID of the process to GID.
+
+
+ - Module Attribute on `Process': euid
+     Returns the current effective user ID of the process.
+
+
+ - Module Attribute on `Process': euid = UID
+     Sets the current effective user ID of the process to UID.
+
+
+ - Module Attribute on `Process': gid
+     Returns the current real group ID of the process.
+
+
+ - Module Attribute on `Process': gid = GID
+     Sets the current real group ID of the process to GID.
+
+
+ - Module Attribute on `Process': pid
+     Returns the process ID of the process, which is same as the
+     value of the variable ``$$''.
+
+
+ - Module Attribute on `Process': ppid
+     Returns the process ID of the parent process.  Under UN*X, the
+     process ID will be 1 (the pid of `init') after the parent process
+     terminates.
+
+
+ - Module Attribute on `Process': uid
+     Returns the real user ID of the process.
+
+
+ - Module Attribute on `Process': uid = UID
+     Sets the real user ID of the process to UID.
+
+
+Module Functions:
+.................
+
+ - Module Function on `Process': getpgrp ([PID])
+     Returns the current process group for the PID, 0 for the current
+     process.  If PID is omitted, returns process group of current
+     process.
+
+
+ - Module Function on `Process': getpriority (WHICH, WHO)
+     Returns the current priority for a process, a process group, or a
+     user.  (See `getpriority(2)'.)  The Process module defines the
+     constants for WHICH, PRIO_PROCESS, PRIO_PGRP, PRIO_USER.
+
+
+ - Module Function on `Process': kill (SIGNAL, PID...)
+     Sends SIGNAL to the specified PID.  SIGNAL must be a string or a
+     integer to specify the signal to send.  If the signal is
+     negative (or `-' before the signal name), it kills process
+     groups instead of processes.
+
+
+ - Module Function on `Process': setpgrp (PID, PGRP)
+     Sets the current process group for the PID, 0 for the current
+     process.
+
+
+ - Module Function on `Process': setpriority (WHICH, WHO, PRIO)
+     Sets the current priority for a process, a process group, or a
+     user.  (See `setpriority(2)'.)  The Process module defines the
+     constants for WHICH, PRIO_PROCESS, PRIO_PGRP, PRIO_USER.
+
+
+ - Module Function on `Process': setsid ()
+     Creates a new session, and detaches tty.  Returns the session ID
+     of the new session.
+
+
+ - Module Function on `Process': wait
+     Waits for a child process to terminate and returns the pid of the
+     deceased process, or raise `Errno::ECHILD' if there are no child
+     processes.
+
+
+ - Module Function on `Process': waitpid (PID, FLAGS)
+     Waits for a particular child process specified by PID to
+     terminate and returns the pid of the deceased process, or raise
+     `Errno::ECHILD' if there is no such child process.  Returns
+     `nil' if the process did not terminated yet in the non-blocking
+     mode.  Non-blocking wait is only available on machines
+     supporting either the `waitpid(2)' or `wait4(2)' system calls.
+     However, waiting for a particular pid with FLAGS of `nil' or 0
+     is implemented everywhere.
+
+
+Constants:
+..........
+
+ - Class Constant of `Process': PRIO_PROCESS
+     Specifies process priority for `getpriority'/`setpriority'.
+
+
+ - Class Constant of `Process': PRIO_PGRP
+     Specifies process group priority.
+
+
+ - Class Constant of `Process': PRIO_USER
+     Specifies user priority.
+
+
+ - Class Constant of `Process': WNOHANG
+     Means to return immediately if no child has exited.
+
+
+ - Class Constant of `Process': WUNTRACED
+     Means to also return for children which are stopped, and whose
+     status has not been reported.
+
+
+File: ruby.info,  Node: Bundled Libraries,  Next: Pseudo BNF Syntax of Ruby,  Prev: Pre-defined classes and modules,  Up: Top
+
+Bundled Libraries
+*****************
+
+   Sorry, the document for the bundle libraries are not yet available
+except for Thread (*note The Thread Library::).
+
+   - `dbm' (*note DBM::)
+
+   - `etc'
+
+   - `kconv' (*note Kconv::)
+
+   - `getopts'
+
+   - `parsearg'
+
+   - `parsedate'
+
+   - `socket' (*note The Socket Library::)
+
+        - `BasicSocket' (*note BasicSocket::)
+
+             - `IPSocket' (*note IPSocket::)
+
+                  - `TCPSocket' (*note TCPSocket::)
+
+                       - `TCPServer' (*note TCPServer::)
+
+
+                  - `UDPSocket' (*note UDPSocket::)
+
+
+             - `UNIXSocket' (*note UNIXSocket::)
+
+                  - `UNIXServer' (*note UNIXServer::)
+
+
+             - `Socket' (*note Socket::)
+
+
+   - `thread' (*note The Thread Library::)
+
+        - `Thread' (*note Thread::)
+
+        - `Mutex' (*note Mutex::)
+
+        - `Queue' (*note Queue::)
+
+
+   - `tk' (*note The Tk Library::)
+
+
+
+File: ruby.info,  Node: DBM,  Next: Kconv,  Up: Bundled Libraries
+
+DBM
+===
+
+   `DBM' is the class to provide access to the DBM files.  It acts
+string to string dictionary, storing data in the DBM file.
+
+SuperClass:
+...........
+
+   - `Object' (*note Object::)
+
+Included Modules:
+.................
+
+   - `Enumerable' (*note Enumerable::)
+
+Class Method:
+.............
+
+ - Class Method on `DBM': open (DBNAME[, MODE])
+     Opens the DBM database specified by DBNAME, with MODE.  The
+     default value for the MODE is 0666.  If `nil' is specified for
+     the MODE, `open' returns `nil', if the DBM file does not exist.
+
+
+Method:
+.......
+
+ - Method on `DBM': self [KEY]
+     Returns the value corresponding the KEY.
+
+
+ - Method on `DBM': self [KEY] = VALUE
+     Stores the VALUE associating with KEY.  If `nil' is given as the
+     VALUE,  the association from the KEY will be removed.
+
+
+ - Method on `DBM': clear
+     Makes the DBM file empty.
+
+
+ - Method on `DBM': close
+     Closes the DBM file.  Later operation raises an exception.
+
+
+ - Method on `DBM': delete (KEY)
+     Removes the association from the KEY.
+
+
+ - Method on `DBM': delete_if { |KEY, VALUE| ... }
+     Deletes associations if the evaluation of the block returns true.
+
+
+ - Method on `DBM': each {|KEY, VALUE| ... }
+ - Method on `DBM': each {|KEY, VALUE| ... }
+     Iterates over associations.
+
+
+ - Method on `DBM': each_key {|KEY| ... }
+     Iterates over keys.
+
+
+ - Method on `DBM': each_value {|VALUE| ... }
+     Iterates over values.
+
+
+ - Method on `DBM': empty? ()
+     Returns true if the database is empty.
+
+
+ - Method on `DBM': has_key? (KEY)
+ - Method on `DBM': key? (KEY)
+ - Method on `DBM': include? (KEY)
+     Returns true if the association from the KEY exists.
+
+
+ - Method on `DBM': has_value? (VALUE)
+ - Method on `DBM': value? (VALUE)
+     Returns true if the association to the VALUE exists.
+
+
+ - Method on `DBM': indexes (KEY_1,...)
+ - Method on `DBM': indices (KEY_1,...)
+     Returns an array contains items at each key specified by each
+     argument.
+
+
+ - Method on `DBM': keys
+     Returns the array of the keys in the DBM dictionary.
+
+
+ - Method on `DBM': length
+ - Method on `DBM': size
+     Returns the number of association in the DBM dictionary.  Current
+     implementation uses iteration over all associations to count, so
+     that it may take time to get the size of the huge DBM dictionary.
+
+
+ - Method on `DBM': shift
+     Removes and returns an association from the database.
+
+
+ - Method on `DBM': values
+     Returns the array of the values in the DBM dictionary.
+
+
+File: ruby.info,  Node: Kconv,  Next: The Socket Library,  Prev: DBM,  Up: Bundled Libraries
+
+Kconv module
+============
+
+   Kconv - Kanji code conversion utility module
+
+SYNOPSIS
+........
+
+     newstring = Kconv::kconv(string, Kconv::JIS, Kconv::AUTO);
+     newstring = Kconv::tojis(string);
+     newstring = Kconv::toeuc(string);
+     newstring = Kconv::tosjis(string);
+     guessed_code = Kconv::guess(string);
+
+CONSTANTS
+.........
+
+   - AUTO
+
+     Auto detection(only for INPUT mode)
+
+   - JIS
+
+     ISO-2022-JP
+
+   - EUC
+
+     EUC-Japan
+
+   - SJIS
+
+     Shifted JIS code (so called MS Kanji code)
+
+   - BINARY
+
+     Binary code (not in JIS/SJIS/EUC).
+
+   - UNKNOWN
+
+     Couldn't determin character code.  Same as AUTO.
+
+
+File: ruby.info,  Node: The Socket Library,  Next: The Thread Library,  Prev: Kconv,  Up: Bundled Libraries
+
+The Socket Library
+==================
+
+* Menu:
+
+* Socket__Constants::         Socket::Constants
+* BasicSocket::               BasicSocket
+* IPSocket::                  IPSocket
+* TCPSocket::                 TCPSocket
+* TCPServer::                 TCPServer
+* UDPSocket::                 UDPSocket
+* UNIXSocket::                UNIXSocket
+* UNIXServer::                UNIXServer
+* Socket::                    Socket
+
+
+File: ruby.info,  Node: Socket__Constants,  Next: BasicSocket,  Up: The Socket Library
+
+Socket::Constants
+-----------------
+
+   The modules that contains the constants (such as `AF_INET')
+required for the socket operations.
+
+
+File: ruby.info,  Node: BasicSocket,  Next: IPSocket,  Prev: Socket__Constants,  Up: The Socket Library
+
+BasicSocket
+-----------
+
+   The abstract class for the sockets.  The operations are defined in
+the subclasses.  For instance `TCPSocket' (*note TCPSocket::) for the
+Internet domain stream socket.
+
+SuperClass:
+...........
+
+   - `IO' (*note IO::)
+
+Methods:
+........
+
+ - Method on `BasicSocket': getsockname
+     Returns the information of the socket in the sockaddr structure
+     packed in the string.  See `getsockname(2)' for detail.
+
+
+ - Method on `BasicSocket': getsockopt (LEVEL, OPTNAME)
+     Get options of the socket.  See `getsockopt(2)'.  Returns the
+     option data packed in the string.
+
+
+ - Method on `BasicSocket': getpeername
+     Returns the information of the peer connected to the socket.
+     Returns the sockaddr structure packed in the string.  See
+     `getpeername(2)' for detail.
+
+
+ - Method on `BasicSocket': recv (LEN[, FLAGS])
+     Receives data from the socket and returns as an string.  The LEN
+     is the maximum length of the receiving data.  See `recv(2)'.
+     The default value for the flags is 0.  The constants for FLAGS
+     are defined in `Socket' class (ex. `Socket::SO_LINGER').  It
+     bypasses stdio, so mixing this with other kinds of reads/eof
+     checks may cause confusion.
+
+
+ - Method on `BasicSocket': send (MESG, FLAGS[, TO])
+     Sends the MESG through the socket.  See `send(2)' for detail.
+     You have to specify the TO argument for the unconnected socket.
+     Reurns the length of data sent.
+
+
+ - Method on `BasicSocket': setsockopt (LEVEL, OPTNAME, OPTVAL)
+     Sets socket options.  See `setsockopt(2)' for detail.
+
+
+ - Method on `BasicSocket': shutdown ([HOW])
+     Causes the connection of the socket to be shut down.  If HOW is
+     0, further receives will be rejected.  If HOW is 1, further
+     sends will be rejected.  If HOW is 2, further sends and receives
+     will be rejected.  The default value for the HOW is 2.  See
+     `shutdown(2)'.
+
+
+
+File: ruby.info,  Node: IPSocket,  Next: TCPSocket,  Prev: BasicSocket,  Up: The Socket Library
+
+IPSocket
+--------
+
+   The class for the Internet domain socket.
+
+SuperClass:
+...........
+
+   - `BasicSocket' (*note BasicSocket::)
+
+Class Methods:
+..............
+
+ - Class Method on `IPSocket': getaddress (HOST)
+     Returns the address of the host.  The address is an octet
+     decimal string.
+
+
+Methods:
+........
+
+ - Method on `IPSocket': addr
+     Returns the array contains socket connection information.  The
+     first element is the string `"AF_INET"'.  The second element is
+     the port number.  The third element is the host representing
+     string.  The fourth element is the IP address of the host in the
+     octet decimal string.
+
+
+ - Method on `IPSocket': peeraddr
+     Returns the array contains the peer's socket information.  The
+     elements of the array is same as the ones which `addr' (*note
+     IPSocket::) returns.
+
+
+
+File: ruby.info,  Node: TCPSocket,  Next: TCPServer,  Prev: IPSocket,  Up: The Socket Library
+
+TCPSocket
+---------
+
+   The class for the Internet domain stream socket.  The socket
+programming will be much easier using this class.  For example, the
+socket client that sends the user input will be:
+
+     require "socket"
+     
+     port = if ARGV.size > 0 then ARGV.shift else 4444 end
+     print port, "\n"
+     
+     s = TCPSocket.open("localhost", port)
+     
+     while gets
+       s.write($_)
+       print(s.gets)
+     end
+     s.close
+
+SuperClass:
+...........
+
+   - `IPSocket' (*note IPSocket::)
+
+Class Methods:
+..............
+
+ - Class Method on `TCPSocket': open (HOST, SERVICE)
+ - Class Method on `TCPSocket': new (HOST, SERVICE)
+     Creates and returns the socket connected to the specified
+     SERVICE on the HOST.  The HOST is the host name string.  The
+     SERVICE is the service name registered in the `/etc/services'
+     (or in NIS), or the port number.
+
+
+ - Class Method on `TCPSocket': gethostbyname (HOST)
+     Returns the array conaining the host information from the host
+     name or the IP address (32 bit integer or string such as
+     `"127.0.0.1"').  The first element of the array is the hostname.
+     The second element is the array of the host aliases (possibly
+     empty).  The third element is the address type.  And sequence of
+     the addresses follows.  The addresses are octet decimal string
+     (like `"127.0.0.1"').
+
+
+Methods:
+........
+
+ - Method on `TCPSocket': recvfrom (LEN[, FLAGS])
+     Receives data from the socket and returns the pair of data and
+     the address of the sender.  Refer IPSocket#addr (*note
+     IPSocket::) for the address format.  For arguments, see `recv'
+     (*note BasicSocket::).
+
+
+
+File: ruby.info,  Node: TCPServer,  Next: UDPSocket,  Prev: TCPSocket,  Up: The Socket Library
+
+TCPServer
+---------
+
+   The server side of the Internet stream socket.  This class makes
+building server much easier.  For example, the echo server will be:
+
+     require "socket"
+     
+     gs = TCPServer.open(0)
+     socks = [gs]
+     addr = gs.addr
+     addr.shift
+     printf("server is on %d\n", addr.join(":"))
+     
+     while true
+       nsock = select(socks)
+       next if nsock == nil
+       for s in nsock[0]
+         if s == gs
+           socks.push(s.accept)
+           print(s, " is accepted\n")
+         else
+           if s.eof?
+             print(s, " is gone\n")
+             s.close
+             socks.delete(s)
+           else
+             str = s.gets
+             s.write(str)
+           end
+         end
+       end
+     end
+
+   Even shorter using thread:
+
+     require "socket"
+     
+     gs = TCPServer.open(0)
+     addr = gs.addr
+     addr.shift
+     printf("server is on %d\n", addr.join(":"))
+     
+     while true
+       ns = gs.accept
+       print(ns, " is accepted\n")
+       Thread.start do
+         s = ns                      # save to dynamic variable
+         while s.gets
+           s.write($_)
+         end
+         print(s, " is gone\n")
+         s.close
+       end
+     end
+
+SuperClass:
+...........
+
+   - `TCPSocket' (*note TCPSocket::)
+
+Class Methods:
+..............
+
+ - Class Method on `TCPServer': new ([HOST, ]SERVICE)
+ - Class Method on `TCPServer': open ([HOST, ]SERVICE)
+     Opens new server connection.  The SERVICE is the service name
+     registered in the `/etc/services' (or in NIS), or the port
+     number.  If HOST is given, only the connection from the
+     specified host will be accepted.  If HOST is not specified,
+     connection from any host will be accepted.
+
+
+Methods:
+........
+
+ - Method on `TCPServer': accept
+     Accepts the request for the connection, and returns the
+     `TCPSocket' connected to the client.
+
+
+
+File: ruby.info,  Node: UDPSocket,  Next: UNIXSocket,  Prev: TCPServer,  Up: The Socket Library
+
+UDPSocket
+---------
+
+   The UDP/IP datagram socket class.
+
+SuperClass:
+...........
+
+   - `IPSocket' (*note IPSocket::)
+
+Class Methods:
+..............
+
+ - Class Method on `UDPSocket': open ()
+ - Class Method on `UDPSocket': new ()
+     Returns new UDP socket.
+
+
+Methods:
+........
+
+ - Method on `UDPSocket': bind (HOST, PORT)
+     Binds the socket to the PORT on the HOST.
+
+
+ - Method on `UDPSocket': connect (HOST, PORT)
+     Connects the socket to the PORT on the HOST.
+
+
+ - Method on `UDPSocket': recvfrom (LEN[, FLAGS])
+     Receives data from the socket and returns the pair of data and
+     the address of the sender.  Refer IPSocket#addr (*note
+     IPSocket::) for the address format.  For arguments, see `recv'
+     (*note BasicSocket::).
+
+
+ - Method on `UDPSocket': send (MESG, FLAGS[, HOST, PORT])
+     Sends the MESG through the socket.  See `send(2)' for detail.
+     You have to specify the HOST and PORT arguments for the
+     unconnected socket.  Reurns the length of data sent.
+
+
+
+File: ruby.info,  Node: UNIXSocket,  Next: UNIXServer,  Prev: UDPSocket,  Up: The Socket Library
+
+UNIXSocket
+----------
+
+   The UNIX domain stream socket.
+
+SuperClass:
+...........
+
+   - `BasicSocket' (*note BasicSocket::)
+
+Class Methods:
+..............
+
+ - Class Method on `UNIXSocket': open (PATH)
+ - Class Method on `UNIXSocket': new (PATH)
+     The socket associated to the PATH.
+
+
+Methods:
+........
+
+ - Method on `UNIXSocket': addr
+     Returns the array contains socket connection information.  The
+     first element is the string `"AF_UNIX"'.  The second element is
+     the path associated to the socket.
+
+
+ - Method on `UNIXSocket': path
+     Returns the path associated to the socket.
+
+
+ - Method on `UNIXSocket': peeraddr
+     Returns the array contains the peer's socket information.  The
+     elements of the array is same as the ones which `addr' (*note
+     UNIXSocket::) returns.
+
+
+ - Method on `UNIXSocket': recvfrom (LEN[, FLAGS])
+     Receives data from the socket and returns the pair of data and
+     the path of the sender.  For arguments, see `recv' (*note ::).
+
+
+
+File: ruby.info,  Node: UNIXServer,  Next: Socket,  Prev: UNIXSocket,  Up: The Socket Library
+
+UNIXServer
+----------
+
+   The server side of the UNIX stream socket.
+
+SuperClass:
+...........
+
+   - `UNIXSocket' (*note UNIXSocket::)
+
+Methods:
+........
+
+ - Method on `UNIXServer': accept
+     Accepts the request for the connection, and returns the
+     `UNIXSocket' connected to the client.
+
+
+
+File: ruby.info,  Node: Socket,  Prev: UNIXServer,  Up: The Socket Library
+
+Socket
+------
+
+   `Socket' provides the low level access to the socket features of
+the operating system.  Its methods are about same level of the Perl's
+socket functions.  The socket addresses are represented by the C
+structure packed into the string.
+
+   Normally, the socket programming are done by the high level socket
+classes like `TCPSocket' (*note TCPSocket::) and `TCPServer' (*note
+TCPServer::).
+
+SuperClass:
+...........
+
+   - `BasicSocket' (*note BasicSocket::)
+
+Class Methods:
+..............
+
+ - Class Method on `Socket': open (DOMAIN, TYPE, PROTOCOL)
+ - Class Method on `Socket': new (DOMAIN, TYPE, PROTOCOL)
+     Creates new socket.  DOMAIN, TYPE, and PROTOCOL are specified by
+     the constant found in the C header files.  Most of the constants
+     are defined as class constants in `Socket' class.  DOMAIN and
+     TYPE can be specified by the string name.  But all possible
+     values may not available by the string.
+
+
+ - Class Method on `Socket': for_fd (FD)
+     Creates new socket object corresponding the file discriptor FD.
+
+
+ - Class Method on `Socket': pair (DOMAIN, TYPE, PROTOCOL)
+ - Class Method on `Socket': socketpair (DOMAIN, TYPE, PROTOCOL)
+     Returns the pair of the connected sockets.  See `socketpair(2)'.
+     The argument specification is same to `Socket.open' (*note
+     Socket::).
+
+
+ - Class Method on `Socket': gethostbyname (HOST)
+     Returns the array conaining the host information from the host
+     name or the IP address (32 bit integer or string such as
+     `"127.0.0.1"').  The first element of the array is the hostname.
+     The second element is the array of the host aliases (possibly
+     empty).  The third element is the address type.  And sequence of
+     the addresses follows.  The addresses are packed string.
+
+
+ - Class Method on `Socket': gethostbyaddr (HOST)
+     Returns the array conaining the host information from the packed
+     `struct sockaddr'.  Data in the array is as decribed in
+     gethostbyname (*note Socket::).  host name or the IP address (32
+     bit integer or string such as `"127.0.0.1"').
+
+
+ - Class Method on `Socket': getservbyname (SERVICE[, PROTO])
+     Returns the port number correnspoinding SERVICE and PROTO.  The
+     default value for the PROTO is `"tcp"'.
+
+
+Methods:
+........
+
+ - Method on `Socket': accept
+     Accepts the connection and returns the pair of the socket for
+     the new connection and address of the connection.  See
+     `accept(2)'.
+
+
+ - Method on `Socket': bind (ADDR)
+     Binds the socket to the ADDR.  See `bind(2)'.  The ADDR is the
+     sockaddr structure packed into the string.
+
+
+ - Method on `Socket': connect (ADDR)
+     Connects the socket to the ADDR.  The ADDR is the sockaddr
+     structure packed into the string.
+
+
+ - Method on `Socket': listen (BACKLOG)
+     Specifies the connection queue limit for the socket.  See
+     `listen(2)'.
+
+
+ - Method on `Socket': recvfrom (LEN[, FLAGS])
+     Receives data from the socket and returns the pair of data and
+     the address of the sender.  For arguments, see `recv' (*note ::).
+
+
+File: ruby.info,  Node: The Thread Library,  Next: The Tk Library,  Prev: The Socket Library,  Up: Bundled Libraries
+
+The Thread Library
+==================
+
+* Menu:
+
+* Thread::                    Thread
+* Mutex::                     Mutex
+* Queue::                     Queue
+
+   The `Thread' library allows concurrent programming in Ruby.  It
+provides multiple threads of control that execute concurrently
+sharing same memory space.  The Ruby interpreter executes threads by
+time-sharing, therefore using threads never makes program run faster
+(even much slower for the cost of context switching).
+
+   The thread which created first when the Ruby process started, is
+called the main thread.  When the main thread is terminated for some
+reason, all other threads will be terminated, and the whole process
+will be terminated.  The exception raised by the user interrupt is
+delivered to the main thread.
+
+   The `Thread' library is optional, and may not be available on some
+Ruby interpreter, which thread feature is disabled by the compile
+time configuration.
+
+
+File: ruby.info,  Node: Thread,  Next: Mutex,  Up: The Thread Library
+
+Thread
+------
+
+   The `Thread' class represents user-level threads.
+
+   Threads terminates when the execution of the given iterater block
+returns, normally or by raisung an exception.
+
+SuperClass:
+...........
+
+   - Object (*note Object::)
+
+Class Methods:
+..............
+
+ - Class Method on `Thread': abort_on_exception
+     Returns the value of the abort flag.
+
+
+ - Class Method on `Thread': abort_on_exception =(YES_NO)
+     Sets the value of the flag to abort the interpreter if any
+     unhandled exception terminates any thread.
+
+
+ - Class Method on `Thread': current
+     Returns the current thread object which calls the method.
+
+
+ - Class Method on `Thread': exit
+     Terminates the current thread.
+
+
+ - Class Method on `Thread': kill (THREAD)
+     Terminates the specified THREAD.
+
+
+ - Class Method on `Thread': new {...}
+ - Class Method on `Thread': start {...}
+ - Class Method on `Thread': fork {...}
+     Creates a new thread of contorl, then starts evaluating the block
+     concurrently.  Returns a newly created thread object.
+
+
+ - Class Method on `Thread': pass
+     Gives other runnable threads chance to run.
+
+
+ - Class Method on `Thread': stop
+     Suspends the current thread until another thread resumes it using
+     `run' method.
+
+
+Methods:
+........
+
+ - Method on `Thread': self [NAME]
+     Retrieves thread local data associated with NAME.  The NAME is
+     either string or symbol.
+
+
+ - Method on `Thread': self [NAME]=VAL
+     Stores VAL into the thread local dictionary, associating with
+     NAME.  The NAME is either string or symbol.
+
+
+ - Method on `Thread': abort_on_exception
+     Returns the value of the abort flag of the thread.
+
+
+ - Method on `Thread': abort_on_exception =(YES_NO)
+     Sets the value of the flag to abort the interpreter if any
+     unhandled exception terminates the thread.
+
+
+ - Method on `Thread': alive?
+ - Method on `Thread': status
+     Returns `true' if the thread is alive.  Returns `false' for
+     normal termination, `nil' for termination by exception.
+
+
+ - Method on `Thread': exit
+     Terminates the thread.
+
+
+ - Method on `Thread': join
+     Suspends the current thread until the thread has terminated.
+
+
+ - Method on `Thread': raise ([ERROR_TYPE,][MESSAGE][,TRACEBACK])
+     Raises an exception on the thread.
+
+
+ - Method on `Thread': run
+     Resumes the thread.  It does nothing if the thread was not
+     suspended.
+
+
+ - Method on `Thread': stop?
+     Returns true if the thread is stopped.
+
+
+ - Method on `Thread': value
+     Waits for the thread to terminate and returns the evaluated
+     value of the block, which is given to the `Thread.create' (*note
+     ::).
+
+
+ - Method on `Thread': wakeup
+     Resumes the thread.
+
+
+
+File: ruby.info,  Node: Mutex,  Next: Queue,  Prev: Thread,  Up: The Thread Library
+
+Mutex
+-----
+
+   Mutexs (mutual-exclusion locks) are used to protect shared data
+against concurrent accesses.  The typical use is (where `m' is the
+mutex object):
+
+     begin
+       m.lock
+       # critical section protected by m
+     ensure
+       m.unlock
+     end
+
+   or, in short
+
+     m.synchronize {
+       # critical section protected by m
+     }
+
+SuperClass:
+...........
+
+   - Object (*note Object::)
+
+Class Methods:
+..............
+
+ - Class Method on `Mutex': new
+     Creates a new `Mutex' object.
+
+
+Methods:
+........
+
+ - Method on `Mutex': lock
+     Locks the mutex object.  Only on thread at a time can lock the
+     mutex.  A thread that attempts to lock a alread locked mutex
+     will suspend until the other thread unlocks the mutex.
+
+
+ - Method on `Mutex': locked?
+     Returns true if the mutex is locked.
+
+
+ - Method on `Mutex': synchronize
+     Locks the mutex, and evaluates the block.  Ensures the mutex be
+     unlocked.
+
+
+ - Method on `Mutex': try_lock
+     Locks the mutex and returns true if the mutex is not locked.  If
+     the mutex is already locked, just returns false.
+
+
+ - Method on `Mutex': unlock
+     Unlocks the mutex.  Other thread suspended trying to lock the
+     mutex will be resumed.
+
+
+
+File: ruby.info,  Node: Queue,  Prev: Mutex,  Up: The Thread Library
+
+Queue
+-----
+
+   The `Queue' is the FIFO (first in first out) communication channel
+between threads.  If a thread trys to read an empty queue, it will be
+suspended until the queue is filled.
+
+SuperClass:
+...........
+
+   - Object (*note Object::)
+
+Class Methods:
+..............
+
+ - Class Method on `Queue': new
+     Creates a new queue object.
+
+
+Methods:
+........
+
+ - Method on `Queue': empty?
+     Returns true if the queue is empty.
+
+
+ - Method on `Queue': length
+     Returns the length of the queue.
+
+
+ - Method on `Queue': pop [NON_BLOCK]
+     Removes and returns an value from queue.  If the queue is empty,
+     the calling thread will be suspended until some value pushed in
+     the queue.  If optional argument NON_BLOCK is non-nil, `pop'
+     raises an exception if no value available in the queue.
+
+
+ - Method on `Queue': push (VALUE)
+     Append an VALUE to the queue.  Restart the waiting thread if any.
+
+
+File: ruby.info,  Node: The Tk Library,  Prev: The Thread Library,  Up: Bundled Libraries
+
+The Tk Library
+==============
+
+   The documentation of the Ruby Tk interface is not yet available.
+The classes in the Tk interface are shown below.
+
+   - `TkObject' (*note TkObject::)
+
+        - `TkWindow' (*note TkWindow::)
+
+             - `TkRoot' (*note TkRoot::)
+
+             - `TkToplevel' (*note TkToplevel::)
+
+             - `TkFrame' (*note TkFrame::)
+
+             - `TkLabel' (*note TkLabel::)
+
+                  - `TkButton' (*note TkButton::)
+
+                       - `TkRadioButton' (*note TkRadioButton::)
+
+                            - `TkCheckButton' (*note TkCheckButton::)
+
+
+                  - `TkMessage' (*note TkMessage::)
+
+                  - `TkMenuButton' (*note TkMenuButton::)
+
+
+             - `TkScale' (*note TkScale::)
+
+             - `TkScrollbar' (*note TkScrollbar::)
+
+             - `TkTextWin' (*note TkTextWin::)
+
+                  - `TkListbox' (*note TkListbox::)
+
+
+             - `TkMenu' (*note TkMenu::)
+
+             - `TkScale' (*note TkScale::)
+
+             - `TkScale' (*note TkScale::)
+
+             - `TkScale' (*note TkScale::)
+
+
+        - `TkcItem' (*note TkcItem::)
+
+             - `TkcArc' (*note TkcArc::)
+
+             - `TkcBitmap' (*note TkcBitmap::)
+
+             - `TkcImage' (*note TkcImage::)
+
+             - `TkcLine' (*note TkcLine::)
+
+             - `TkcOval' (*note TkcOval::)
+
+
+        - `TkImage' (*note TkImage::)
+
+             - `TkBitmapImage' (*note TkBitmapImage::)
+
+             - `TkPhotoImage' (*note TkPhotoImage::)
+
+
+
+File: ruby.info,  Node: Pseudo BNF Syntax of Ruby,  Prev: Bundled Libraries,  Up: Top
+
+Pseudo BNF Syntax of *Ruby*
+***************************
+
+   Here is the syntax of Ruby in pseudo BNF.  For more detail, see
+parse.y in Ruby distribution.
+
+     PROGRAM         : COMPSTMT
+     
+     COMPSTMT        : STMT (TERM EXPR)* [TERM]
+     
+     STMT            : CALL do [`|' [BLOCK_VAR] `|'] COMPSTMT end
+                     | undef FNAME
+                     | alias FNAME FNAME
+                     | STMT if EXPR
+                     | STMT while EXPR
+                     | STMT unless EXPR
+                     | STMT until EXPR
+                     | `BEGIN' `{' COMPSTMT `}'
+                     | `END' `{' COMPSTMT `}'
+                     | LHS `=' COMMAND [do [`|' [BLOCK_VAR] `|'] COMPSTMT end]
+                     | EXPR
+     
+     EXPR            : MLHS `=' MRHS
+                     | return CALL_ARGS
+                     | yield CALL_ARGS
+                     | EXPR and EXPR
+                     | EXPR or EXPR
+                     | not EXPR
+                     | COMMAND
+                     | `!' COMMAND
+                     | ARG
+     
+     CALL            : FUNCTION
+                     | COMMAND
+     
+     COMMAND         : OPERATION CALL_ARGS
+                     | PRIMARY `.' OPERATION CALL_ARGS
+                     | PRIMARY `::' OPERATION CALL_ARGS
+                     | super CALL_ARGS
+     
+     FUNCTION        : OPERATION [`(' [CALL_ARGS] `)']
+                     | PRIMARY `.' OPERATION `(' [CALL_ARGS] `)'
+                     | PRIMARY `::' OPERATION `(' [CALL_ARGS] `)'
+                     | PRIMARY `.' OPERATION
+                     | PRIMARY `::' OPERATION
+                     | super `(' [CALL_ARGS] `)'
+                     | super
+     
+     ARG             : LHS `=' ARG
+                     | LHS OP_ASGN ARG
+                     | ARG `..' ARG
+                     | ARG `...' ARG
+                     | ARG `+' ARG
+                     | ARG `-' ARG
+                     | ARG `*' ARG
+                     | ARG `/' ARG
+                     | ARG `%' ARG
+                     | ARG `**' ARG
+                     | `+' ARG
+                     | `-' ARG
+                     | ARG `|' ARG
+                     | ARG `^' ARG
+                     | ARG `&' ARG
+                     | ARG `<=>' ARG
+                     | ARG `>' ARG
+                     | ARG `>=' ARG
+                     | ARG `<' ARG
+                     | ARG `<=' ARG
+                     | ARG `==' ARG
+                     | ARG `===' ARG
+                     | ARG `!=' ARG
+                     | ARG `=~' ARG
+                     | ARG `!~' ARG
+                     | `!' ARG
+                     | `~' ARG
+                     | ARG `<<' ARG
+                     | ARG `>>' ARG
+                     | ARG `&&' ARG
+                     | ARG `||' ARG
+                     | defined? ARG
+                     | PRIMARY
+     
+     PRIMARY         : `(' COMPSTMT `)'
+                     | LITERAL
+                     | VARIABLE
+                     | PRIMARY `::' IDENTIFIER
+                     | `::' IDENTIFIER
+                     | PRIMARY `[' [ARGS] `]'
+                     | `[' [ARGS [`,']] `]'
+                     | `{' [(ARGS|ASSOCS) [`,']] `}'
+                     | return [`(' [CALL_ARGS] `)']
+                     | yield [`(' [CALL_ARGS] `)']
+                     | defined? `(' ARG `)'
+                     | FUNCTION
+                     | FUNCTION `{' [`|' [BLOCK_VAR] `|'] COMPSTMT `}'
+                     | if EXPR THEN
+                       COMPSTMT
+                       (elsif EXPR THEN COMPSTMT)*
+                       [else COMPSTMT]
+                       end
+                     | unless EXPR THEN
+                       COMPSTMT
+                       [else COMPSTMT]
+                       end
+                     | while EXPR DO COMPSTMT end
+                     | until EXPR DO COMPSTMT end
+                     | case COMPSTMT
+                       (when WHEN_ARGS THEN COMPSTMT)+
+                       [else COMPSTMT]
+                       end
+                     | for BLOCK_VAR in EXPR DO
+                       COMPSTMT
+                       end
+                     | begin
+                       COMPSTMT
+                       [rescue [ARGS] DO COMPSTMT]+
+                       [else COMPSTMT]
+                       [ensure COMPSTMT]
+                       end
+                     | class IDENTIFIER [`<' IDENTIFIER]
+                       COMPSTMT
+                       end
+                     | module IDENTIFIER
+                       COMPSTMT
+                       end
+                     | def FNAME ARGDECL
+                       COMPSTMT
+                       end
+                     | def SINGLETON (`.'|`::') FNAME ARGDECL
+                       COMPSTMT
+                       end
+     
+     WHEN_ARGS       : ARGS [`,' `*' ARG]
+                     | `*' ARG
+     
+     THEN            : TERM
+                     | then
+                     | TERM then
+     
+     DO              : TERM
+                     | do
+                     | TERM do
+     
+     BLOCK_VAR       : LHS
+                     | MLHS
+     
+     MLHS            : MLHS_ITEM `,' [MLHS_ITEM (`,' MLHS_ITEM)*] [`*' [LHS]]
+                     | `*' LHS
+     
+     MLHS_ITEM       : LHS
+                     | '(' MLHS ')'
+     
+     LHS             : VARIABLE
+                     | PRIMARY `[' [ARGS] `]'
+                     | PRIMARY `.' IDENTIFIER
+     
+     MRHS            : ARGS [`,' `*' ARG]
+                     | `*' ARG
+     
+     CALL_ARGS       : ARGS
+                     | ARGS [`,' ASSOCS] [`,' `*' ARG] [`,' `&' ARG]
+                     | ASSOCS [`,' `*' ARG] [`,' `&' ARG]
+                     | `*' ARG [`,' `&' ARG]
+                     | `&' ARG
+                     | COMMAND
+     
+     ARGS            : ARG (`,' ARG)*
+     
+     ARGDECL         : `(' ARGLIST `)'
+                     | ARGLIST TERM
+     
+     ARGLIST         : IDENTIFIER(`,'IDENTIFIER)*[`,'`*'[IDENTIFIER]][`,'`&'IDENTIFIER]
+                     | `*'IDENTIFIER[`,'`&'IDENTIFIER]
+                     | [`&'IDENTIFIER]
+     
+     SINGLETON       : VARIABLE
+                     | `(' EXPR `)'
+     
+     ASSOCS          : ASSOC (`,' ASSOC)*
+     
+     ASSOC           : ARG `=>' ARG
+     
+     VARIABLE        : VARNAME
+                     | nil
+                     | self
+     
+     LITERAL         : numeric
+                     | SYMBOL
+                     | STRING
+                     | STRING2
+                     | HERE_DOC
+                     | REGEXP
+     
+     TERM            : `;'
+                     | `\n'
+
+   The followings are recognized by lexical analizer.
+
+     OP_ASGN         : `+=' | `-=' | `*=' | `/=' | `%=' | `**='
+                     | `&=' | `|=' | `^=' | `<<=' | `>>='
+                     | `&&=' | `||='
+     
+     SYMBOL          : `:'FNAME
+                     | `:'VARNAME
+     
+     FNAME           : IDENTIFIER | `..' | `|' | `^' | `&'
+                     | `<=>' | `==' | `===' | `=~'
+                     | `>' | `>=' | `<' | `<='
+                     | `+' | `-' | `*' | `/' | `%' | `**'
+                     | `<<' | `>>' | `~'
+                     | `+@' | `-@' | `[]' | `[]='
+     
+     OPERATION       : IDENTIFIER
+                     | IDENTIFIER'!'
+                     | IDENTIFIER'?'
+     
+     VARNAME         : GLOBAL
+                     | `@'IDENTIFIER
+                     | IDENTIFIER
+     
+     GLOBAL          : `$'IDENTIFIER
+                     | `$'any_char
+                     | `$''-'any_char
+     
+     STRING          : `"' any_char* `"'
+                     | `'' any_char* `''
+                     | ``' any_char* ``'
+     
+     STRING2         : `%'(`Q'|`q'|`x')char any_char* char
+     
+     HERE_DOC        : `<<'(IDENTIFIER|STRING)
+                       any_char*
+                       IDENTIFIER
+     
+     REGEXP          : `/' any_char* `/'[`i'|`o'|`p']
+                     | `%'`r' char any_char* char
+     
+     IDENTIFIER is the sqeunce of characters in the pattern of /[a-zA-Z_][a-zA-Z0-9_]*/.
+
+
+File: ruby.info,  Node: Ruby Glossary,  Up: Top
+
+Ruby Glossary
+*************
+
+* Menu:
+
+* glossary_A::                A
+* glossary_B::                B
+* glossary_C::                C
+* glossary_D::                D
+* glossary_E::                E
+* glossary_F::                F
+* glossary_G::                G
+* glossary_H::                H
+* glossary_I::                I
+* glossary_J::                J
+* glossary_K::                K
+* glossary_L::                L
+* glossary_M::                M
+* glossary_N::                N
+* glossary_O::                O
+* glossary_P::                P
+* glossary_Q::                Q
+* glossary_R::                R
+* glossary_S::                S
+* glossary_T::                T
+* glossary_U::                U
+* glossary_V::                V
+* glossary_W::                W
+* glossary_X::                X
+* glossary_Y::                Y
+* glossary_Z::                Z
+
+
+File: ruby.info,  Node: glossary_A,  Next: glossary_B,  Up: Ruby Glossary
+
+A
+=
+
+
+File: ruby.info,  Node: glossary_B,  Next: glossary_C,  Prev: glossary_A,  Up: Ruby Glossary
+
+B
+=
+
+
+File: ruby.info,  Node: glossary_C,  Next: glossary_D,  Prev: glossary_B,  Up: Ruby Glossary
+
+C
+=
+
+
+File: ruby.info,  Node: glossary_D,  Next: glossary_E,  Prev: glossary_C,  Up: Ruby Glossary
+
+D
+=
+
+   - document
+
+     The one that matz is really bad at.  He always says "the source
+     itself should be the document.  It even describes bugs
+     perfectly."  But no one agrees.
+
+
+
+File: ruby.info,  Node: glossary_E,  Next: glossary_F,  Prev: glossary_D,  Up: Ruby Glossary
+
+E
+=
+
+
+File: ruby.info,  Node: glossary_F,  Next: glossary_G,  Prev: glossary_E,  Up: Ruby Glossary
+
+F
+=
+
+
+File: ruby.info,  Node: glossary_G,  Next: glossary_H,  Prev: glossary_F,  Up: Ruby Glossary
+
+G
+=
+
+
+File: ruby.info,  Node: glossary_H,  Next: glossary_I,  Prev: glossary_G,  Up: Ruby Glossary
+
+H
+=
+
+
+File: ruby.info,  Node: glossary_I,  Next: glossary_J,  Prev: glossary_H,  Up: Ruby Glossary
+
+I
+=
+
+
+File: ruby.info,  Node: glossary_J,  Next: glossary_K,  Prev: glossary_I,  Up: Ruby Glossary
+
+J
+=
+
+   - Japanese (language)
+
+     Native language of matz, the author of Ruby.  The cause of the
+     poor documentation of Ruby (according to his excuse).
+
+
+
+File: ruby.info,  Node: glossary_K,  Next: glossary_L,  Prev: glossary_J,  Up: Ruby Glossary
+
+K
+=
+
+
+File: ruby.info,  Node: glossary_L,  Next: glossary_M,  Prev: glossary_K,  Up: Ruby Glossary
+
+L
+=
+
+
+File: ruby.info,  Node: glossary_M,  Next: glossary_N,  Prev: glossary_L,  Up: Ruby Glossary
+
+M
+=
+
+   - matz
+
+     Ruby's author.  His real name is `Yukihiro Matsumoto'.  If you
+     say `You-Key-Hero Matz-motor' real quick, it sounds like his
+     name.  (`tz' as in `waltz')
+
+

@@ -1,0 +1,1426 @@
+Info file: w3.info,    -*-Text-*-
+produced by `texinfo-format-buffer'
+from file `w3.txi'
+using `texinfmt.el' version 2.38 of 3 July 1998.
+
+INFO-DIR-SECTION World Wide Web
+INFO-DIR-SECTION GNU Emacs Lisp
+START-INFO-DIR-ENTRY
+* Emacs/W3: (w3).                 Emacs/W3 World Wide Web browser.
+END-INFO-DIR-ENTRY
+
+This file documents the Emacs/W3 World Wide Web browser.
+
+Copyright (C) 1993, 1994, 1995, 1996 William M. Perry Copyright (C)
+1996, 1997 Free Software Foundation
+
+Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+
+
+File: w3.info, Node: Top, Next: Getting Started, Prev: (dir), Up: (dir)
+
+W3
+**
+
+Users can browse the World Wide Web from within Emacs by using
+Emacs/W3.  All of the widely used (and even some not very widely used)
+URL schemes are supported, and it is very easy to add new methods as
+the need arises.
+
+Emacs/W3 provides some core functionality that can be readily re-used
+from any program in Emacs.  Users and other package writers are
+encouraged to Web-enable their applications and daily work routines
+with the library.
+
+Emacs/W3 is completely customizable, both from Emacs-Lisp and from
+stylesheets *Note Stylesheets::.  If there is any aspect of Emacs/W3
+that cannot be modified to your satisfaction, please send mail to the
+w3-beta@xemacs.org mailing list with any suggestions.  *Note Reporting
+Bugs::.
+
+This manual corresponds to Emacs/W3 v4.0pre.46
+
+* Menu:
+
+* Getting Started::             Getting up and running with Emacs/W3
+* Basic Usage::                 Basic movement and usage of Emacs/W3.
+* Compatibility::               Explanation of compatibility with
+                                other browsers.
+* Display Variables::           How to control Emacs/W3's look.
+* Stylesheets::                 How to control the look of web pages
+* Supported URLs::              What URL schemes are supported.
+* MIME Support::                Support for MIME
+* Security::                    Various security methods supported
+* Cookies::                     Emacs/W3 and cookies.
+* Non-Unix Operating Systems::  Special considerations necessary to get
+                                up and running correctly under non-unix
+                                OS's.
+* Speech Integration::          Outputting to a speech synthesizer.
+* Advanced Features::           Some of the more arcane features.
+* More Help::                   How to get more help--mailing lists,
+                                newsgroups, etc.
+* Future Directions::           Plans for future revisions
+
+Appendices:
+* Reporting Bugs::              How to report a bug in Emacs/W3.
+* Dealing with Firewalls::      How to get around your firewall.
+* Proxy Gateways::              Using a proxy gateway with Emacs/W3.
+* Installing SSL::              Turning on SSL support.
+* Mailcap Files::               An explanation of Mailcap files.
+* Temporary::
+
+Indices:
+* General Index::               General Index.
+* Key Index::                   Menus of command keys and their references.
+
+
+
+File: w3.info, Node: Getting Started, Next: Basic Usage, Prev: Top, Up: Top
+
+Getting Started
+***************
+If installed correctly, starting Emacs/W3 is quite painless.  Just
+type `M-x w3' in a running Emacs session.  This will retrieve the
+default page that has been configured -- by default the documentation
+for Emacs/W3 at Indiana University.  The default homepage is specified
+by the `w3-default-homepage' variable.
+
+If the default page is not retrieved correctly at startup, you will
+have to do some customization.
+
+Once started, you can use the mouse and the menu or use the following
+key commands (for more commands and more detail, *Note Basic Usage:
+Basic Usage.).
+
+move forward
+     press the space bar,
+
+move backwards
+     press the backspace key,
+
+move to the next HTML reference on the page
+     press the `TAB' key,
+
+move to the previous HTML reference on the page
+     press the `SHIFT' and `TAB' keys at the same time.  If this does
+     not work (some text terminals cannot distinguish between `TAB'
+     and `SHIFT-TAB', pressing the `ALT' and `TAB' keys should also
+     work.
+
+follow a link
+     put the cursor over it
+     and press the `RETURN' key, or 
+     click the left mouse button on it,
+
+fetch a URL
+     press the `Control' and `o' keys at the same time,
+     type the URL, and then press the `RETURN' key,
+
+return to the last URL you were at
+     press the `l' key,
+
+quit W3 mode
+     press the `q' key.
+
+* Menu:
+
+* Downloading::                 Where to download Emacs/W3.
+* Building and Installing::     Compiling and installing from source.
+* Startup Files::               What is where, and why.
+
+
+
+File: w3.info, Node: Downloading, Next: Building and Installing, Prev: Getting Started, Up: Getting Started
+
+Downloading
+===========
+
+Emacs/W3 will work with Emacs 19.29 and later and XEmacs 19.14 and
+later, but if you're using a 19.x Emacs then you will need to get the
+latest custom and widget libraries.
+
+Emacs
+     Available from the GNU archive `ftp://prep.ai.mit.edu/pub/gnu' or
+     one of it's many mirrors.
+
+XEmacs
+     Available from the XEmacs archive `http://www.xemacs.org/' or one
+     of it's many mirrors.
+
+Emacs/W3
+     `http://www.cs.indiana.edu/elisp/w3/docs.html' is the main
+     distribution point for Emacs/W3.
+
+Emacspeak
+     A speech synthesizer package for Emacs and XEmacs.  More
+     information is available at
+     `http://www.cs.cornell.edu/Info/People/raman/emacspeak/'
+
+
+
+
+File: w3.info, Node: Building and Installing, Next: Startup Files, Prev: Downloading, Up: Getting Started
+
+Building and Installing
+=======================
+
+Emacs/W3 uses GNU `configure' (*Note Top: (configure)Top.) to control
+installation.  configure will attempt to find what version of Emacs
+you have and where it is installed.  If it finds both Emacs and
+XEmacs, then XEmacs is used (but see below for how to change this).
+Apart from the usual options, the following options are accepted:
+
+`--with-xemacs'
+     Use XEmacs.
+`--with-emacs'
+     Use Emacs.
+`--with-lispdir=DIR'
+     Put lisp files (*.el and *.elc) in DIR.  If this is not
+     specified, and neither is `--with-package-dir', then the lisp
+     files go into `EMACS/site-lisp'.
+`--with-package-dir=DIR'
+     If using XEmacs, install Emacs/W3 as a package in DIR.  Please
+     note that this and the `--prefix' argument are mutually
+     exclusive.
+`--with-makeinfo=MAKEINFO'
+     Use MAKEINFO to build info files from Texinfo files.  `configure'
+     will normally find makeinfo if it's available, you should only
+     need to specify this if it's not called makeinfo or if it isn't
+     in a directory in your `PATH'.
+`--with-custom=DIR'
+     Use the custom package in DIR.  `configure' will attempt to find
+     a suitable custom package, you should not need to specify this
+     yourself if the custom package is in Emacs's `load-path'.
+`--enable-site-install'
+     Install Emacs/W3 for the site, rather than just yourself.  This
+     only affects whether `make dotemacs' affects `~/.emacs' or
+     `site-lisp/default.el'.
+
+
+These are the most useful of the normal `configure' options.
+
+`--prefix=DIR'
+     This is the top level directory and by default everything is
+     installed somewhere below this.  This is `/usr/local' by default.
+`--infodir=DIR'
+     Where to put the info files.  This is `PREFIX/info' by default.
+`--data-dir=DIR'
+     Where to put date files (default stylesheets).  This is
+     `PREFIX/share' by default unless `--with-package-dir=PACK-DIR'
+     was given in which case they go into `PACK-DIR/etc/w3'.
+
+The directory that the byte-compiled lisp files will be installed into
+is controlled by the `--prefix', `--with-package-dir' and
+`--with-lispdir' options.  The directory for the info and data files
+is likewise controlled by the `--prefix', `--with-package-dir' and
+`--infodir' or `--data-dir' options.
+
+Normally these are the only things that need to be installed, they can
+by compiled by `make all', or `make w3' and `make info'.  `make
+install' will install the lisp, info and data files.  `make all' in
+the `texi' directory will create the info files and also dvi files.
+HTML and postscript can be generated by `make html' and `make ps'
+respectively.
+
+
+
+
+File: w3.info, Node: Startup Files, Prev: Building and Installing, Up: Getting Started
+
+Startup Files
+=============
+
+Emacs/W3 needs a directory for each user to store options, history and
+the cache.  `w3-configuration-directory' controls this directory,
+which is `~/.w3' by default.
+
+
+Emacs/W3 profile
+----------------
+Emacs/W3 keeps a file called `profile' in your configuration directory
+that sets many variables.  *Warning*: this file will overide any
+options that you set in your `.emacs'.  You *must* either edit
+`profile' directly or use `w3-menu-save-options' to save your
+settings.
+
+If you prefer, you can set `w3-default-configuration-file' to specify
+a different configuration file.  This file does not need to be
+dedicated to Emacs/W3 because Emacs/W3 will delimit its part of the
+file so you can set this to `.emacs' if you want.  However, while
+Emacs/W3 will save it's options to the correct part of the file, it
+will read (and execute) the entire file when starting.
+
+
+Default stylesheets
+-------------------
+Emacs/W3 will look for style-sheets in `w3-configuration-directory' as
+well as the site-wide directories.  In particular it will look for
+`dark.css' or `stylesheet-dark' if you're using a dark background and
+`light.css' or `stylesheet-light' if you're using a light background
+as well as `stylesheet' and `default.css'.  If `w3-default-stylesheet'
+is not `nil' then the file that it names will be used as well.  For
+more information, *Note Stylesheets::.
+
+
+History
+-------
+Emacs/W3 keeps a file called `history' in the configuration directory.
+This is a list of all the links you have visited.  You can change the
+file where the history is stored by setting `url-global-history-file'
+to the name of the file you'd prefer.  *Note Global History::.
+
+
+Hotlists
+--------
+"Hotlists" (sometimes called bookmarks, but not to be confused with
+Emacs's bookmarks) are a list of URLs.  Emacs/W3 supports mosaic's
+hotlist format which associates an alias with each URL --- *Note
+Hotlist Handling::.  The `w3-hotlist-file' variable specifies the
+hotlist file.  It defaults to `.mosaic-hotlist-default'.
+
+
+
+File: w3.info, Node: Basic Usage, Next: Compatibility, Prev: Getting Started, Up: Top
+
+Basic Usage
+***********
+Emacs/W3 is similar to the Info package all Emacs users hold near and
+dear to their hearts (*Note Info: (info)Top, for a description of
+Info).  Basically, `space' and `backspace' control scrolling, and
+`return' or the middle mouse button follows a hypertext link.  The
+`tab' and `Meta-tab' keys maneuver around the various links on the
+page.
+
+NOTE: Starting with Emacs/W3 4.0, form entry areas in a page can be
+typed directly into.  This is one of the main differences in
+navigation from version 2.0.  If you are used to using the `f' and `b'
+keys to navigate around a buffer, I suggest training yourself to
+always use `tab' and `M-tab' -- it will save time and frustration on
+pages with lots of form fields.
+
+By default, hypertext links are surrounded by '[[' and ']]' on
+non-graphic terminals (VT100, DOS window, etc.).  On a graphics
+terminal, the links are in shown in different colors.  For information
+on how to change this, *Note Stylesheets::.
+
+
+There are approximately 50 keys bound to special Emacs/W3 functions.
+The basic rule of thumb regarding keybindings in Emacs/W3 is that a
+lowercase key takes an action on the current document, and an
+uppercase key takes an action on the document pointed to by the
+hypertext link under the cursor.
+
+There are several areas that the keybindings fall into: movement,
+information, action, and miscellaneous.
+
+* Menu:
+
+* Movement::                    Moving around in the buffer.
+* Information::                 Getting information about a document.
+* Action::                      Following links, printing, etc.
+* Miscellaneous::               Everything else.
+
+
+
+File: w3.info, Node: Movement, Next: Information, Prev: Basic Usage, Up: Basic Usage
+
+Movement
+========
+
+All the standard Emacs bindings for movement are still in effect, with
+a few additions for convenience.
+
+`space'
+     Scroll downward in the buffer.  With prefix arg, scroll down that
+     many screenfuls (`w3-scroll-up').
+`M-space'
+     Goes to next document.
+
+`M-del'
+     Goes to previous document.
+
+`backspace, C-?'
+     Scroll upward in the buffer.  With prefix arg, scroll up that
+     many screenfuls (`scroll-down').
+`<'
+     Goes to the start of document (`w3-start-of-document').
+`>'
+     Goes to the end of document (`w3-end-of-document').
+`Meta-tab, Shift-tab, b'
+     Attempts to move backward one link area in the current document
+     (`w3-widget-backward').  Signals an error if no previous links
+     are found.
+`tab, f, n'
+     Attempts to move forward one link area in the current document
+     (`w3-widget-forward').  Signals an error if no more links are
+     found.
+`B, HB'
+     Takes one step back along the path in the current history
+     (`w3-history-backward').  Has no effect if at the beginning of
+     the session history.
+`F, HF'
+     Takes one step forward along the path in the current history
+     (`w3-history-forward').  Has no effect if at the end of the
+     session history.
+`l'
+     Return to the last buffer shown before this buffer
+     (`w3-goto-last-buffer').
+`q'
+     Kill this buffer (`w3-quit').
+`Q, u'
+     Bury this buffer, but don't kill it (`w3-leave-buffer').
+
+
+
+File: w3.info, Node: Information, Next: Action, Prev: Movement, Up: Basic Usage
+
+Information
+===========
+
+These functions relate information about one or more links on the
+current document.
+
+`v'
+     This shows the URL of the current document in the minibuffer
+     (`url-view-url').
+`V'
+     This shows the URL of the hypertext link under point in the
+     minibuffer (`w3-view-this-url').
+`i'
+     Shows miscellaneous information about the currently displayed
+     document (`w3-document-information').  This includes the URL, the
+     last modified date, MIME headers, the HTTP response code, and any
+     relationships to other documents.  Any security information is
+     also displayed.
+`I'
+     Shows information about the URL at point (`w3-popup-info').
+`s'
+     This shows the HTML source of the current document in a separate
+     buffer (`w3-source-document').  The buffer's name is based on the
+     document's URL.
+`S'
+     Shows the HTML source of the hypertext link under point in a
+     separate buffer (`w3-source-document-at-point').  The buffer's
+     name is based on the document's URL.
+`k'
+     This stores the current document's URL in the kill ring, and also
+     in the current window-system's clipboard, if possible
+     (`w3-save-url').
+`K'
+     Stores the URL of the document under point in the kill ring, and
+     also in the current window-system's clipboard, if possible
+     (`w3-save-this-url').
+
+
+
+File: w3.info, Node: Action, Next: Miscellaneous, Prev: Information, Up: Basic Usage
+
+Action
+======
+
+First, here are the keys and functions that bring up a new hypertext
+page, usually creating a new buffer.
+`m'
+     Choose a link from the current buffer and follow it
+     (`w3-complete-link').  A completing-read is done on all the
+     links, so `space' and `TAB' can be used for completion.
+`return'
+     Pressing return when over a hyperlink attempts to follow the link
+     under the cursor (`w3-follow-link').
+
+     Pressing return when over a form input field can cause
+     auto-submission of the form.  This is for Mosaic and Netscape
+     compatibility.  If there is only one item in the form other than
+     submit or reset buttons, then the form will be submitted.
+
+`Middle Mouse Button'
+     Attempt to follow a hypertext link under the mouse cursor
+     (`w3-follow-mouse').  Clicking on a form input field will prompt
+     in the minibuffer for the data to insert into the input field.
+     Type checking is done, and the data is only entered into the form
+     when data of the correct type is entered (ie: cannot enter 44 for
+     'date' field, etc).
+
+`Control Middle Mouse Button, Meta return'
+     Tries to retrieve the inlined image that is under point
+     (`w3-follow-inlined-image').  It ignores any form entry areas or
+     hyperlinks, and blindly follows any inlined image.  Useful for
+     seeing images that are meant to be used as hyperlinks when not on
+     a terminal capable of displaying graphics.
+
+`D'
+     Download the URL at point (`w3-download-url-at-point').
+`d'
+     Download the current URL (`w3-download-this-url').
+`m'
+     Selects a destination from a list of all the hyperlinks in the
+     current buffer (`w3-complete-link').  Use `space' and `tab' to
+     complete on the links.
+
+`r, g'
+     Reloads the current document (`w3-reload-document').  The
+     position within the buffer remains the same (unless the document
+     has changed since it was last retrieved, in which case it should
+     be relatively close).  This causes an unconditional reload from
+     the remote server --- the locally cached copy is not consulted.
+`R'
+     Redraws the buffer without reloading document
+     (`w3-refresh-buffer').
+`C-o'
+     Prompts for a URL in the minibuffer, and attempts to fetch it
+     (`w3-fetch').  If there are any errors, or Emacs/W3 cannot
+     understand the type of link requested, the errors are displayed
+     in a hypertext buffer.
+`o'
+     Opens a local file, interactively (`w3-open-local').  This
+     prompts for a local file name to open.  The file must exist, and
+     may be a directory.  If the requested file is a directory and
+     `url-use-hypertext-dired' is `nil', then a dired-mode buffer is
+     displayed.  If non`nil', then Emacs/W3 automatically generates a
+     hypertext listing of the directory.  The hypertext mode is the
+     default, so that all the keys and functions remain the same.
+
+`M-s'
+     Save a document to the local disk as HTML Source, Formatted Text,
+     LaTeX Source, or Binary (`w3-save-as').
+
+`Hv, C-c C-b'
+     Show the current session's history list (`w3-show-history-list').
+     This takes all the links that are in that internal list, and
+     formats them as hypertext links in a list, *Note Global History::
+
+And here are the commands to move around between Emacs/W3 buffers:
+
+`l'
+     Goes to the last WWW buffer seen (`w3-goto-last-buffer').
+`p'
+     Prints the current document (`w3-print-this-url').  Choose from
+     several different formats to print: formatted text, HTML source,
+     PostScript (with ps-print), or by using LaTeX and dvips).  *Note
+     Printing::.
+`P'
+     Prints out the URL under point in a variety of formats
+     (`w3-print-url-under-point').  *Note Printing::.
+`q'
+     Quits WWW mode (`w3-quit').  This kills the current buffer and
+     goes to the most recently visited buffer.
+`u, Q'
+     This (`w3-leave-buffer') is similar to `w3-quit', but the buffer
+     is not killed, it is moved to the bottom of the buffer list (so
+     it is the least likely to show up as the default with
+     switch-to-buffer).  This is different from `w3-goto-last-buffer'
+     in that it does not return to the last WWW page visited -- it is
+     the same as using `switch-to-buffer' -- the buffer left in the
+     window is fairly random.
+
+
+
+File: w3.info, Node: Miscellaneous, Prev: Action, Up: Basic Usage
+
+Miscellaneous
+=============
+
+`?'
+     Shows help for Emacs/W3 (`w3-help').
+`C-c C-v'
+     Show what version of Emacs/W3 you're running (`w3-version').
+`M-m'
+     Mails the current document to someone
+     (`w3-mail-current-document').  Choose from several different
+     formats to mail: formatted text, HTML source, PostScript, or
+     LaTeX source.  When the HTML source is mailed, then an
+     appropriate <base> tag is inserted at the beginning of the
+     document so that relative links may be followed correctly by
+     whoever receives the mail.
+`M-M'
+     Mails the document pointed to by the hypertext link under point
+     to someone (`w3-mail-document-under-point').  Choose from several
+     different formats to mail: formatted text, HTML source,
+     PostScript, or LaTeX source.  When the HTML source is mailed,
+     then an appropriate <base> tag is inserted at the beginning of
+     the document so that relative links may be followed correctly by
+     whoever receives the mail.
+`M-t, A-t'
+     gdj1: bound to url-list-processes.  What does this do?
+`c'
+     Send a mail to the author of the current document
+     (`w3-mail-document-author').
+
+`M-x w3-insert-formatted-url'
+     Insert a fully formatted HTML link into another buffer
+     (`w3-insert-formatted-url').  This gets the name and URL of
+     either the current buffer, or, with a prefix arg, of the link
+     under point, and construct the appropriate <a...>...</a> markup
+     and insert it into the desired buffer.
+`M-tab'
+     Inserts the URL of the current document into another buffer
+     (`w3-insert-this-url'').  Buffer is prompted for in the
+     minibuffer.  With prefix arg, uses the URL of the link under
+     point.
+`U'
+     Selects one of the <LINK> tags from this document and fetch it
+     (`w3-use-links').  Links are attributes of a specific document,
+     and can tell such things as who made the document, where a table
+     of contents is located, etc.
+
+     Link tags specify relationships between documents in two ways.
+     Normal (forward) relationships (where the link has a REL="xxx"
+     attribute), and reverse relationships (where the link has a
+     REV="xxx" attribute).  This first asks what type of link to
+     follow (Normal or Reverse), then does a `completing-read' on only
+     the links that have that type of relationship.
+
+
+
+File: w3.info, Node: Compatibility, Next: Display Variables, Prev: Basic Usage, Up: Top
+
+Compatibility with other Browsers
+*********************************
+Due to the popularity of several other browsers, Emacs/W3 offers an
+easy transition to its much better way of life.  This ranges from
+being able to share the same preferences files and disk cache to
+actually emulating the keybindings used in other browsers.
+
+* Menu:
+
+* Emulation::                   Emacs/W3 can emulate the keybindings and
+				other behaviours of other browsers.
+* Hotlist Handling::            A hotlist is an easy way to keep track of
+				interesting Web pages without having to
+				remember the exact path to get there.
+* Session History::             Keeping a history of documents visited
+				in one Emacs sessions allows the use of
+				'forward' and 'back' buttons easily.
+* Global History::              Keeping a history of all the places ever
+				visited on the web.
+
+
+
+File: w3.info, Node: Emulation, Next: Hotlist Handling, Prev: Compatibility, Up: Compatibility
+
+Emulation
+=========
+
+Emacs/W3 can emulate the keybindings of lynx and netscape, but only
+one at a time.  If you want emulation permanantly turned on, then you
+should add `turn-on-lynx-emulation' or `turn-on-netscape-emulation' to
+`w3-mode-hook'.
+
+* Menu:
+
+* lynx::                        Emulate lynx.
+* netscape::                    Emulate netscape.
+* Masquerading::                Emacs/W3 can masquerade as another
+                                browser.
+
+
+
+File: w3.info, Node: lynx, Next: netscape, Prev: Emulation, Up: Emulation
+
+Lynx emulation
+==============
+
+`turn-on-lynx-emulation' turns on lynx emulation and turns off
+netscape emulation.  lynx emulation is handled by the
+`w3-lynx-emulation-minor-mode' minor mode.  For more information about
+lynx style hotlists, *Note Hotlist Handling::.
+
+
+:: work :: Document lynx emulation
+`Down arrow'
+     Highlight next topic
+`Up arrow'
+     Highlight previous topic
+`Right arrow, Return, Enter'
+     Jump to highlighted topic
+`Left arrow'
+     Return to previous topic.  gdj1: actually, this doesn't seem to
+     work quite right.
+`+'
+     Scroll down to next page (Page-Down)
+`-'
+     Scroll up to previous page (Page-Up)
+`SPACE'
+     Scroll down to next page (Page-Down)
+`b'
+     Scroll up to previous page (Page-Up)
+`C-a'
+     Go to first page of the current document (Home)
+`C-e'
+     Go to last page of the current document (End)
+`C-b'
+     Scroll up to previous page (Page-Up)
+`C-f'
+     Scroll down to next page (Page-Down)
+`C-n'
+     Go forward two lines in the current document
+`C-p'
+     Go back two lines in the current document
+`)'
+     Go forward half a page in the current document (ignored)
+`('
+     Go back half a page in the current document (ignored)
+`#'
+     Go to Toolbar or Banner in the current document, only works in
+     XEmacs.  gdj1: is this what is meant by toolbar?
+`?, h'
+     Help (this screen)
+`a'
+     Add the current link to a bookmark file
+`c'
+     Send a comment to the document owner
+`d'
+     Download the current link
+`e'
+     Edit the current file (ignored)
+`g'
+     Goto a user specified URL or file
+`i'
+     Show an index of documents (ignored)
+`j'
+     Execute a jump operation (using hotlist)
+`k'
+     Show a list of key mappings
+`l'
+     List references (links) in current document
+`m'
+     Return to main screen
+`n'
+     Go to the next search string
+`o'
+     Set your options
+`p'
+     Print the current document
+`q'
+     Quit
+`r'
+     Delete hotlist entry
+`s'
+     Enter a search string for an external search gdj1: really?
+`u'
+     Go backwards in history
+`/'
+     Search for a string within the current document
+`v'
+     View a bookmark file
+`V'
+     Go to the Visited Links Page
+`x'
+     Force submission of form or link with no-cache
+`z'
+     Cancel transfer in progress
+`[backspace]'
+     Go to the history Page gdj1: really?
+`='
+     Show file and link info
+`\'
+     Toggle document source/rendered view
+`!'
+     Spawn your default shell
+`*'
+     Toggle image_links mode on and off (ignored)
+`['
+     Toggle pseudo_inlines mode on and off (ignorged)
+`]'
+     Send an HTTP HEAD request for the current doc or link (ignored)
+`C-r'
+     Reload current file and refresh the screen
+`C-w'
+     Refresh the screen
+`C-u'
+     Erase input line (ignored)
+`C-g'
+     Cancel input or transfer
+`C-t'
+     Toggle trace mode on and off (ignored)
+`C-k'
+     Invoke the Cookie Jar Page (ignored)
+
+
+
+File: w3.info, Node: netscape, Next: Masquerading, Prev: lynx, Up: Emulation
+
+Netscape emulation
+==================
+
+`turn-on-netscape-emulation' turns on netscape emulation and turns off
+lynx emulation.  netscape emulation is handled by the
+`w3-netscape-emulation-minor-mode' minor mode.  For more information
+about netscape style hotlists, *Note Hotlist Handling::.
+
+
+
+`M-a'
+     Add the current link to a bookmark file
+
+`M-b'
+     Show hotlist file.
+
+`M-f'
+     Search forward in document
+
+`M-g'
+     Reapeat last search
+
+`M-h'
+     Show history window
+
+`M-i'
+     Load images
+
+`M-l'
+     Goto a user specified URL or file
+
+`M-m'
+     Send mail
+
+`M-n'
+     Open new frame
+
+`M-o'
+     Open a local file
+
+`M-p'
+     Print current document
+
+`M-q'
+     Quit current document
+
+`M-r'
+     Reload document and redraw
+
+`M-s'
+     Save current document
+
+`M-[left]'
+     Go back in history list
+
+`M-[right]'
+     Go forward in history list
+
+`[left]'
+     Scroll left
+
+`[right]'
+     Scroll right
+
+`[up]'
+     Scroll up
+
+`[down]'
+     Scroll down
+
+
+
+File: w3.info, Node: Masquerading, Prev: netscape, Up: Emulation
+
+Masquerading
+============
+HTTP allows servers to ask browsers what browser they are, and what
+version they are.  Emacs/W3 allows you to choose the reply.  There are
+functions to masquerade as lynx, netscape, IE or arena.  For each
+BROWSER there are three functions, `turn-on-BROWSER-masquerade-mode',
+`turn-off-BROWSER-masquerade-mode' and `w3-BROWSER-masquerade-mode'.
+The purpose of the first two is clear, `w3-BROWSER-masquerade-mode'
+takes an optional argument which toggles the mode if it's `nil', turns
+off the mode if it's 0 and turns the mode on otherwise.
+
+If you'd prefer to masquerade as another browser, then you should call
+`w3-masquerade-stub' with three arguments: ARG, APP and VERSION.  ARG
+has the same function as for `w3-BROWSER-masquerade-mode', APP is the
+name of the browser to masquerade as and VERSION is the version.
+
+Why would you want to masquerade as another browser when you could be
+advertising Emacs/W3?  Well, some servers will only let certain
+browsers connect with them.  This is cleary evil.  Also some servers
+may alter what they present depending on the browser, this is probably
+a Good Thing but they might not know about Emacs/W3.  Also one could
+argue that demanding the USER_AGENT field is a breach of privacy,
+Emacs/W3 doesn't have to send it (*Note Security::), but the server
+doesn't have to let you connect either.
+
+
+
+
+File: w3.info, Node: Hotlist Handling, Next: Session History, Prev: Emulation, Up: Compatibility
+
+Hotlist Handling
+================
+
+Emacs/W3 supports two types of hotlist, mosaic hotlists and HTML as
+used by lynx and netscape (which both call hotlists bookmarks).
+Unfortunately, not all hotlist operations are supported for HTML files
+at the moment.
+
+In order to avoid having to traverse many documents to get to the same
+document over and over, Emacs/W3 supports a "hotlist" like Mosaic.
+This is a file that contains URLs and aliases.  Hotlists allow quick
+access to any document in the Web, providing it has been visited and
+added to the hotlist.  The variable `w3-hotlist-file' determines where
+this information is saved.  The structure of the file is compatible
+with Mosaic's hotlist file, so this defaults to
+`~/.mosaic-hotlist-default'.
+
+Hotlist commands are:
+`ha'
+     Shows the hotlist entries matching a regular expression.
+
+`hi'
+     Adds the current document to the hotlist, with the buffer name as
+     its identifier.  Modifies the file specified by
+     `w3-hotlist-file'.  If this is given a prefix-argument (via
+     `C-u'), the title is prompted for instead of automatically
+     defaulting to the document title.
+
+`hd'
+     Prompts for the alias of the entry to kill.  Pressing the
+     spacebar or tab will list out partial completions.  The internal
+     representation of the hotlist and the file specified by
+     `w3-hotlist-file' are updated.
+
+`hr'
+     Some hotlist item names can be very unwieldy (`Mosaic for X level
+     2 fill out form support'), or uninformative (`Index of /').
+     Prompts for the item to rename in the minibuffer--use the
+     spacebar or tab key for completion.  After having chosen an item
+     to rename, prompts for a new title until a unique title is
+     entered.  Modifies the file specified by `w3-hotlist-file'.
+
+`hu'
+     Prompts for the alias to jump to.  Pressing the spacebar or tab
+     key shows partial completions.
+
+`hv'
+     Converts the hotlist into HTML and displays it.
+
+`hA'
+     Appends another hotlist file to the one currently in memory.
+
+`hI'
+     Add the document pointed to by the hyperlink under point to the
+     hotlist.
+
+`hR'
+     This rereads the default hostlist file specified by
+     `w3-hotlist-file'.
+
+
+
+
+
+File: w3.info, Node: Session History, Next: Global History, Prev: Hotlist Handling, Up: Compatibility
+
+History
+=======
+
+Almost all web browsers keep track of the URLs followed from a page,
+so that it can provide forward and back buttons to keep a path of URLs
+that can be traversed easily.
+
+If `url-keep-history' is non-`nil', then Emacs/W3 keeps track of all
+the URLs visited in an Emacs session.  If `t' then Emacs/W3 will save
+the history list at the end of each session to the
+`url-global-history-file' file.  The history list is simply a list of
+all the URLs visited in the session.
+
+To view a listing of the history for this session of Emacs/W3, use
+`M-x w3-show-history-list' (`Hv') from any buffer, and Emacs/W3
+generates an HTML document showing every URL visited since Emacs
+started (or cleared the history list), and then format it.  Any of the
+links can be chosen and followed to the original document.  To clear
+the history list, choose 'Clear History' from the 'Options' menu.
+
+Another twist on the history list mechanism is the fact that all
+Emacs/W3 buffers remember what URL, buffer, and buffer position of the
+last document, and also keeps track of the next location jumped to
+from that buffer.  This means that the user can go forwards and
+backwards very easily along the path taken to reach a particular
+document.  To go forward, use the function `w3-forward-in-history'
+(`F'), to go backward, use the function `w3-backward-in-history'
+(`B').  To view the entire history, use `w3-show-history-list' (`Hv').
+
+
+
+
+File: w3.info, Node: Global History, Prev: Session History, Up: Compatibility
+
+Global History
+==============
+
+Most web browsers also support the idea of a "history" of URLs the
+user has visited, and it displays them in a different style than
+normal URLs.  Emacs/W3 will read and write history files generated by
+Emacs/W3, Mosaic v1 and v2 or netscape.  Emacs/W3 looks at the file
+contents to determine the type of history.
+
+If the variable `url-keep-history' is `t', then Emacs/W3 keeps a list
+of all the URLs visited in a session.  The file is automatically
+written to disk every `url-global-history-save-interval' seconds and
+when exiting emacs.  The list is added to those already in the file
+specified by `url-global-history-file', which defaults to
+`~/mosaic.hst' for MS operating systems, `~/mosaic.global-history' for
+VMS and `~/.w3/history' for everything else.
+
+If any URL in the list is found in the file, it is not saved, but new
+ones are added at the end of the file.
+
+The function that saves the global history list is smart enough to
+notice what style of history list is being used (Netscape, Emacs/W3,
+or XMosaic), and writes out the new additions appropriately.
+
+One of the nice things about keeping a global history files is that
+Emacs/W3 can use it as a completion table.  When doing `M-x w3-fetch',
+pressing the `tab' or `space' key will show all completions for a
+partial URL.  This is very useful, especially for very long URLs that
+are not in a hotlist, or for seeing all the pages from a particular
+web site before choosing which to retrieve.
+
+
+
+File: w3.info, Node: Display Variables, Next: Stylesheets, Prev: Compatibility, Up: Top
+
+Display Variables
+=================
+
+Emacs/W3 has many variable for you to fiddle with to get the display
+just right.
+
+`w3-display-frames'
+     You can control what Emacs/W3 does with frame by setting
+     `w3-display-frames'.  It can be
+     `nil'
+          Emacs/W3 will pretend not to understand frames at all.
+     `as-nil'
+          Emacs/W3 will show hyperlinks to frames but will not fetch
+          them (the same behaviour as lynx).
+     `ask'
+          This is similar to `as-nil', but Emacs/W3 will ask if you
+          want to retrieve the frames.
+     `t'
+          Emacs/W3 will dispaly the hyperlinks and fetch the frames.
+
+`w3-bullets'
+     Emacs/W3 lets *you* decide what characters to use for bullets in
+     unordered lists by setting `w3-bullets'.  It is a association
+     list, mapping list types to characters.  By default it is `((disc
+     . ?*) (circle . ?o) (square . ?#) (none . ? ))'.
+
+`w3-echo-link'
+     You can decide what should be displayed when tabbing through
+     links by setting the `w3-echo-link' variable.  It is a list and
+     may contain the following symbols,
+     `url'
+          Display the URL of the target.
+     `text'
+          Display the text of the link.
+     `title'
+          Display the title attribute of the link.
+     `name'
+          Display the name or id attribute of the link.
+
+     The default is `(title url text name)'.
+
+`w3-horizontal-rule-char'
+     Many HTML pages use horizontal lines (rules) to seperate sections
+     of the page.  You can control what character Emacs/W3 will use to
+     draw these by setting `w3-horizontal-rule-char'.  If it is a
+     character (*not* a string) then Emacs/W3 will replicate that
+     character across the screen, if it is `nil' then Emacs/W3 will
+     use a terminal graphics character if possible.  It is `nil by
+     default'.
+
+`w3-use-terminal-characters'
+     When Emacs/W3 draws table and rules, it needs to approximate line
+     somehow.  If `w3-use-terminal-characters' it `non-nil' (the
+     default) then Emacs/W3 will use terminal graphics characters if
+     they are available.
+
+`w3-use-terminal-characters-on-tty'
+     Using terminal graphics characters on ttys will trigger display
+     bugs in both XEmacs and FSF Emacs, but the display is usually
+     readable with FSF Emacs.  `w3-use-terminal-characters-on-tty'
+     controls whether to use terminal graphics characters on ttys, it
+     is `nil' by default.
+
+`w3-use-terminal-glyphs'
+     Emacs/W3 can use glyphs rather than text properties for terminal
+     graphics characters.  Glyphs do not work with the most recent
+     versions of XEmacs.  This is `t' by default.
+
+`w3-defined-link-types'
+     `w3-defined-link-types' is a list of names that have special
+     significance as the values of `REL' or `REV' attributes of <link>
+     elements.  All members should be in lowercase.
+
+`w3-auto-image-alt'
+     Some people do not feel it's worth their time to add `alt' tags
+     to their images, but Emacs/W3 can create `alt' tags on the fly
+     for images that do not have them.  To control this you can set
+     `w3-auto-image-alt' to one of the following:
+     `nil'
+          Do not create `alt' tags
+     string
+          The string will be run through format with the filename of
+          the image and so may have a single `%s', for example
+          `"[IMAGE(%s)]"'
+     function
+          The function will be called with the filename of the images
+          as the argument.  This is the default, with
+          `w3-default-image-alt-func' being the function.
+
+`w3-min-img-size, w3-default-image-alt-func, w3-dummy-img-alt-repl'
+     `w3-default-image-alt-func' returns `w3-dummy-img-alt-repl' (`*'
+     by default) if the image's height and width are both less than
+     `w3-min-img-size' pixels (15 by default) and if the filename
+     matches the `w3-dummy-img-re' regular expression.  Otherwise,
+     `w3-default-image-alt-func' returns the filename enclosed in a
+     `[]' pair.
+
+`w3-icon-format'
+     Emacs/W3 will expect the standard icons to be in the format
+     specified by `w3-icon-format'.  This is `gif' by default, but
+     could be `xpm', `xbm' or any other format for that matter.  It is
+     added as a file extension to the icon name, but the variable's
+     value must be a symbol.  If `nil', then the server decides.
+
+`w3-delay-image-loads'
+     You can choose whether Emacs/W3 retrieves images with the
+     document, or delays loading them by setting
+     `w3-delay-image-loads'.  By default this is `t' if you compiled
+     XEmacs with support for gifs, jpegs, pngs or imagick and `nil'
+     otherwise.
+
+`w3-image-mappings'
+     `w3-image-mappings' controls the mapping of MIME types to image
+     types for the `image' package.  Each entry is a cons cell of a
+     MIME type string and an image-type symbol.
+
+`w3-max-menu-length'
+     Emacs/W3 will split menus into smaller submenus if they are
+     longer than `w3-max-menu-length'.
+
+`w3-max-menu-width'
+     The maximum width of a pulldown menu choice.
+
+`w3-right-margin'
+     Emacs/W3's right margin is controlled by `w3-right-margin'.  This
+     is subtracted from `(window-width)' for each Emacs/W3 buffer and
+     used as the fill-column.  It is 2 by default.
+
+`w3-maximum-line-length'
+     The maximum length of a line.  If `nil' (the default) then lines
+     can extend to the window margin.
+
+`w3-modeline-format'
+     You can specify the modeline to use in `w3-mode' by setting this.
+
+`w3-honor-stylesheets'
+     If this is non-`nil' (the default) then Emacs/W3 will let a
+     document specify a CSS stylesheet.
+
+`w3-user-colors-take-precedence'
+     Emacs/W3 will ignore a document's attempts to define certain
+     colours if `w3-user-colors-take-precedence' it non-`nil'.  The
+     default is `nil'.
+
+`w3-user-fonts-take-precedence'
+     Emacs/W3 will ignore attempts by stylesheets or font tags to
+     change certain fonts if this is non-`nil'.
+
+
+     Asynchronous behaviour
+     ----------------------
+
+`url-be-asynchronous'
+     If this is non-`nil' then document retrievals over HTTP will be
+     down in the background.
+
+`url-default-retrieval-proc'
+     This controls what happens when an asynchronous retrievel
+     completes.  It is `url-default-callback' by default but can be
+     any function taking one argument.  The argument specifies the
+     file that has been retrieved.  If there is no buffer associated
+     with the file, then `url-default-callback' just puts a message in
+     the minibuffer saying that the retrieval is complete, otherwise
+     the action depends on the buffer.
+
+`w3-do-incremental-display'
+     Emacs/W3 can de incremental display of pages if
+     `w3-do-incremental-display' is `t'.  It is `nil' by default.
+
+`w3-notify'
+     You might want Emacs/W3 to notify you discreetly when it has
+     finished preparing a page for your reading pleasure.  You can
+     control Emacs/W3's behaviour in this situation by way of the
+     `w3-notify' variable.  It may take the following values:
+     `newframe'
+          Puts the Emacs/W3 page in its own frame.
+     `bully'
+          Make the Emacs/W3 page the current buffer and only window.
+     `semibully'
+          Make the Emacs/W3 page the current buffer in the same
+          window.  This is the default.
+     `aggressive'
+          Make the Emacs/W3 page the current buffer in the other
+          window.
+     `friendly'
+          Display the Emacs/W3 page in the other window, but don't
+          make it the current buffer.
+     `polite'
+          Don't display Emacs/W3 page, but print a message when ready
+          and beep.
+     `quiet'
+          The same as `polite', but don't beep.
+     `meek'
+          Make no indication that the page is ready, in fact any other
+          value is equivalent to meek.
+
+
+
+
+
+File: w3.info, Node: Stylesheets, Next: Supported URLs, Prev: Display Variables, Up: Top
+
+Stylesheets
+***********
+The way in which Emacs/W3 formats a document is very customizable.
+All formatting is now controlled by a default stylesheet set by the
+user with the `w3-default-stylesheet' variable.  Emacs/W3 currently
+supports the W3C recommendation for Cascading Style Sheets, Level 1
+(commonly known as CSS1) with a few experimental items from other W3C
+proposals.  Wherever Emacs/W3 diverges from the specification, it will
+be clearly documented, and will be changed once a full standard is
+available.
+
+Support for DSSSL is progressing, but spare time is at an all-time
+low.  If anyone would like to help, please contact the author.
+
+The following sections closely parallel the CSS1 specification so it
+should be very easy to look up what Emacs/W3 supports when browsing
+through the CSS1 specification.  Please note that a lot of the text in
+the following sections comes directly from the specification as well.
+
+* Menu:
+
+* Terminology::                 Terms used in the rest of this chapter.
+* Basic Concepts::              Why are stylesheets useful?  Getting started.
+* Pseudo-Classes/Elements::     Special classes for elements.
+* The Cascade::                 How stylesheets are combined.
+* Properties::                  What properties you can set on elements.
+* Units::                       What you can set them to.
+
+
+
+File: w3.info, Node: Terminology, Next: Basic Concepts, Prev: Stylesheets, Up: Stylesheets
+
+Terminology
+===========
+
+"attribute"
+     HTML attribute, ie: `align=center' -- align is the attribute.
+"author"
+     The author of an HTML document.
+"block-level element"
+     An element which has a line break before and after (e.g. 'H1' in
+     HTML).
+"canvas"
+     The part of the UA's drawing surface onto which documents are
+     rendered.
+"child element"
+     A subelement in SGML terminology.
+"contextual selector"
+     A selector that matches elements based on their position in the
+     document structure. A contextual selector consists of several
+     simple selectors. E.g., the contextual selector 'H1.initial B'
+     consists of two simple selectors, 'H1.initial' and 'B'.
+"CSS"
+     Cascading Style Sheets.
+"declaration"
+     A property (e.g. 'font-size') and a corresponding value
+     (e.g. '12pt').
+"designer"
+     The designer of a style sheet.
+"document"
+     HTML document.
+"element"
+     HTML element.
+"element type"
+     A generic identifier in SGML terminology.
+"fictional tag sequence"
+     A tool for describing the behavior of pseudo-classes and
+     pseudo-elements.
+"font size"
+     The size for which a font is designed. Typically, the size of a
+     font is approximately equal to the distance from the bottom of
+     the lowest letter with a descender to the top of the tallest
+     letter with an ascender and (optionally) with a diacritical mark.
+"HTML extension"
+     Markup introduced by UA vendors, most often to support certain
+     visual effects. The FONT, CENTER and BLINK elements are examples
+     of HTML extensions, as is the BGCOLOR attribute. One of the goals
+     of CSS is to provide an alternative to HTML extensions.
+"inline element"
+     An element which does not have a line break before and after
+     (e.g. 'STRONG' in HTML)
+"intrinsic dimensions"
+     The width and height as defined by the element itself, not
+     imposed by the surroundings. In this specification it is assumed
+     that all replaced elements -- and only replaced elements -- come
+     with intrinsic dimensions.
+"parent element"
+     The containing element in SGML terminology.
+"pseudo-element"
+     Pseudo-elements are used in CSS selectors to address
+     typographical items (e.g. the first line of an element) rather
+     than structural elements.
+"pseudo-class"
+     Pseudo-classes are used in CSS selectors to allow information
+     external to the HTML source (e.g. the fact that an anchor has
+     been visited or not) to classify elements.
+"property"
+     A stylistic parameter that can be influenced through CSS.
+"reader"
+     The person for whom the document is rendered.
+"replaced element"
+     An element that the CSS formatter only knows the intrinsic
+     dimensions of. In HTML, IMG, INPUT, TEXTAREA, SELECT and OBJECT
+     elements can be examples of replaced elements. E.g., the content
+     of the IMG element is often replaced by the image that the SRC
+     attribute points to.  CSS1 does not define how the intrinsic
+     dimensions are found.
+"rule"
+     A declaration (e.g. 'font-family: helvetica') and its selector
+     (e.g. 'H1').
+"selector"
+     A string that identifies what elements the corresponding rule
+     applies to. A selector can either be a simple selector
+     (e.g. 'H1') or a contextual selector (e.g. 'H1 B') which consists
+     of several simple selectors.
+"SGML"
+     Standard Generalized Markup Language, of which HTML is an
+     application.
+"simple selector"
+     A selector that matches elements based on the element type and/or
+     attributes, and not the element's position in the document
+     structure. E.g., 'H1.initial' is a simple selector.
+"style sheet"
+     A collection of rules.
+"UA"
+     User Agent, often a web browser or web client.
+"user"
+     Synonymous with reader.
+"weight"
+     The priority of a rule.
+
+
+
+File: w3.info, Node: Basic Concepts, Next: Pseudo-Classes/Elements, Prev: Terminology, Up: Stylesheets
+
+Basic Concepts
+==============
+
+Designing simple style sheets is easy. One needs only to know a little
+HTML and some basic desktop publishing terminology. E.g., to set the
+text color of 'H1' elements to blue, one can say:
+
+       H1 { color: blue }
+
+The example above is a simple CSS rule. A rule consists of two main
+parts: selector ('H1') and declaration ('color: blue'). The
+declaration has two parts: property ('color') and value
+('blue'). While the example above tries to influence only one of the
+properties needed for rendering an HTML document, it qualifies as a
+style sheet on its own. Combined with other style sheets (one
+fundamental feature of CSS is that style sheets are combined) it will
+determine the final presentation of the document.
+
+The selector is the link between the HTML document and the style
+sheet, and all HTML element types are possible selectors.
+
+
+
+File: w3.info, Node: Pseudo-Classes/Elements, Next: The Cascade, Prev: Basic Concepts, Up: Stylesheets
+
+Pseudo-Classes/Elements
+=======================
+
+In CSS1, style is normally attached to an element based on its
+position in the document structure. This simple model is sufficient
+for a wide variety of styles, but doesn't cover some common
+effects. The concept of pseudo-classes and pseudo-elements extend
+addressing in CSS1 to allow external information to influence the
+formatting process.
+
+Pseudo-classes and pseudo-elements can be used in CSS selectors, but
+do not exist in the HTML source. Rather, they are "inserted" by the UA
+under certain conditions to be used for addressing in style
+sheets. They are referred to as "classes" and "elements" since this is
+a convenient way of describing their behavior. More specifically,
+their behavior is defined by a fictional tag sequence.
+
+Pseudo-elements are used to address sub-parts of elements, while
+pseudo-classes allow style sheets to differentiate between different
+element types.
+
+The only support pseudo-classes in Emacs/W3 are on the anchor tag
+(<a>...</a>).
+
+User agents commonly display newly visited anchors differently from
+older ones. In CSS1, this is handled through pseudo-classes on the 'A'
+element:
+
+       A:link { color: red }       /* unvisited link */
+       A:visited { color: blue }   /* visited links */
+       A:active { color: lime }    /* active links */
+
+All 'A' elements with an 'HREF' attribute will be put into one and
+only one of these groups (i.e. target anchors are not affected). UAs
+may choose to move an element from 'visited' to 'link' after a certain
+time. An 'active' link is one that is currently being selected
+(e.g. by a mouse button press) by the reader.
+
+The formatting of an anchor pseudo-class is as if the class had been
+inserted manually. A UA is not required to reformat a currently
+displayed document due to anchor pseudo-class transitions. E.g., a
+style sheet can legally specify that the 'font-size' of an 'active'
+link should be larger that a 'visited' link, but the UA is not
+required to dynamically reformat the document when the reader selects
+the 'visited' link.
+
+Pseudo-class selectors do not match normal classes, and vice
+versa. The style rule in the example below will therefore not have any
+influence:
+
+       A:link { color: red }
+
+       <A CLASS=link NAME=target5> ... </A>
+
+In CSS1, anchor pseudo-classes have no effect on elements other than
+'A'. Therefore, the element type can be omitted from the selector:
+
+       A:link { color: red }
+       :link { color: red }
+
+The two selectors above will select the same elements in CSS1.
+
+Pseudo-class names are case-insensitive.
+
+Pseudo-classes can be used in contextual selectors:
+
+       A:link IMG { border: solid blue }
+
+Also, pseudo-classes can be combined with normal classes:
+
+       A.external:visited { color: blue }
+
+       <A CLASS=external HREF="http://out.side/">external link</A>
+
+If the link in the above example has been visited, it will be rendered
+in blue. Note that normal class names precede pseudo-classes in the
+selector.
+
+
+

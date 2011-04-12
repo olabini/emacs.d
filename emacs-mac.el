@@ -1,0 +1,20 @@
+(defun tcsh ()
+  (interactive)
+  (let* ((explicit-shell-file-name "/bin/tcsh")
+         (shell-file-name explicit-shell-file-name)
+         (comint-prompt-read-only t))
+    (shell)
+    (rename-buffer "*tcsh-shell*" t)))
+
+(defun bash ()
+  (interactive)
+  (let* ((explicit-shell-file-name "/bin/bash")
+         (shell-file-name explicit-shell-file-name)
+         (comint-prompt-read-only t))
+    (shell)
+    (rename-buffer "*bash-shell*" t)))
+
+(setq mac-command-modifier 'meta)
+(setq mac-option-modifier nil)
+
+(provide 'emacs-mac)

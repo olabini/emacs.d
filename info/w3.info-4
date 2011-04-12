@@ -1,0 +1,957 @@
+Info file: w3.info,    -*-Text-*-
+produced by `texinfo-format-buffer'
+from file `w3.txi'
+using `texinfmt.el' version 2.38 of 3 July 1998.
+
+INFO-DIR-SECTION World Wide Web
+INFO-DIR-SECTION GNU Emacs Lisp
+START-INFO-DIR-ENTRY
+* Emacs/W3: (w3).                 Emacs/W3 World Wide Web browser.
+END-INFO-DIR-ENTRY
+
+This file documents the Emacs/W3 World Wide Web browser.
+
+Copyright (C) 1993, 1994, 1995, 1996 William M. Perry Copyright (C)
+1996, 1997 Free Software Foundation
+
+Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+
+
+File: w3.info, Node: Dealing with Firewalls, Next: Proxy Gateways, Prev: Reporting Bugs, Up: Top
+
+Dealing with Firewalls
+**********************
+By default, Emacs can support standard TCP/IP network connections on
+almost all the platforms it runs on (Unix, VMS, Windows, etc).
+However, there are several situations where it is not sufficient.
+
+Firewalls
+     It is becoming more and more common to be behind a firewall or
+     some other system that restricts your outbound network activity,
+     especially if you are like me and away from the wonderful world
+     of academia.  Emacs/W3 has several different methods to get
+     around firewalls (not to worry though -- none of them should get
+     you in trouble with the local MIS department.)
+
+Emacs cannot resolve hostnames.
+     This happens quite often on SunOS workstations and some ULTRIX
+     machines.  Some C libraries do not include the hostname resolver
+     routines in their static libraries.  If Emacs was linked
+     statically, and was not linked with the resolver libraries, it
+     wil not be able to get to any machines off the local network.
+     This is characterized by being able to reach someplace with a raw
+     ip number, but not its hostname (`http://129.79.254.191/' works,
+     but `http://www.cs.indiana.edu/' doesn't).
+
+     The best solution for this problem is to recompile Emacs, making
+     sure to either link dynamically (if available on your operating
+     system), or include the `-lresolv'.
+
+     If you do not have the disk space or the appropriate permissions
+     to recompile Emacs, another alternative is using the `nslookup'
+     program to do hostname resolution.  To turn this on, set the
+     variable `url-gateway-broken-resolution' in your `~/.emacs' file.
+     This runs the program specified by `url-gateway-nslookup-program'
+     (by default "`nslookup'" to do hostname resolution.  This program
+     should expect a single argument on the command line -- the
+     hostname to resolve, and should produce output similar to the
+     standard Unix `nslookup' program:
+
+          Name: www.cs.indiana.ed
+          Address: 129.79.254.191
+
+Using TERM (or TERM-like) Networking Software
+     TERM (1) (*Note Dealing with Firewalls-Footnotes::) for slip-like
+     access to the internet.
+
+     NOTE: XEmacs and Emacs 19.22 or later have patches to enable
+     native TERM networking.  To enable it, `#define TERM' in the
+     appropriate s/*.h file for the operating system, then change the
+     `SYSTEM_LIBS' definition to include the `termnet' library that
+     comes with the latest versions of TERM.
+
+     If you run into any problems with the native TERM networking
+     support in Emacs or XEmacs, please let wmperry+w3@cs.indiana.edu
+     know, as he is responsible for the original support.
+
+Emacs/W3 has support for using the gateway mechanism for certain
+domains, and directly connecting to others.  The variable
+`url-gateway-local-host-regexp' controls this behaviour.  This is a
+regular expression (2) (*Note Dealing with Firewalls-Footnotes::) that
+matches local hosts that do not require the use of a gateway.  If
+`nil', then all connections are made through the gateway.
+
+Emacs/W3 supports several methods of getting around gateways.  The
+variable `url-gateway-method' controls which of these methods is used.
+This variable can have several values (use these as symbol names, not
+strings), ie: `(setq url-gateway-method 'telnet)'.  Possible values
+are:
+
+"telnet"
+     Use this method if you must first telnet and log into a gateway
+     host, and then run telnet from that host to connect to outside
+     machines.
+
+     `url-gateway-telnet-host'
+          The gateway host to telnet to.  Once logged in there, you
+          then telnet out to the hosts you want to connect to.
+     `url-gateway-telnet-parameters'
+          This should be a list of parameters to pass to the `telnet'
+          program.
+     `url-gateway-telnet-password-prompt'
+          This is a regular expression that matches the password
+          prompt when logging in.
+     `url-gateway-telnet-login-prompt'
+          This is a regular expression that matches the username
+          prompt when logging in.
+     `url-gateway-telnet-user-name'
+          The username to log in with.
+     `url-gateway-telnet-password'
+          This is the password to send when logging in.
+     `url-gateway-prompt-pattern'
+          This is a regular expression that matches the shell prompt.
+
+
+"rlogin"
+     This method is identical to the `telnet' method, but uses
+     `rlogin' to log into the remote machine without having to send
+     the username and password over the wire every time.
+
+     `url-gateway-rlogin-host'
+          Host to `rlogin' to before telnetting out.
+     `url-gateway-rlogin-parameters'
+          Parametres to pass to `rsh'.
+     `url-gateway-rlogin-user-name'
+          User name to use when logging in to the gateway.
+     `url-gateway-prompt-pattern'
+          This is a regular expression that matches the shell prompt.
+
+"tcp"
+     Masanobu UMEDA (umerin@mse.kyutech.ac.jp) has written a very
+     small application that you can run in a subprocess to do the
+     network connections.
+
+"SOCKS"
+     Use if the firewall has a SOCKS gateway running on it.  SOCKS v5
+     protocol is defined in RFC1928.
+
+     `socks-password'
+          If this is `nil' then you will be asked for the passward,
+          otherwise it will be used as the password for authenticating
+          you to the SOCKS server.
+
+     `socks-username'
+          This is the username to use when authenticating yourself to
+          the SOCKS server.  By default this is your login name
+
+     `socks-timeout'
+          This controls how long, in seconds, Emacs/W3 will wait for
+          responses from the SOCKS server; it is 5 by default.
+
+     `socks-server'
+          Thiss the default server, it take the form (`"Default
+          server"' SERVER PORT VERSION) where VERSION can be either 4
+          or 5.
+
+     `socks-server-aliases'
+          This a list of server aliases.  It is a list of aliases of
+          the form (ALIAS HOSTNAME PORT VERSION).
+
+     `socks-network-aliases'
+          This a list of network aliases.  Each entry in the list
+          takes the form (ALIAS (NETWORK)) where ALIAS is a string
+          that names the NETWORK.  The networks can contain a pair
+          (not a dotted pair) of IP addresses which specify a range of
+          IP addresses, an IP address and a netmask, a domain name or
+          a unique hostname or IP address.
+
+     `socks-redirection-rules'
+          This a list of redirection rules.  Each rule take the form
+          (DESTINATION NETWORK CONNECTION TYPE) where DESTINATION
+          NETWORK is a network alias from `socks-network-aliases' and
+          CONNECTION TYPE can be `nil' in which case a direct
+          connection is used, or it can be an alias from
+          `socks-server-aliases' in which case that server is used as
+          a proxy.
+
+     `socks-nslookup-program'
+          This the `nslookup' program.  It is `nslookup' by default.
+
+
+
+"native"
+     This means that Emacs/W3 should use the builtin networking code
+     of Emacs.  This should be used only if there is no firewall, or
+     the Emacs source has already been hacked to get around the
+     firewall.
+
+Emacs/W3 should now be able to get outside the local network.  If none
+of this makes sense, its probably my fault.  Please check with the
+network administrators to see if they have a program that does most of
+this already, since somebody somewhere at the company has probably
+been through something similar to this before, and would be much more
+helpful/knowledgeable about the local setup than I would be.  But feel
+free to mail me as a last resort.
+
+
+File: w3.info  Node: Dealing with Firewalls-Footnotes, Up: Dealing with Firewalls
+
+(1) TERM is a user-level protocol for emulating IP over
+a serial line.  More information is available at
+`ftp://sunsite.unc.edu/pub/Linux/apps/comm/term'
+
+(2) Please see the full Emacs distribution for a description of
+regular expressions
+
+
+
+File: w3.info, Node: Proxy Gateways, Next: Installing SSL, Prev: Dealing with Firewalls, Up: Top
+
+Proxy Gateways
+**************
+
+In late January 1993, Kevin Altis and Lou Montulli proposed and
+implemented a new proxy service.  This service requires the use of
+environment variables to specify a gateway server/port # to send
+protocol requests to.  Each protocol (HTTP, WAIS, gopher, FTP, etc.)
+can have a different gateway server.  The environment variables are
+`PROTOCOL'_proxy, where `PROTOCOL' is one of the supported network
+protocols (gopher, file, HTTP, FTP, etc.)
+
+For companies with internal intranets, it will usually be helpful to
+define a list of hosts that should be contacted directly, not sent
+through the proxy.  The `NO_PROXY' environment variable controls what
+hosts are able to be contacted directly.  This should be a comma
+separated list of hostnames, domain names, or a mixture of both.
+Asterisks can be used as a wildcard.  For example:
+
+     NO_PROXY=*.aventail.com,home.com,*.seanet.com
+
+tells Emacs/W3 to contact all machines in the aventail.com and
+seanet.com domains directly, as well as the machine named home.com.
+
+For those adventurous souls who enjoy writing regular expressions, all
+the proxy settings can be manipulated from Emacs-Lisp.  The variable
+`url-proxy-services' controls this.  This is an assoc list, keyed on
+the protocol type (HTTP, gopher, etc) in all lowercase.  The `cdr' of
+each entry should be the ADDRESS of the proxy server to contact,
+followed by ":" and the port number to use. In the case of the special
+"no_proxy" entry, it should be a regular expression that matches any
+hostnames that should be contacted directly.
+
+     (setq url-proxy-services
+            '(("http"     . "proxy.aventail.com:80")
+              ("no_proxy" . "^.*\\(aventail\\|seanet\\)\.com")))
+
+
+
+File: w3.info, Node: Installing SSL, Next: Mailcap Files, Prev: Proxy Gateways, Up: Top
+
+Installing SSL
+**************
+In order to use SSL in Emacs/W3, an implementation of SSL is
+necessary.  Emacs/W3 is configued to work out of the box with SSLeay
+0.6.6 or later.  For best results, you should apply a patch that makes
+the SSLeay client much quieter about what it reports.
+
+You can download SSLeay from `ftp://ftp.psy.uq.oz.au/pub/Crypto/SSL/'
+
+The following variables control how the external program is invoked.
+
+`ssl-program-name'
+     The name of the program to run, as a string.
+
+          (setq ssl-program-name "s_client")
+
+`ssl-program-arguments'
+     This should be used if your SSL program needs command line
+     switches to specify any behaviour (certificate file locations,
+     etc).  This is a list of strings and symbols.
+
+     The special symbols 'host and 'port may be used in the list of
+     arguments and will be replaced with the hostname and service/port
+     that will be connected to.
+
+          (setq ssl-program-arguments '("-host" host "-port" service
+"-verify" "4" "-CApath /usr/local/ssl/certs")) The default is ("-host"
+host "-port" service "-verify" SSL-CERTIFICATE-VERIFICATION-POLICY
+-CApath SSL-CERTIFICATE-DIRECTORY).
+
+`ssl-certificate-directory' is the directory in which CA certificates
+are stored.  It is `W3-CONFIGURATION-DIRECTORY/cert' by default.
+
+`ssl-rehash-program-name' is the program that is run after adding a
+certificate to the `ssl-certificate-directory' directory.  It is run
+with the directory name as an argument and defaults to `c_rehash'.
+
+`ssl-view-certificate-program-name' names the program that can produce
+a human-readable view of a certificate.  It is `x509' by default and
+is called with the arguments listed in
+`ssl-view-certificate-program-arguments' which is `("text" "-inform"
+"DER")' by default.
+
+`ssl-certificate-directory-style' specifies the type of certificate
+database to use.  It's default (and at the moment, only possible
+value) is `ssleay' which specifies a directory or pem encoded
+certificates with hash symlinks.
+
+You can decide how high up the chain of certificates should be
+verified by setting `ssl-certificate-verification-policy'.  Possible
+values are 0 No verification 1 Verification required 3 Reject
+connection if verification fails 5 SSL_VERIFY_CLIENT_ONCE The default
+is 0
+
+
+
+File: w3.info, Node: Mailcap Files, Next: Temporary, Prev: Installing SSL, Up: Top
+
+Mailcap Files
+*************
+NCSA Mosaic and almost all other WWW browsers rely on a separate file
+for mapping MIME types to external viewing programs.  This takes some
+of the burden off of browser developers, so each browser does not have
+to support all image formats, or postscript, etc.  Instead of having
+the users of Emacs/W3 duplicate this in lisp, this file can be parsed
+using the `mm-parse-mailcaps' function.  This function is called each
+time Emacs/W3 is loaded.  It tries to locate mimetype files in several
+places. If the environment variable `MAILCAPS' is nonempty, then this
+is assumed to specify a UNIX-like path of mimetype files (this is a
+colon separated string of pathnames).  If the `MAILCAPS' environment
+variable is empty, then Emacs/W3 looks for these files:
+
+  1. `~/.mailcap'
+  2. `/etc/mailcap'
+  3. `/usr/etc/mailcap'
+  4. `/usr/local/etc/mailcap'
+
+This format of this file is specified in RFC 1343, but a brief
+synopsis follows (this is taken verbatim from sections of RFC 1343).
+
+Each mailcap file consists of a set of entries that describe the
+proper handling of one media type at the local site.  For example, one
+line might tell how to display a message in Group III fax format.  A
+mailcap file consists of a sequence of such individual entries,
+separated by newlines (according to the operating system's newline
+conventions). Blank lines and lines that start with the "#" character
+(ASCII 35) are considered comments, and are ignored.  Long entries may
+be continued on multiple lines if each non-terminal line ends with a
+backslash character ('\', ASCII 92), in which case the multiple lines
+are to be treated as a single mailcap entry.  Note that for such
+"continued" lines, the backslash must be the last character on the
+line to be continued.
+
+Each mailcap entry consists of a number of fields, separated by
+semi-colons.  The first two fields are required, and must occur in the
+specified order.  The remaining fields are optional, and may appear in
+any order.
+
+The first field is the content-type, which indicates the type of data
+this mailcap entry describes how to handle.  It is to be matched
+against the type/subtype specification in the "Content-Type" header
+field of an Internet mail message.  If the subtype is specified as
+"*", it is intended to match all subtypes of the named content-type.
+
+The second field, view-command, is a specification of how the message
+or body part can be viewed at the local site.  Although the syntax of
+this field is fully specified, the semantics of program execution are
+necessarily somewhat operating system dependent.
+
+The optional fields, which may be given in any order, are as follows:
+   * The "compose" field may be used to specify a program that can be
+     used to compose a new body or body part in the given format.  Its
+     intended use is to support mail composing agents that support the
+     composition of multiple types of mail using external composing
+     agents.  As with the view- command, the semantics of program
+     execution are operating system dependent.  The result of the
+     composing program may be data that is not yet suitable for mail
+     transport--that is, a Content-Transfer-Encoding may need to be
+     applied to the data.
+   * The "composetyped" field is similar to the "compose" field, but
+     is to be used when the composing program needs to specify the
+     Content-type header field to be applied to the composed data.
+     The "compose" field is simpler, and is preferred for use with
+     existing (non-mail-oriented) programs for composing data in a
+     given format.  The "composetyped" field is necessary when the
+     Content-type information must include auxilliary parameters, and
+     the composition program must then know enough about mail formats
+     to produce output that includes the mail type information.
+   * The "edit" field may be used to specify a program that can be
+     used to edit a body or body part in the given format.  In many
+     cases, it may be identical in content to the "compose" field, and
+     shares the operating-system dependent semantics for program
+     execution.
+   * The "print" field may be used to specify a program that can be
+     used to print a message or body part in the given format.  As
+     with the view-command, the semantics of program execution are
+     operating system dependent.
+   * The "test" field may be used to test some external condition
+     (e.g.  the machine architecture, or the window system in use) to
+     determine whether or not the mailcap line applies.  It specifies
+     a program to be run to test some condition.  The semantics of
+     execution and of the value returned by the test program are
+     operating system dependent.  If the test fails, a subsequent
+     mailcap entry should be sought.  Multiple test fields are not
+     permitted--since a test can call a program, it can already be
+     arbitrarily complex.
+   * The "needsterminal" field indicates that the view-command must be
+     run on an interactive terminal.  This is needed to inform
+     window-oriented user agents that an interactive terminal is
+     needed.  (The decision is not left exclusively to the
+     view-command because in some circumstances it may not be possible
+     for such programs to tell whether or not they are on interactive
+     terminals.)  The needsterminal command should be assumed to apply
+     to the compose and edit commands, too, if they exist.  Note that
+     this is NOT a test--it is a requirement for the environment in
+     which the program will be executed, and should typically cause
+     the creation of a terminal window when not executed on either a
+     real terminal or a terminal window.
+   * The "copiousoutput" field indicates that the output from the
+     view-command will be an extended stream of output, and is to be
+     interpreted as advice to the UA (User Agent mail- reading
+     program) that the output should be either paged or made
+     scrollable. Note that it is probably a mistake if needsterminal
+     and copiousoutput are both specified.
+   * The "description" field simply provides a textual description,
+     optionally quoted, that describes the type of data, to be used
+     optionally by mail readers that wish to describe the data before
+     offering to display it.
+   * The "x11-bitmap" field names a file, in X11 bitmap (xbm) format,
+     which points to an appropriate icon to be used to visually denote
+     the presence of this kind of data.
+   * Any other fields beginning with "x-" may be included for local or
+     mailer-specific extensions of this format.  Implementations
+     should simply ignore all such unrecognized fields to permit such
+     extensions, some of which might be standardized in a future
+     version of this document.
+
+
+
+File: w3.info, Node: Temporary, Next: General Index, Prev: Mailcap Files, Up: Top
+
+
+
+
+
+
+File: w3.info, Node: General Index, Next: Key Index, Prev: Temporary, Up: Top
+
+General Index
+*************
+
+* Menu:
+
+* 32-Bit Windows:               Windows.                4.
+* AXP-VMS:                      VMS.                    4.
+* Authentication, Basic:        Security.               10.
+* Authentication, Digest:       Security.               16.
+* Bad HTML:                     Debugging HTML.         4.
+* Basic Usage:                  Basic Usage.            4.
+* Broken SunOS libc:            Dealing with Firewalls.  19.
+* Browser emulation:            Emulation.              5.
+* Browser masquerading:         Masquerading.           4.
+* Browsing with no network connection: Disk Caching.    27.
+* Buffer movement:              Action.                 76.
+* Bugs:                         Reporting Bugs.         4.
+* Cache cleaning:               Disk Caching.           17.
+* Cache only mode:              Disk Caching.           27.
+* Caching:                      Disk Caching.           4.
+* Cleaning the cache:           Disk Caching.           17.
+* Clearing the cache:           Disk Caching.           17.
+* Clueless in Seattle:          Getting Started.        4.
+* Completion of URLs:           Global History.         26.
+* Contacting the author:        Reporting Bugs.         4.
+* Cookies:                      Cookies.                4.
+* DOS:                          MS-DOS.                 4.
+* Debugging:                    Debugging HTML.         4.
+* Default stylesheet:           Startup Files.          28.
+* Digital VMS:                  VMS.                    4.
+* Disk Cache:                   Disk Caching.           4.
+* Emulation of other browsers:  Emulation.              5.
+* Export Restrictions:          Installing SSL.         4.
+* Export Restrictions:          Security.               23.
+* Exportability:                Installing SSL.         4.
+* Exportability:                Security.               23.
+* FTP:                          ftp.                    4.
+* Faulty hostname resolvers:    Dealing with Firewalls.  19.
+* File URLs:                    file.                   4.
+* Firewalls:                    Dealing with Firewalls.  8.
+* GNUS:                         Interfacing to Mail/News.  4.
+* Gag Puke Retch:               Installing SSL.         4.
+* Gag Puke Retch:               Security.               23.
+* Getting Started:              Getting Started.        4.
+* HTTP/1.0 Authentication:      Installing SSL.         4.
+* HTTP/1.0 Authentication:      Security.               10.
+* HTTP/1.0 Authentication:      Security.               16.
+* HTTP/1.0 Authentication:      Security.               23.
+* HTTP Proxy:                   Proxy Gateways.         4.
+* HTTP:                         http/https.             4.
+* HTTPS:                        http/https.             4.
+* History Lists:                Session History.        4.
+* Hooks:                        Hooks.                  4.
+* Hostname resolution:          Dealing with Firewalls.  19.
+* IRC URLs:                     irc.                    4.
+* IRC:                          irc.                    4.
+* Interfacing to Mail/News:     Interfacing to Mail/News.  4.
+* Invalid HTML:                 Debugging HTML.         4.
+* LaTeX:                        Printing.               5.
+* Limiting the size of the cache: Disk Caching.         17.
+* Lynx emulation:               lynx.                   4.
+* MS-DOG:                       MS-DOS.                 4.
+* MS-DOS:                       MS-DOS.                 4.
+* Masquerading as other browsers: Masquerading.         4.
+* Microsloth:                   MS-DOS.                 4.
+* Microsloth:                   Windows.                4.
+* NFS URLs:                     nfs.                    4.
+* NFS:                          nfs.                    4.
+* NO_PROXY:                     Proxy Gateways.         13.
+* Netless browsing:             Disk Caching.           27.
+* Netscape emulation:           netscape.               4.
+* Newsgroups:                   More Help.              4.
+* No Proxy:                     Proxy Gateways.         13.
+* Non-Unix Operating Systems:   Non-Unix Operating Systems.  4.
+* OS/2:                         OS/2.                   4.
+* Paranoia:                     Security.               4.
+* Persistent Cache:             Disk Caching.           4.
+* Postscript:                   Printing.               5.
+* Printing:                     Printing.               5.
+* Proxies:                      Proxy Gateways.         4.
+* Proxies, environment variables: Proxy Gateways.       4.
+* Proxies, exclusion lists:     Proxy Gateways.         13.
+* Proxies, setting from lisp:   Proxy Gateways.         25.
+* Proxy Servers:                Proxy Gateways.         4.
+* RMAIL:                        Interfacing to Mail/News.  4.
+* Relevant Newsgroups:          More Help.              4.
+* Relying on cache:             Disk Caching.           27.
+* Reporting Bugs:               Reporting Bugs.         4.
+* SSL:                          Installing SSL.         4.
+* SSL:                          Security.               23.
+* Secure Sockets Layer:         Installing SSL.         4.
+* Secure Sockets Layer:         Security.               23.
+* Security, Basic:              Security.               10.
+* Security, Digest:             Security.               16.
+* Security:                     Security.               4.
+* Standalone mode:              Disk Caching.           27.
+* Startup files:                Startup Files.          4.
+* Support:                      More Help.              4.
+* TERM:                         Dealing with Firewalls.  45.
+* Turning on caching:           Disk Caching.           17.
+* Usefulness of global history: Global History.         26.
+* Using Emacs/W3 with Gnus:     Interfacing to Mail/News.  4.
+* Using Emacs/W3 with RMAIL:    Interfacing to Mail/News.  4.
+* Using Emacs/W3 with VM:       Interfacing to Mail/News.  4.
+* VAX-VMS:                      VMS.                    4.
+* VM:                           Interfacing to Mail/News.  4.
+* VMS:                          VMS.                    4.
+* Warp:                         OS/2.                   4.
+* Windows (32-Bit):             Windows.                4.
+* Windows '95:                  Windows.                4.
+* browse-url-browser-function:  Interfacing to Mail/News.  9.
+* data URLs:                    data.                   1.
+* files:                        file.                   4.
+* finger URLs:                  finger.                 4.
+* finger:                       finger.                 4.
+* font-blink-interval:          Other Variables.        100.
+* gopher URLs:                  gopher.                 4.
+* gopher:                       gopher.                 4.
+* history:                      Startup Files.          39.
+* info URLs:                    info.                   4.
+* info:                         info.                   4.
+* mailserver URLs:              mailserver.             4.
+* mailserver:                   mailserver.             4.
+* mailto URLs:                  mailto.                 4.
+* mailto:                       mailto.                 4.
+* mime-types file:              Adding MIME types based on file extensions.  22.
+* mm-add-mailcap-entry:         Specifying Viewers.     15.
+* mm-content-transfer-encodings: Other Variables.       55.
+* mm-mime-extensions:           Adding MIME types based on file extensions.  5.
+* mm-parse-mimetypes:           Adding MIME types based on file extensions.  22.
+* news URLs:                    news/nntp/snews.        4.
+* news:                         news/nntp/snews.        4.
+* nntp:                         news/nntp/snews.        4.
+* profile:                      Startup Files.          12.
+* rlogin URLs:                  rlogin/telnet/tn3270.   4.
+* rlogin:                       rlogin/telnet/tn3270.   4.
+* scroll-down:                  Movement.               20.
+* snews:                        news/nntp/snews.        4.
+* socks-network-aliases:        Dealing with Firewalls.  122.
+* socks-nslookup-program:       Dealing with Firewalls.  122.
+* socks-password:               Dealing with Firewalls.  122.
+* socks-redirection-rules:      Dealing with Firewalls.  122.
+* socks-server:                 Dealing with Firewalls.  122.
+* socks-server-aliases:         Dealing with Firewalls.  122.
+* socks-timeout:                Dealing with Firewalls.  122.
+* socks-username:               Dealing with Firewalls.  122.
+* ssl-certificate-directory:    Installing SSL.         32.
+* ssl-certificate-directory-style: Installing SSL.      45.
+* ssl-certificate-verification-policy: Installing SSL.  50.
+* ssl-program-arguments:        Installing SSL.         21.
+* ssl-program-name:             Installing SSL.         15.
+* ssl-rehash-program-name:      Installing SSL.         35.
+* ssl-view-certificate-program-arguments: Installing SSL.  39.
+* ssl-view-certificate-program-name: Installing SSL.    39.
+* telnet URLs:                  rlogin/telnet/tn3270.   4.
+* telnet:                       rlogin/telnet/tn3270.   4.
+* tn3270 URLs:                  rlogin/telnet/tn3270.   4.
+* tn3270:                       rlogin/telnet/tn3270.   4.
+* turn-off-arena-masquerade-mode: Masquerading.         4.
+* turn-off-ie-masquerade-mode:  Masquerading.           4.
+* turn-off-lynx-masquerade-mode: Masquerading.          4.
+* turn-off-netscape-masquerade-mode: Masquerading.      4.
+* turn-on-arena-masquerade-mode: Masquerading.          4.
+* turn-on-ie-masquerade-mode:   Masquerading.           4.
+* turn-on-lynx-emulation:       lynx.                   4.
+* turn-on-lynx-masquerade-mode: Masquerading.           4.
+* turn-on-netscape-emulation:   netscape.               4.
+* turn-on-netscape-masquerade-mode: Masquerading.       4.
+* url-automatic-caching:        Disk Caching.           17.
+* url-bad-port-list:            Other Variables.        11.
+* url-be-anal-about-file-attributes: http/https.        4.
+* url-be-asynchronous:          Display Variables.      177.
+* url-cache-creation-function:  Disk Caching.           38.
+* url-cache-directory:          Disk Caching.           38.
+* url-cache-expired:            Disk Caching.           38.
+* url-cache-ignored-protocols:  Disk Caching.           38.
+* url-confirmation-func:        Other Variables.        16.
+* url-cookie-confirmation:      Cookies.                17.
+* url-cookie-file:              Cookies.                12.
+* url-cookie-trusted-urls:      Cookies.                17.
+* url-cookie-untrusted-urls:    Cookies.                17.
+* url-default-ports:            news/nntp/snews.        4.
+* url-default-retrieval-proc:   Display Variables.      182.
+* url-directory-index-file:     file.                   5.
+* url-external-retrieval-args:  Other Variables.        85.
+* url-external-retrieval-program: Other Variables.      85.
+* url-gateway-broken-resolution: Dealing with Firewalls.  32.
+* url-gateway-local-host-regexp: Dealing with Firewalls.  57.
+* url-gateway-method:           Dealing with Firewalls.  64.
+* url-gateway-prompt-pattern:   Dealing with Firewalls.  102.
+* url-gateway-prompt-pattern:   Dealing with Firewalls.  76.
+* url-gateway-rlogin-host:      Dealing with Firewalls.  102.
+* url-gateway-rlogin-parameters: Dealing with Firewalls.  102.
+* url-gateway-rlogin-user-name: Dealing with Firewalls.  102.
+* url-gateway-telnet-host:      Dealing with Firewalls.  76.
+* url-gateway-telnet-login-prompt: Dealing with Firewalls.  76.
+* url-gateway-telnet-parameters: Dealing with Firewalls.  76.
+* url-gateway-telnet-password:  Dealing with Firewalls.  76.
+* url-gateway-telnet-password-prompt: Dealing with Firewalls.  76.
+* url-gateway-telnet-user-name: Dealing with Firewalls.  76.
+* url-global-history-file:      Global History.         11.
+* url-global-history-file:      Startup Files.          39.
+* url-global-history-save-interval: Global History.     11.
+* url-global-history-save-interval: Startup Files.      39.
+* url-gopher-icons:             gopher.                 4.
+* url-gopher-labels:            gopher.                 4.
+* url-gopher-to-mime:           gopher.                 4.
+* url-honor-refresh-requests:   http/https.             4.
+* url-inhibit-mime-parsing:     Other Variables.        105.
+* url-irc-function:             irc.                    4.
+* url-keep-history:             Global History.         11.
+* url-keep-history:             Session History.        9.
+* url-keep-history:             Startup Files.          39.
+* url-list-processes:           Miscellaneous.          29.
+* url-mail-command:             mailto.                 4.
+* url-max-password-attempts:    Other Variables.        31.
+* url-mime-language-string:     Other Variables.        110.
+* url-multiple-p:               Other Variables.        118.
+* url-news-server:              news/nntp/snews.        4.
+* url-news-use-article-mode:    news/nntp/snews.        4.
+* url-nfs-automounter-directory-spec: nfs.              5.
+* url-passwd-entry-func:        Other Variables.        23.
+* url-personal-mail-address:    Other Variables.        123.
+* url-privacy-level:            Security.               27.
+* url-proxy-services:           Proxy Gateways.         25.
+* url-proxy-services:           Proxy Gateways.         4.
+* url-show-status:              Other Variables.        47.
+* url-standalone-mode:          Disk Caching.           27.
+* url-temporary-directory:      Other Variables.        131.
+* url-uncompressor-alist:       Other Variables.        74.
+* url-use-hypertext-dired:      Action.                 68.
+* url-use-hypertext-gopher:     gopher.                 4.
+* url-view-url:                 Information.            8.
+* w3:                           Getting Started.        4.
+* .w3:                          Startup Files.          4.
+* w3-arena-masquerade-mode:     Masquerading.           4.
+* w3-auto-image-alt:            Display Variables.      85.
+* w3-backward-in-history:       Movement.               40.
+* w3-backward-in-history:       Session History.        22.
+* w3-bullets:                   Display Variables.      25.
+* w3-complete-link:             Action.                 45.
+* w3-complete-link:             Action.                 7.
+* w3-configuration-directory:   Startup Files.          5.
+* w3-debug-buffer:              Debugging HTML.         4.
+* w3-debug-html:                Debugging HTML.         4.
+* w3-default-configuration-file: Startup Files.         12.
+* w3-default-homepage:          Getting Started.        4.
+* w3-default-image-alt-func:    Display Variables.      102.
+* w3-default-stylesheet:        Startup Files.          28.
+* w3-defined-link-types:        Display Variables.      79.
+* w3-delay-image-loads:         Display Variables.      119.
+* w3-display-errors-hook:       Debugging HTML.         4.
+* w3-display-frames:            Display Variables.      10.
+* w3-do-incremental-display:    Display Variables.      192.
+* w3-do-scripting:              Other Variables.        80.
+* w3-document-information:      Information.            16.
+* w3-documentation-root:        Other Variables.        137.
+* w3-download-this-url:         Action.                 42.
+* w3-download-url-at-point:     Action.                 39.
+* w3-dummy-img-alt-repl:        Display Variables.      102.
+* w3-echo-link:                 Display Variables.      32.
+* w3-end-of-document:           Movement.               27.
+* w3-fetch:                     Action.                 62.
+* w3-fetch:                     Session History.        22.
+* w3-follow-inlined-image:      Action.                 31.
+* w3-follow-link:               Action.                 12.
+* w3-follow-mouse:              Action.                 22.
+* w3-forward-in-history:        Movement.               45.
+* w3-forward-in-history:        Session History.        22.
+* w3-goto-last-buffer:          Action.                 78.
+* w3-goto-last-buffer:          Movement.               50.
+* w3-help:                      Miscellaneous.          5.
+* w3-history-backward:          Movement.               40.
+* w3-history-forward:           Movement.               45.
+* w3-honor-stylesheets:         Display Variables.      157.
+* w3-horizontal-rule-char:      Display Variables.      48.
+* w3-hotlist-add-document:      Hotlist Handling.       24.
+* w3-hotlist-add-document-at-point: Hotlist Handling.   63.
+* w3-hotlist-append:            Hotlist Handling.       59.
+* w3-hotlist-apropos:           Hotlist Handling.       22.
+* w3-hotlist-delete:            Hotlist Handling.       32.
+* w3-hotlist-file:              Hotlist Handling.       24.
+* w3-hotlist-file:              Hotlist Handling.       32.
+* w3-hotlist-file:              Hotlist Handling.       41.
+* w3-hotlist-file:              Hotlist Handling.       66.
+* w3-hotlist-file:              Startup Files.          47.
+* w3-hotlist-refresh:           Hotlist Handling.       66.
+* w3-hotlist-rename-entry:      Hotlist Handling.       41.
+* w3-html-errors-font-lock-keywords: Debugging HTML.    4.
+* w3-icon-format:               Display Variables.      111.
+* w3-ie-masquerade-mode:        Masquerading.           4.
+* w3-image-mappings:            Display Variables.      127.
+* w3-insert-formatted-url:      Miscellaneous.          37.
+* w3-insert-this-url:           Miscellaneous.          44.
+* w3-latex-docstyle:            Printing.               46.
+* w3-latex-packages:            Printing.               50.
+* w3-latex-print-links:         Printing.               58.
+* w3-latex-use-latex2e:         Printing.               41.
+* w3-latex-use-maketitle:       Printing.               54.
+* w3-leave-buffer:              Action.                 95.
+* w3-leave-buffer:              Movement.               57.
+* w3-load-hook:                 Hooks.                  11.
+* w3-lynx-emulation-minor-mode: lynx.                   4.
+* w3-lynx-masquerade-mode:      Masquerading.           4.
+* w3-mail-current-document:     Miscellaneous.          11.
+* w3-mail-document-author:      Miscellaneous.          32.
+* w3-mail-document-under-point: Miscellaneous.          20.
+* w3-max-menu-length:           Display Variables.      133.
+* w3-max-menu-width:            Display Variables.      138.
+* w3-maximum-line-length:       Display Variables.      148.
+* w3-min-img-size:              Display Variables.      102.
+* w3-mode-hook:                 Emulation.              5.
+* w3-modeline-format:           Display Variables.      153.
+* w3-netscape-compatible-comments: Other Variables.     92.
+* w3-netscape-emulation-minor-mode: netscape.           4.
+* w3-netscape-masquerade-mode:  Masquerading.           4.
+* w3-next-document:             Movement.               14.
+* w3-notify:                    Display Variables.      197.
+* w3-open-local:                Action.                 68.
+* w3-popup-info:                Information.            23.
+* w3-popup-menu-on-mouse-3:     Other Variables.        142.
+* w3-postscript-print-function: Printing.               21.
+* w3-prev-document:             Movement.               18.
+* w3-print-command:             Printing.               29.
+* w3-print-this-url:            Action.                 81.
+* w3-print-url-under-point:     Action.                 87.
+* w3-quit:                      Action.                 91.
+* w3-quit:                      Movement.               54.
+* w3-refresh-buffer:            Action.                 58.
+* w3-reload-document:           Action.                 51.
+* w3-reuse-buffers:             Other Variables.        37.
+* w3-right-margin:              Display Variables.      142.
+* w3-save-as:                   Action.                 78.
+* w3-save-this-url:             Information.            41.
+* w3-save-url:                  Information.            36.
+* w3-scroll-up:                 Movement.               8.
+* w3-show-history-list:         Action.                 83.
+* w3-show-history-list:         Session History.        15.
+* w3-show-hotlist:              Hotlist Handling.       55.
+* w3-source-document:           Information.            26.
+* w3-source-document-at-point:  Information.            31.
+* w3-start-of-document:         Movement.               24.
+* w3-submit-bug:                Reporting Bugs.         9.
+* w3-temporary-directory:       Other Variables.        131.
+* w3-track-mouse:               Other Variables.        150.
+* w3-use-hotlist:               Hotlist Handling.       50.
+* w3-use-links:                 Miscellaneous.          50.
+* w3-use-menus:                 Other Variables.        155.
+* w3-use-terminal-characters:   Display Variables.      58.
+* w3-use-terminal-characters-on-tty: Display Variables.  65.
+* w3-use-terminal-glyphs:       Display Variables.      73.
+* w3-user-colors-take-precedence: Display Variables.    162.
+* w3-user-fonts-take-precedence: Display Variables.     168.
+* w3-version:                   Miscellaneous.          8.
+* w3-view-this-url:             Information.            12.
+* w3-widget-backward:           Movement.               30.
+* w3-widget-forward:            Movement.               35.
+
+
+File: w3.info, Node: Key Index, Prev: General Index, Up: Top
+
+Key Index
+*********
+
+* Menu:
+
+* A-t:                          Miscellaneous.          29.
+* B:                            Movement.               40.
+* C-?:                          Movement.               20.
+* C-a:                          lynx.                   37.
+* C-b:                          lynx.                   40.
+* C-b:                          lynx.                   43.
+* C-c C-b:                      Action.                 83.
+* C-c C-v:                      Miscellaneous.          8.
+* C-f:                          lynx.                   46.
+* C-g:                          lynx.                   164.
+* C-k:                          lynx.                   170.
+* C-n:                          lynx.                   49.
+* C-o:                          Action.                 62.
+* C-p:                          lynx.                   52.
+* C-r:                          lynx.                   155.
+* C-t:                          lynx.                   167.
+* C-u:                          lynx.                   161.
+* C-w:                          lynx.                   158.
+* Control Middle Mouse Button:  Action.                 31.
+* D:                            Action.                 39.
+* F:                            Movement.               45.
+* H F:                          Movement.               45.
+* HB:                           Movement.               40.
+* Hv:                           Action.                 83.
+* I:                            Information.            23.
+* K:                            Information.            41.
+* M-M:                          Miscellaneous.          20.
+* M-a:                          netscape.               12.
+* M-b:                          netscape.               16.
+* M-del:                        Movement.               18.
+* M-f:                          netscape.               20.
+* M-g:                          netscape.               24.
+* M-h:                          netscape.               28.
+* M-i:                          netscape.               32.
+* M-l:                          netscape.               36.
+* M-left:                       netscape.               68.
+* M-m:                          Miscellaneous.          11.
+* M-m:                          netscape.               40.
+* M-n:                          netscape.               44.
+* M-o:                          netscape.               48.
+* M-p:                          netscape.               52.
+* M-q:                          netscape.               56.
+* M-r:                          netscape.               60.
+* M-right:                      netscape.               72.
+* M-s:                          Action.                 78.
+* M-s:                          netscape.               64.
+* M-space:                      Movement.               14.
+* M-t:                          Miscellaneous.          29.
+* M-tab:                        Basic Usage.            4.
+* M-tab:                        Miscellaneous.          44.
+* M-x w3:                       Getting Started.        4.
+* M-x w3-insert-formatted-url:  Miscellaneous.          37.
+* Meta return:                  Action.                 31.
+* Meta-tab:                     Movement.               30.
+* Middle Mouse Button:          Action.                 22.
+* ?:                            Miscellaneous.          5.
+* <:                            Movement.               24.
+* >:                            Movement.               27.
+* P:                            Action.                 87.
+* Q:                            Action.                 95.
+* Q, u:                         Movement.               57.
+* R:                            Action.                 58.
+* S:                            Information.            31.
+* U:                            Miscellaneous.          50.
+* V:                            Information.            12.
+* V:                            lynx.                   125.
+* a:                            lynx.                   68.
+* b:                            Movement.               30.
+* b:                            lynx.                   34.
+* backspace:                    Basic Usage.            4.
+* backspace:                    Movement.               20.
+* backspace:                    lynx.                   134.
+* c:                            Miscellaneous.          32.
+* c:                            lynx.                   71.
+* d:                            Action.                 42.
+* d:                            lynx.                   74.
+* down:                         lynx.                   12.
+* down:                         netscape.               88.
+* e:                            lynx.                   77.
+* f:                            Movement.               35.
+* g:                            Action.                 51.
+* g:                            lynx.                   80.
+* h:                            lynx.                   65.
+* hA:                           Hotlist Handling.       59.
+* hI:                           Hotlist Handling.       63.
+* hR:                           Hotlist Handling.       66.
+* ha:                           Hotlist Handling.       22.
+* hd:                           Hotlist Handling.       32.
+* hi:                           Hotlist Handling.       24.
+* hr:                           Hotlist Handling.       41.
+* hu:                           Hotlist Handling.       50.
+* hv:                           Hotlist Handling.       55.
+* i:                            Information.            16.
+* i:                            lynx.                   83.
+* j:                            lynx.                   86.
+* k:                            Information.            36.
+* k:                            lynx.                   89.
+* l:                            Action.                 78.
+* l:                            Movement.               50.
+* l:                            lynx.                   92.
+* left:                         lynx.                   21.
+* left:                         netscape.               76.
+* /:                            lynx.                   119.
+* =:                            lynx.                   137.
+* \:                            lynx.                   140.
+* !:                            lynx.                   143.
+* *:                            lynx.                   146.
+* [:                            lynx.                   149.
+* ]:                            lynx.                   152.
+* +:                            lynx.                   25.
+* -:                            lynx.                   28.
+* ):                            lynx.                   55.
+* (:                            lynx.                   58.
+* #:                            lynx.                   61.
+* ?:                            lynx.                   65.
+* m:                            Action.                 45.
+* m:                            Action.                 7.
+* m:                            lynx.                   95.
+* n:                            Movement.               35.
+* n:                            lynx.                   98.
+* o:                            Action.                 68.
+* o:                            lynx.                   101.
+* p:                            Action.                 81.
+* p:                            lynx.                   104.
+* q:                            Action.                 91.
+* q:                            Movement.               54.
+* q:                            lynx.                   107.
+* r:                            Action.                 51.
+* r:                            lynx.                   110.
+* return:                       Action.                 12.
+* return:                       Basic Usage.            4.
+* return:                       lynx.                   18.
+* right:                        lynx.                   18.
+* right:                        netscape.               80.
+* s:                            Information.            26.
+* s:                            lynx.                   113.
+* space:                        Basic Usage.            4.
+* space:                        Movement.               8.
+* space:                        lynx.                   31.
+* tab:                          Basic Usage.            4.
+* tab:                          Movement.               35.
+* u:                            Action.                 95.
+* u:                            lynx.                   116.
+* up:                           lynx.                   15.
+* up:                           netscape.               84.
+* v:                            Information.            8.
+* v:                            lynx.                   122.
+* w:                            Reporting Bugs.         9.
+* x:                            lynx.                   128.
+* z:                            lynx.                   131.
+

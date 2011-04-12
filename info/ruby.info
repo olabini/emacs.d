@@ -1,0 +1,209 @@
+This is ruby.info, produced by makeinfo version 4.0 from Ruby.texi.
+
+INFO-DIR-SECTION Programming Languages
+START-INFO-DIR-ENTRY
+* ruby: (ruby).                 Ruby Language Reference Manual (English)
+END-INFO-DIR-ENTRY
+
+     This Info file was converted from the Ruby Language Reference
+     Manual (HTML), automatically.
+
+     The original HTML document is below.
+
+     <http://www.ruby-lang.org/en/man-1.4/>
+     for `Ruby' Version 1.4.6
+     written by Yukihiro Matsumoto <matz@zetabits.com>
+     Last modified: Mon Feb 23 16:01:41 1998
+
+     So, this document is matz's, too.
+
+
+Indirect:
+ruby.info-1: 583
+ruby.info-2: 50493
+ruby.info-3: 96255
+ruby.info-4: 144030
+ruby.info-5: 193229
+ruby.info-6: 243187
+
+Tag Table:
+(Indirect)
+Node: Top583
+Node: Preface4879
+Node: Options7786
+Node: Ruby Syntax12724
+Node: syntax_lexical15393
+Node: syntax_ident16002
+Node: syntax_comment16400
+Node: syntax_embed_doc16709
+Node: syntax_resword17221
+Node: syntax_program17800
+Node: syntax_expression18148
+Node: syntax_string18445
+Node: syntax_command20180
+Node: syntax_regexp20688
+Node: syntax_exprsub23150
+Node: syntax_here_doc23781
+Node: syntax_numeric25588
+Node: syntax_variable26291
+Node: syntax_gvar26697
+Node: syntax_ivar27129
+Node: syntax_const27505
+Node: syntax_lvar28692
+Node: syntax_pvar29641
+Node: syntax_array30314
+Node: syntax_hash30970
+Node: syntax_method31326
+Node: syntax_super32670
+Node: syntax_assign33058
+Node: syntax_operator35898
+Node: syntax_control36932
+Node: syntax_if37241
+Node: syntax_if-mod38058
+Node: syntax_unless38358
+Node: syntax_unless-mod38926
+Node: syntax_case39256
+Node: syntax_and40531
+Node: syntax_or40893
+Node: syntax_not41248
+Node: syntax_range41668
+Node: syntax_while42303
+Node: syntax_while-mod42643
+Node: syntax_until43044
+Node: syntax_until-mod43386
+Node: syntax_iter43786
+Node: syntax_for45184
+Node: syntax_yield45627
+Node: syntax_raise46167
+Node: syntax_begin47511
+Node: syntax_retry49064
+Node: syntax_return50035
+Node: syntax_break50493
+Node: syntax_next50864
+Node: syntax_redo51096
+Node: syntax_BEGIN_proc51366
+Node: syntax_END_proc52025
+Node: syntax_cdef52740
+Node: syntax_scdef53217
+Node: syntax_mdef53716
+Node: syntax_method-def54173
+Node: syntax_singleton-def56195
+Node: syntax_alias56881
+Node: syntax_undef57554
+Node: syntax_defined_p58018
+Node: Ruby Functions58475
+Node: Pre-defined variables and constants76078
+Node: variables76335
+Node: constants83276
+Node: ENV84770
+Node: Pre-defined classes and modules87420
+Node: classes87734
+Node: Object89698
+Node: Array96255
+Node: Data106637
+Node: Dir106883
+Node: Exception Classes109933
+Node: Exception111069
+Node: Interrupt112417
+Node: NotImplementError112652
+Node: SignalException112928
+Node: StandardError113196
+Node: SystemExit113496
+Node: fatal113731
+Node: ArgumentError114156
+Node: FloatDomainError114460
+Node: IndexError114754
+Node: IOError114987
+Node: LoadError115207
+Node: LocalJumpError115443
+Node: NameError115798
+Node: RuntimeError116044
+Node: SecurityError116348
+Node: SyntaxError116604
+Node: SystemCallError116839
+Node: SystemStackError117344
+Node: TypeError117606
+Node: ThreadError117868
+Node: ZeroDivisionError118465
+Node: EOFError118713
+Node: Hash118909
+Node: IO123973
+Node: File133612
+Node: MatchingData142689
+Node: Module144030
+Node: Class151813
+Node: Numeric153154
+Node: Integer154653
+Node: Bignum156371
+Node: Fixnum157806
+Node: Float159360
+Node: Proc160576
+Node: Range161552
+Node: Regexp163328
+Node: String164944
+Node: Struct180171
+Node: Time182143
+Node: NilClass188031
+Node: modules188475
+Node: Comparable189035
+Node: Enumerable189996
+Node: Errno192669
+Node: Errno__E*192836
+Node: FileTest193229
+Node: GC196370
+Node: Kernel196913
+Node: Marshal197252
+Node: Math198847
+Node: ObjectSpace200366
+Node: Precision201612
+Node: Process202881
+Node: Bundled Libraries207071
+Node: DBM208116
+Node: Kconv210685
+Node: The Socket Library211412
+Node: Socket__Constants211940
+Node: BasicSocket212167
+Node: IPSocket214188
+Node: TCPSocket215133
+Node: TCPServer216891
+Node: UDPSocket218871
+Node: UNIXSocket219965
+Node: UNIXServer221054
+Node: Socket221445
+Node: The Thread Library224586
+Node: Thread225647
+Node: Mutex228419
+Node: Queue229734
+Node: The Tk Library230723
+Node: Pseudo BNF Syntax of Ruby232311
+Node: Ruby Glossary240453
+Node: glossary_A241375
+Node: glossary_B241457
+Node: glossary_C241558
+Node: glossary_D241659
+Node: glossary_E241943
+Node: glossary_F242044
+Node: glossary_G242145
+Node: glossary_H242246
+Node: glossary_I242347
+Node: glossary_J242448
+Node: glossary_K242704
+Node: glossary_L242805
+Node: glossary_M242906
+Node: glossary_N243187
+Node: glossary_O243288
+Node: glossary_P243389
+Node: glossary_Q243545
+Node: glossary_R243646
+Node: glossary_S244005
+Node: glossary_T244106
+Node: glossary_U244207
+Node: glossary_V244308
+Node: glossary_W244409
+Node: glossary_X244510
+Node: glossary_Y244611
+Node: glossary_Z244712
+Node: Variable Index244794
+Node: Function Index248079
+
+End Tag Table

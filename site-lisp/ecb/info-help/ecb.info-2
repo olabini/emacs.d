@@ -1,0 +1,1060 @@
+This is ecb.info, produced by makeinfo version 4.2 from ecb.texi.
+
+INFO-DIR-SECTION GNU Emacs Lisp
+START-INFO-DIR-ENTRY
+* ECB: (ecb).           Emacs Code Browser
+END-INFO-DIR-ENTRY
+
+
+File: ecb.info,  Node: Incremental search,  Next: Personal keybindings,  Prev: Navigation/Selection,  Up: Using the keyboard
+
+Incremental search for a node in current tree-buffer
+----------------------------------------------------
+
+Each display-able key (e.g. all keys normally bound to `self-insert-command')
+is appended to the current search-pattern. The tree-buffer tries to jump to
+the first node which matching the current search-pattern either as substring
+or as prefix (see below). If no match is found then nothing is done. There
+are some special keys:
+
+ * `backspace' and `delete': Delete the last character from the
+   search-pattern.
+
+ * `home': Delete the complete search-pattern
+
+ * `end': Expand either to a complete node if current search-pattern is
+   already unique or expands to the greatest common substring or prefix of the
+   nodes. If there are at least two nodes with the same greatest
+   common-prefix than every hit of `end' jumps to the next node with this
+   common prefix.
+
+For better overlooking the current search-pattern is shown in the echo area.
+After selecting a node with RET the search-pattern is cleared out. With
+`ecb-tree-incremental-search' you can specify if the current search-pattern
+must be a real prefix of the node (default) or if any substring is matched.
+
+For faster and easier finding the right node in a ecb-window the incremental
+search ignores the following non interesting stuff:
+
+ - any leading spaces
+
+ - expand/collapse-buttons: [+] rsp. [-]
+
+ - protection-signs (+, -, #) in the method-window if uml-notation is used
+
+ - variables types or return-types in front of variable- or method-names.
+
+ - const specifier for variables
+
+This means: Just type in the prefix (rsp. a substring) of a class-,
+variable-, method-, directory- or filename and ECB will bring you as fast as
+possible to the node you want. Incremental node-search uses the value of
+`case-fold-search'.
+
+Tip: The `ecb-minor-mode' offers you in the `ecb-mode-map' (customizable via
+`ecb-key-map') some keys for selecting every window of the ecb-frame. This
+makes window-selection a child´s play. For example you can jump into the
+method-window by hitting `C-c . gm'.
+
+
+File: ecb.info,  Node: Personal keybindings,  Next: Using popup-menus,  Prev: Incremental search,  Up: Using the keyboard
+
+Adding personal keybindings
+---------------------------
+
+There are five hooks which can be used for adding personal keybindings to the
+ECB tree-buffers:
+
+ - `ecb-common-tree-buffer-after-create-hook'
+
+ - `ecb-directories-buffer-after-create-hook'
+
+ - `ecb-sources-buffer-after-create-hook'
+
+ - `ecb-methods-buffer-after-create-hook'
+
+ - `ecb-history-buffer-after-create-hook'
+
+These hooks are called directly after tree-buffer creation so they can be
+used to add personal local keybindings(1) either to all tree-buffers
+(`ecb-common-tree-buffer-after-create-hook') or just to a certain
+tree-buffer. Here is a list which keys MUST NOT be rebound:
+
+ * `RET' and all combinations with `Shift' and `Ctrl': Used for selecting
+   nodes in all tree-buffers.
+
+ * `TAB': Used for expanding/collapsing nodes in all tree-buffers.
+
+ * `C-t': Used for toggling "jump after selection" in all tree-buffers, see
+   command `ecb-toggle-RET-selects-edit-window'.
+
+ * All self-inserting characters: Used for easy and fast navigation in all
+   tree-buffers, *Note Incremental search::.
+
+ * `F2', `F3', `F4': Used for customizing ECB, adding source-path in the
+   directories buffer.
+
+The following example binds `C-a' to some useful code in ALL tree-buffers and
+`C-d' to even more useful code ONLY in the directories buffer:
+
+   (add-hook 'ecb-common-tree-buffer-after-create-hook
+             (lambda ()
+                (local-set-key (kbd "C-a")
+                               (lambda ()
+                                  (interactive)
+                                  (message "ECB is great!")))))
+   
+   (add-hook 'ecb-directories-buffer-after-create-hook
+             (lambda ()
+                (local-set-key (kbd "C-d")
+                               (lambda ()
+                                  (interactive)
+                                  (message "ECB is wonderful!")))))
+
+---------- Footnotes ----------
+
+(1) To be more general: They can be used to run any arbitrary lisp code after
+a tree-buffer creation!
+
+
+File: ecb.info,  Node: Using popup-menus,  Prev: Personal keybindings,  Up: Using the keyboard
+
+Using the popup-menu of a tree-buffer from keyboard.
+----------------------------------------------------
+
+A popup-menu of a tree-buffer can be activated from keyboard with the command
+`tree-buffer-show-menu-keyboard' which is bound to `M-m' in every
+tree-buffer. How the popup-menu is displayed depends if this command is
+called with a prefix-argument or not:
+
+If called without a prefix-arg then the popup-menu is displayed graphically
+as if it would be activated via mouse (for GNU Emacs this works perfectly but
+for XEmacs there is a bug which results in a wrong menu-position - but the
+menu itself works also with XEmacs).
+
+If called with a prefix-arg (`C-u M-m') then the popup-menu is displayed with
+the tmm-mechanism (like the Emacs-[menu-bar] is displayed when `tmm-menubar'
+is called). This tmm-display is only available for GNU Emacs.
+
+
+File: ecb.info,  Node: The edit-area,  Next: Temp- and compile-buffers,  Prev: Using the keyboard,  Up: Usage of ECB
+
+Working with the edit-window(s) of the edit-area
+================================================
+
+ECB offers you all what you need to work with the edit-area as if the
+edit-windows of the edit-area would be the only windows of the ECB-frame.
+
+ECB offers you to advice the following functions so they work best with ECB:
+
+ - `other-window'
+
+ - `delete-window'
+
+ - `delete-other-windows'
+
+ - `delete-windows-on'
+
+ - `split-window-horizontally'
+
+ - `split-window-vertically'
+
+ - `split-window'
+
+ - `display-buffer'
+
+ - `switch-to-buffer'
+
+ - `switch-to-buffer-other-window'
+
+ - `other-window-for-scrolling'
+
+ - `balance-windows'
+
+The behavior of the adviced functions is (slightly simplified):
+
+ * All these adviced functions behaves exactly like their corresponding
+   original functions but they always act as if the edit-window(s) of ECB
+   would be the only window(s) of the ECB-frame. So the edit-window(s) of ECB
+   seems to be a normal Emacs-frame to the user. This means that you can
+   split and delete edit-windows without any restriction - ECB ensures that
+   neither the special ECB-windows nor the compile-window will be damaged.
+
+ * If there is a durable compile-window (*note Temp- and compile-buffers::)
+   then all compilation-buffers in the sense of `ecb-compilation-buffer-p'
+   will be displayed in the compile-window.
+
+ * If called in another frame than the ECB-frame these functions behave
+   exactly like the not adviced original versions!
+
+ATTENTION: If you want to work within the edit-area with splitting and
+unsplitting (i.e. deleting) the edit-window(s) it is highly recommended to
+use the adviced-functions of ECB instead of the original Emacs-functions (see
+above). Per default ECB advices all of the functions mentioned above but with
+the option `ecb-advice-window-functions' you can customizes which functions
+should be adviced by ECB. Please read carefully the documentation of this
+option!
+
+Another interesting option in the context of the edit-window and these
+adviced functions is `ecb-layout-always-operate-in-edit-window'!
+
+Documentation of the adviced window functions
+---------------------------------------------
+
+This section describes for every adviced window function (s.a.) how it
+differs from the original version. Only the differences are mentioned, so if
+you want the full documentation of such a function call `describe-function'
+or `C-h f'.
+
+ - Command: other-window ARG &optional ALL-FRAMES
+   Around-advice `ecb': The ECB-version of `other-window'.  Works exactly
+   like the original function with the following ECB-adjustment: The behavior
+   depends on `ecb-other-window-behavior'.
+
+ - Command: delete-window &optional WINDOW
+   Around-advice `ecb': The ECB-version of `delete-window'.  Works exactly
+   like the original function with the following ECB-adjustment:
+
+   If optional argument WINDOW is nil (i.e. probably called interactively):
+   If called in a splitted edit-window then it works like as if all the
+   edit-windows would be the only windows in the frame.  This means the
+   current edit-window which contains the point will be destroyed and its
+   place will be occupied from another one. If called in an unsplitted
+   edit-window then nothing is done. If called in the compile-window of ECB
+   then the compile-window will be hidden (like with
+   `ecb-toggle-compile-window'). If called in an ecb-window of the current
+   ECB-layout there are two alternatives:
+
+    * If the function is contained in
+      `ecb-layout-always-operate-in-edit-window' the right edit-window is
+      selected (depends on the value of the option
+      `ecb-mouse-click-destination') and does then it´s job.
+
+    * Otherwise the behavior depends on the value of the option
+      `ecb-advice-window-functions-signal-error'.
+
+   If optional argument WINDOW is a living window (i.e. called from program):
+   If WINDOW is an edit-window then this window is deleted, if WINDOW is the
+   compile-window then it will be hidden and otherwise the behavior depends
+   on `ecb-advice-window-functions-signal-error'.
+
+ - Command: delete-other-windows &optional WINDOW
+   Around-advice `ecb': The ECB-version of `delete-other-windows'. Works
+   exactly like the original function with the following ECB-adjustment:
+
+   If optional argument WINDOW is nil (i.e. probably called interactively):
+   If called in a splitted edit-window then it works like as if all the
+   edit-windows would be the only windows in the frame.  This means all other
+   edit-windows besides the current edit-window which contains the point will
+   be destroyed and the current edit-window fills the whole edit-area.
+   Neither the special ecb-windows nor the compile-window will be destroyed!
+
+    * If called in an unsplitted edit-window then either the compile-window
+      will be hidden (if there is one) otherwise nothing is done.
+
+    * If called in one of the ecb-windows then the current one is maximized,
+      i.e. the other ecb-windows (not the edit-windows!) are deleted.
+
+    * If called in the compile window there are two alternatives:
+
+       - If the function is contained in
+         `ecb-layout-always-operate-in-edit-window' the right edit-window is
+         selected (depends on the value of the option
+         `ecb-mouse-click-destination') and then it does it´s job.
+
+       - Otherwise the behavior depends on the value of the option
+         `ecb-advice-window-functions-signal-error'.
+
+   If optional argument WINDOW is a living window (i.e. called from program):
+   If WINDOW is an edit-window then this window is maximized (i.e. the other
+   edit-window is deleted) if there are more at least 2 edit-windows
+   otherwise the compile-window is deleted (if there is one). If WINDOW is an
+   ecb-window then only the other ecb-windows are deleted and in all other
+   cases the behavior depends on `ecb-advice-window-functions-signal-error'.
+
+ - Command: delete-windows-on BUFFER &optional FRAME
+   Around-advice `ecb': The ECB-version of `delete-windows-on'.  Works
+   exactly like the original function with the following ECB-adjustment:
+
+   An error is reported if BUFFER is an ECB-tree-buffer. These windows are
+   not allowed to be deleted.
+
+ - Command: split-window &optional WINDOW SIZE HORFLAG
+   Around-advice `ecb': The ECB-version of `split-window'.  Works exactly
+   like the original function with the following ECB-adjustment:
+
+   If called for a not-edit-window in the `ecb-frame' it stops with an error
+   if `split-window' is not contained in the option
+   `ecb-layout-always-operate-in-edit-window'! Besides this (e.g.  called for
+   a window in another frame than the `ecb-frame') it behaves like the
+   original version.
+
+ - Command: split-window-horizontally
+   Around-advice `ecb': The ECB-version of `split-window-horizontally'. Works
+   exactly like the original function with the following ECB-adjustment:
+
+   If called in any other window of the current ECB-layout it stops with an
+   error if this `split-window-horizontally' is not contained in the option
+   `ecb-layout-always-operate-in-edit-window'!
+
+ - Command: split-window-vertically
+   Around-advice `ecb': The ECB-version of `split-window-vertically'. Works
+   exactly like the original function with the following ECB-adjustment:
+
+   If called in any other window of the current ECB-layout it stops with an
+   error if this `split-window-vertically' is not contained in the option
+   `ecb-layout-always-operate-in-edit-window'!
+
+ - Command: display-buffer BUFFER &optional NOT-THIS-WINDOW FRAME
+   Around-advice `ecb': Makes this function compatible with ECB if called in
+   or for the ecb-frame. It displays all buffers which are
+   "compilation-buffers" in the sense of `ecb-compilation-buffer-p' in the
+   compile-window of ECB. If the compile-window is temporally hidden then it
+   will be displayed first.
+
+   If there is no compile-window (`ecb-compile-window-height' is nil) then it
+   splits the edit-window if unsplitted and displays BUFFER in another
+   edit-window but only if `pop-up-windows' is not nil (otherwise the
+   edit-window will not be splitted).
+
+   All buffers which are not "compilation-buffers" in the sense of
+   `ecb-compilation-buffer-p' will be displayed in one of the edit-area and
+   `display-buffer' behaves as if the edit-windows would be the only windows
+   in the frame.
+
+   If BUFFER is contained in `special-display-buffer-names' or matches
+   `special-display-regexps' then `special-display-function' will be called
+   (if not nil). But this behavior depends on the value of the option
+   `ecb-ignore-special-display'. The values of `same-window-buffer-names' and
+   `same-window-regexps' are supported as well.
+
+   See the option `ecb-ignore-display-buffer-function'!
+
+   If called for other frames it works like the original version.
+
+ - Command: switch-to-buffer BUFFER &optional NORECORD
+   Around-advice `ecb': The ECB-version of `switch-to-buffer'.  Works exactly
+   like the original but with the following enhancements for ECB:
+
+   "compilation-buffers" in the sense of `ecb-compilation-buffer-p' will be
+   displayed always in the compile-window of ECB (if
+   `ecb-compile-window-height' is not nil) - if the compile-window is
+   temporally hidden then it will be displayed first. If you do not want this
+   you have to modify the options `ecb-compilation-buffer-names',
+   `ecb-compilation-major-modes' or `ecb-compilation-predicates'.
+
+   If called for non "compilation-buffers" (s.a.) from outside the edit-area
+   of ECB it behaves as if called from an edit-window if `switch-to-buffer'
+   is contained in the option `ecb-layout-always-operate-in-edit-window'.
+   Otherwise an error is reported.
+
+ - Command: switch-to-buffer-other-window BUFFER &optional FRAME
+   Around-advice `ecb': The ECB-version of `switch-to-buffer-other-window'.
+   Works exactly like the original but with some adaptions for ECB so this
+   function works in a "natural" way:
+
+   If called in any special ecb-window of the current ECB-layout then it goes
+   always to an edit-window (which one depends on the setting in
+   `ecb-mouse-click-destination') and then goes on as if called from this
+   edit-window.
+
+   If a compile-window is used (i.e. `ecb-compile-window-height' is not nil)
+   then "compilation-buffers" in the sense of `ecb-compilation-buffer-p' are
+   always displayed in the compile-window. If the compile-window is
+   temporally hidden then it will be displayed first. If no compile-window is
+   used it behaves like the original.
+
+   If called from within the compile-window then "compilation-buffers" will
+   be displayed still there and all other buffers are displayed in one of the
+   edit-windows - if the destination-buffer is already displayed in one of
+   the edit-windows then this one is used otherwise it behaves like the
+   original.
+
+   If called within an edit-window it behaves like the original function
+   except for compilation-buffers (if a compile-window is used, see above).
+
+ - Function: other-window-for-scrolling
+   Around-advice `ecb': This function determines the window which is scrolled
+   if any of the "other-window-scrolling-functions" is called (e.g.
+   `scroll-other-window'):
+
+   If the option `ecb-scroll-other-window-scrolls-compile-window' is not nil
+   (maybe set by `ecb-toggle-scroll-other-window-scrolls-compile') and a
+   compile-window is visible then always the current buffer in the
+   compile-window is scrolled!
+
+   Otherwise it depends completely on the setting in
+   `ecb-other-window-behavior'.
+
+ - Command: balance-windows
+   Around-advice `ecb': When called in the `ecb-frame' then only the
+   edit-windows are balanced.
+
+
+File: ecb.info,  Node: Temp- and compile-buffers,  Next: The other window,  Prev: The edit-area,  Up: Usage of ECB
+
+Temp- and compile-buffers display in ECB
+========================================
+
+If you call any help in Emacs, e.g. by calling `describe-function', or if you
+do a completion in the minibuffer, then Emacs displays the result-buffer in
+another window. This behavior you have also in ECB.
+
+Standard Emacs behavior
+-----------------------
+
+If the edit-area is already splitted into at least two edit-windows then the
+temp-buffer is displayed in another edit-window otherwise the edit-are will
+be splitted first into two edit-windows, one above the other. The variables
+`temp-buffer-max-height' and `temp-buffer-resize-mode' (for GNU Emacs) and
+`temp-buffer-shrink-to-fit' (for XEmacs) work also correctly with ECB.
+
+Same for all compilation output-buffers (e.g. after a `compile' or `grep')
+and the variable `compilation-window-height'.
+
+This is default behavior of ECB. But there is also another way to display
+such buffers: Using a durable extra window at the bottom of the ECB-frame:
+
+Using a durable compile window
+------------------------------
+
+With the option `ecb-compile-window-height' you can define if the ECB layout
+should contain per default a compile-window at the bottom (just specify the
+number of lines which should be used for the compile-window at the bottom of
+the frame). If "yes" ECB displays all buffers for which the function
+`ecb-compilation-buffer-p' returns not nil (e.g. all output of
+compilation-mode (compile, grep etc.) or all temp-buffers like
+*Help*-buffers) in this special window.
+
+In general: With the options `ecb-compilation-buffer-names',
+`ecb-compilation-major-modes' and `ecb-compilation-predicates' you can define
+which buffers should be displayed in the compile-window of ECB (for example
+if you call `switch-to-buffer' or `display-buffer' or if you run `compile' or
+if you display *Help*-buffers). Per default these are all temp-buffers like
+*Help*-buffers, all compile- and grep buffers, *Occur*-buffers etc. See the
+default values of these options.
+
+With the command `ecb-toggle-compile-window' (bound to `C-c .  \') you can
+toggle the visibility of the compile-window (*note Interactive ECB
+commands::).
+
+There are some more useful options and commands related to the compile-window
+of ECB (to see all options for the compile-window see the customization group
+*Note ecb-compilation::):
+
+ * With the option `ecb-compile-window-temporally-enlarge' you can allow
+   Emacs to enlarge temporally the ECB-compile-window in some situations.
+   Please read the comment of this option. See also the description of the
+   command `ecb-toggle-compile-window-height'.
+
+ * With the option `ecb-enlarged-compilation-window-max-height' you specify
+   how `ecb-toggle-compile-window-height' should enlarge the compile-window.
+
+ * With the command `ecb-cycle-through-compilation-buffers' (*note
+   Interactive ECB commands::) you can cycle through all current open
+   compilation-buffers (in the sense of `ecb-compilation-buffer-p') very fast.
+
+ECB offers the same compile-window functionality regardless if the ECB-window
+are hidden or not. The state of the compile-window will be preserved when
+toggling the ecb-windows or when maximizing one ecb-windows! So you have the
+advantage of one special window for all help-, grep or compile-output (see
+above) also when the ecb-windows are hidden - a window which will not be
+deleted if you call `delete-other-windows' (bound to `C-x 1') for one of the
+edit-windows. In general: All features of the compile-window work with hidden
+ecb-windows exactly as when the ecb-windows are visible.
+
+What to do if there are problems with the compile-window
+--------------------------------------------------------
+
+Normally displaying temp- and compilation-buffers (or more general:
+displaying buffer for which `ecb-compilation-buffer-p' is not nil) should
+work reliable. But if there are problems which you can not handle with the
+options `ecb-compilation-buffer-names', `ecb-compilation-major-modes' or
+`ecb-compilation-predicates' then please go on like follows:
+
+1. Set the option `ecb-layout-debug-mode' to not nil.
+
+2. Reproduce the wrong behavior exactly by repeating all the operations which
+   lead to the problem. If possible then restart Emacs before reproducing the
+   problem so you can begin from the beginning!
+
+3. Now send immediately a bug report with `ecb-submit-problem-report'.
+
+4. Set `ecb-layout-debug-mode' back to nil if you do not want further
+   debugging output in the *Messages* buffer"
+
+Handling special-display-buffers
+--------------------------------
+
+Emacs offers three options for a special-display-handling of certain buffers:
+`special-display-function', `special-display-buffer-names' and
+`special-display-regexps' (see the Emacs manual for a description of these
+options). ECB offers an option `ecb-ignore-special-display' for specification
+in which situations ECB should take account for the values of these
+special-display-options.
+
+Default-behavior of ECB is to ignore these special-display-options when a
+durable compile-window is active (i.e.  `ecb-compile-window-height' is not
+nil). But with `ecb-ignore-special-display' you can tell ECB, that either
+always the special-display-options should be ignored as long as ECB is active
+or that they should be never igored regardless if a durable compile-window is
+set or not. In the latter case using `display-buffer' or `pop-to-buffer'
+takes always account for the values of these options - like the original
+behavior of Emacs.
+
+
+File: ecb.info,  Node: The other window,  Next: The Methods buffer,  Prev: Temp- and compile-buffers,  Up: Usage of ECB
+
+How the "other window" is determined by ECB
+===========================================
+
+Normally all windows in an Emacs-frame are arranged in a cyclic order and
+window-selecting-commands like `other-window' or window-scrolling-commands
+like `scroll-other-window' choose simply the next(1) window after the current
+window as "other window".
+
+"Other window"-basics in ECB
+----------------------------
+
+With a typical window-layout of ECB such a cyclic order of *all* windows in
+the ECB-frame does not make sense because it would be not very intuitive and
+against that what the user wants to "say" when calling `other-window' or
+`scroll-other-window'.
+
+Therefore ECB divides the whole set of windows of the ECB-frame in several
+subsets:
+
+ * The edit-windows of the edit-area
+
+ * The special tree-windows for browsing-tasks
+
+ * The compile-window at the bottom (if there is one)
+
+ * The minibuffer-window of the ECB-frame (if active)
+
+Each of these subsets will be treated as a cyclic ordered subset, i.e.  all
+windows in each of these subsets are ordered as the function `walk-windows'
+would visit the windows when the windows of a subset would be the only
+windows of a frame(2).
+
+Builtin "other window" behaviors of ECB
+---------------------------------------
+
+ECB now offers to specify the behavior of commands like `other-window' or
+`scroll-other-window' within the ECB-frame. This can be done with the option
+`ecb-other-window-behavior'. This option offers several builtin behaviors:
+
+ * All windows of the ECB-frame are considered
+
+   ECB will cycle through all windows of the ECB-frame or scroll simply the
+   next window in the ECB-frame, means it behaves like the original
+   `other-window' rsp. the original `other-window-for-scrolling'.
+
+ * Only the windows of the edit-area are considered
+
+   ECB will only cycle through the edit-windows of ECB or only scroll another
+   edit-window. If the selected window is not an edit-window then all windows
+   are taken into account.
+
+ * The edit-windos and the compile-window are considered
+
+   Like above but the compile-window will be added to the subset of the
+   edit-windows.
+
+ * Behave as smart and intuitive as possible
+
+   This is the default behavior of ECB. ECB tries to choose the
+   `other-window'-destination or the "other window" to scroll in a smart and
+   intuitive way: If point is in one of the edit-windows and if the edit-area
+   is splitted then always the "next" edit-window is choosen (whereas the
+   next edit-window of the last edit-window is the first edit-window)- if the
+   edit-area is unsplitted then the compile-window is used if there is one.
+   In the context of an `other-window'-call the ARG of `other-window' will be
+   taken into account.
+
+   If one of the special ecb-windows is selected then always the "next"
+   ecb-window is choosen (whereas the next ecb-window of the last ecb-window
+   is the first ecb-window). In the context of an `other-window'-call the ARG
+   of `other-window' will be taken into account. If there is only one
+   ecb-window then ECB considers also the edit-windows.
+
+   If the compile-window is selected then always the last edit-window which
+   had the point will be used unless `other-window' has been called with a
+   prefix-argument unequal 1.
+
+Regardless of the different behaviors above ECB handles the situation of an
+active minibuffer during a call to `other-window' or `scroll-other-window'
+like follows:
+
+If the minibuffer-window is selected then ECB always chooses the window
+`minibuffer-scroll-window' points to (when this variable is set, otherwise
+the compile-window or the last selected edit-window is choosen) when the
+called command is called to choose the 1. next window (always true for
+scrolling another window or true when `other-window' called without
+prefix-arg or with prefix-arg equal 1). Otherwise the window ARG steps away
+is choosen (in case of `other-window').
+
+If there is an active minibuffer but the minibuffer-window is not selected
+then `other-window' and `scroll-other-window' behave like the original
+version.
+
+User-defined "other window" behavior
+------------------------------------
+
+In addition to the builtin "other window" behaviors ECB offers a user to
+completely define for himself how ECB should choose another window for
+scrolling it or selecting it. This can be done with the option
+`ecb-other-window-behavior' too because this option can also have a
+function-symbol as value:
+
+Such a function gets seven arguments:
+1. A canonical list of all currently visible windows of the `ecb-frame'
+
+2. A canonical list of all currently visible edit-windows
+
+3. A canonical list of all currently visible ecb-windows
+
+4. The window-object of the compile-window if there is any.
+
+5. The minibuffer-window of the ECB-frame if there is an active minibuffer.
+
+6. The result of the function `ecb-where-is-point' - see the documentation of
+   this function for details.
+
+7. An integer which indicates how many steps away from the current selected
+   window the "other-window" is. Is nil when this function is called in
+   another context than for `other-window'.
+
+The function has to return a window-object which is then used as "other
+window" for the command `other-window' or for scrolling another window (e.g.
+with `scroll-other-window'). Such a function has to handle properly all
+situation for itself.
+
+Here is an example for such a function:
+
+   (defun ecb-get-other-window-smart (win-list
+                                      edit-win-list
+                                      ecb-win-list
+                                      comp-win
+                                      minibuf-win
+                                      point-loc
+                                      nth-window)
+     "Implements the smart-setting of `ecb-other-window-behavior'."
+     (if minibuf-win
+         ;; if we have an active mini-buffer we delegate this to
+         ;; `ecb-get-other-window-minibuf-active'
+         (ecb-get-other-window-minibuf-active win-list
+                                              edit-win-list
+                                              ecb-win-list
+                                              comp-win
+                                              minibuf-win
+                                              point-loc
+                                              nth-window)
+       ;; here we have no active minibuffer!
+       (let ((nth-win (or nth-window 1)))
+         (cond ((equal point-loc 'ecb)
+                (ecb-next-listelem ecb-win-list (selected-window) nth-win))
+               ((equal point-loc 'compile)
+                (if (= nth-win 1)
+                    (or (and ecb-last-edit-window-with-point
+                             (window-live-p ecb-last-edit-window-with-point)
+                             ecb-last-edit-window-with-point)
+                        (car edit-win-list))
+                  (ecb-next-listelem (append edit-win-list
+                                             (list (selected-window)))
+                                     (selected-window)
+                                     nth-win)))
+               (t ;; must be an edit-window
+                (ecb-next-listelem (append edit-win-list
+                                           (if (and comp-win
+                                                    (= (length edit-win-list)
+                                                       1))
+                                               (list comp-win)))
+                                   (selected-window)
+                                   nth-win))))))
+
+This example implements the builtin smart behavior described above.
+
+---------- Footnotes ----------
+
+(1) `other-window' allows to select ARG'th different window, i.e. the window
+ARG steps away from current window in the cyclic order of the windows
+
+(2) `other-window' uses the same window-ordering as `walk-windows'
+
+
+File: ecb.info,  Node: The Methods buffer,  Next: Filtering the tree-buffers,  Prev: The other window,  Up: Usage of ECB
+
+Using and customizing the ECB-Methods buffer
+============================================
+
+ECB is mostly designed to display parsing information for files supported by
+semantic. But beginning with version 1.94 it also supports other parsing
+engines like imenu and etags, so also files not supported by semantic but by
+imenu/etags can be displayed in the Method-buffer of ECB. Therefore we have
+to introduce some terminology:
+
+ - "semantic-sources": These are file-types for which a semantic grammar is
+   available, so the files are parse-able by semantic. These sources are
+   supported best by ECB and most of the following options and descriptions
+   are related to these file-types. Examples are programming-sources like
+   C++, C, Java, Emacs-Lisp and Texinfo-file and some more.
+
+ - "non-semantic-sources": For these files there is no semantic-grammar
+   available so they can not be parsed by semantic. Examples are Perl-,
+   LaTeX- and TeX-files. But for many of these files imenu and/or etags
+   parsers exist. ECB supports now parsing and displaying these file-types
+   too and it uses for this some speedbar-logic.
+
+This chapter describes how to use and customize the Methods-buffer of ECB.
+
+* Menu:
+
+* Visiting tags::               Possible actions after visiting a tag
+* Expanding::                   Explicit and automatic expanding
+* Customizing the display::     How to customize the Methods-buffer display
+* Rebuilding the Methods::      When to rebuild the Methods-buffer
+
+
+File: ecb.info,  Node: Visiting tags,  Next: Expanding,  Prev: The Methods buffer,  Up: The Methods buffer
+
+Possible actions after visiting a tag
+-------------------------------------
+
+You visit a tag by clicking with either the primary oder secondary
+mouse-button (or by hitting `RET' or `C-RET' if using the keyboard) onto a
+node in the Methods-tree-buffer of ECB. This simply selects the "right"
+edit-window (depends if clicked with the primary or secondary button, in how
+many windows the edit-area is splitted and the value of
+`ecb-mouse-click-destination') and puts the point onto the first line of the
+clicked tag.
+
+But you can define if after this "basic" tag-visit-action more additional
+actions should be performed by ECB. You can either use some of the predefined
+actions (e.g. highlighting the header-line of the tag) or define own actions.
+You can set different actions for different major-modes. All this is done via
+the option `ecb-tag-visit-post-actions'.
+
+The following actions are currently predefined:
+ - `ecb-tag-visit-highlight-tag-header'
+
+ - `ecb-tag-visit-smart-tag-start'
+
+ - `ecb-tag-visit-recenter'
+
+ - `ecb-tag-visit-recenter-top'
+
+ - `ecb-tag-visit-goto-doc-start'
+
+ - `ecb-tag-visit-narrow-tag'
+
+See the documentation of these function for details what they do.
+
+Per default ECB performs the actions `ecb-tag-visit-smart-tag-start' and
+`ecb-tag-visit-highlight-tag-header' for all major-modes.
+
+
+File: ecb.info,  Node: Expanding,  Next: Customizing the display,  Prev: Visiting tags,  Up: The Methods buffer
+
+Explicit and automatic expanding of the ECB-methods-buffer
+----------------------------------------------------------
+
+Explicit expanding all nodes to a certain expansion level
+.........................................................
+
+With the command `ecb-expand-methods-nodes' (bound to `C-c .  x') you can get
+a fast overlook of the contents of the source-buffer, because this command
+allows precisely expanding all tags with a certain indentation-level. So you
+can either expand no tags (or with other words collapse all tags) or expand
+all tags so see the contents of a buffer at one glance. Or you can expand
+exactly that tags of a certain indentation level.
+
+Which node-types are expanded (rsp. collapsed) by this command depends for
+semantic-sources on the options `ecb-methods-nodes-expand-spec' and
+`ecb-methods-nodes-collapse-spec'! For non-semantic-sources always all
+node-types are expanded/collapsed, i.e. the two options above takes no effect
+for these files.
+
+Explicit expanding of the current node to a certain level
+.........................................................
+
+With the popup-menu of the methods-buffer an even more precise expansion is
+possible because it allows not only expanding all tags (see above) but offers
+in addition expanding only the current-node (for which the menu was
+activated) to an exact level of expansion:
+
+All menu-entries are label with an expansion-"level" whereas level specifies
+precisely which level of nodes should be expanded. level means the
+indentation-level of the NODE itself and its (recursive) subnodes relative to
+the NODE itself.
+
+So a level value X means that all (sub)nodes with an indentation-level <= X
+relative to NODE are expanded and all other are collapsed.
+
+Examples:
+
+ - Expand this node to level 0: Expand only the NODE itself because it is the
+   only node which has indentation 0 to itself. All deeper indented nodes
+   will be collapsed.  This is also the important difference between using
+   this menu compared to clicking onto the expand-symbol of the node: The
+   latter one expands the NODE to that expansion-state it has before the last
+   collapsing (so when deeper nodes has been expanded they will be expanded
+   now to). The former one expands exactly(!) to level 0, means expand only
+   the node itself and collapse all(!) its subnodes recursively(!).
+
+ - Expand this node to level 1: Expand the NODE itself and all of its direct
+   subnodes - because only the direct subnodes of NODE have indentation-level
+   1 relativ to NODE.  All deeper nodes will be collapsed.
+
+ - Collapse this node completely: Collapses the current node recursively,
+   means collapse not only the node itself but also its subnodes, the
+   subnodes of the subnodes and so on! This is very differnt from clicking
+   onto the collapse symbol because this action only collapses the node
+   itself but preserves the expansion-state of all its subnodes!
+
+
+Expanding the current node with the popup-menu ignores the settings in the
+options `ecb-methods-nodes-expand-spec' and `ecb-methods-nodes-collapse-spec'!
+
+Automatic expansion ot tags after buffer-parsing
+................................................
+
+With the option `ecb-show-tags' you tell ECB how to display tags of a certain
+tag-class (*note Customizing the display::). Among other things you can tell
+ECB that a certain tag-class should be combined under an expanded or
+collapsed bucket-node. But such a setting defines the expansion-state of such
+a bucket-node only direct afterwards the buffer has been (re)parsed, which
+can occur after opening a file, after autom. reparsing the buffer via
+semantic or after manually rebuilding the methods-buffer of ECB.
+
+The tag-class `type' (classes, interfaces, enumerations etc.) is divided into
+several subtypes by semantic. The subtypes are stings which names exactly if
+the tag with tag-class `type' is a class, an interface, an enumeration, a
+typedef etc. With the option `ecb-type-tag-expansion' you can tell ECB if
+these type-tags should be autom. expanded after (reparsing) a buffer (see
+above) or if they should be displayed collapsed - so all its members (methods,
+variables etc.) are hidden.
+
+Automatic expanding the ECB-methods-buffer for current tag
+..........................................................
+
+If the option `ecb-highlight-tag-with-point' is switched on, then always that
+node in the method-buffer is highlighted which belongs to the current
+semantic-tag under point in the current active edit-window. But if this node
+is invisible (probably because its parent node is collapsed) then no node is
+highlighted if the auto.  expanding feature is switched off.
+
+You can either switch on this feature with the option
+`ecb-auto-expand-tag-tree' or even easier with the command
+`ecb-toggle-auto-expand-tag-tree'.
+
+There is another option `ecb-expand-methods-switch-off-auto-expand' which
+makes both explicit and auto. expanding best working together. See the
+documentation of this option to get the details.
+
+The autom. expanding feature is only available for semantic-sources!
+
+Previous versions of ECB have always fully expanded the whole tree in the
+Methods-buffer if the current tag in the source-buffer was not visible in the
+current tree - e.g. because the variables-bucket was collapsed or the
+containing type of a tag (e.g. the class of a method) was collapsed. So in
+most cases much more was expanded as needed to make the current tag visible.
+
+The mechanism of ECB 2.22 and higher only expands the needed parts of the
+tree-buffer to make the related node visible: First we try to highlight the
+current tag with current expansion-state of the Methods-buffer. If the node
+is not visible so the tag can not be highlighted then we go upstairs the
+ladder of type-tags the current tag belongs to (e.g. we expand successive the
+nodes of the whole class-hierachy of the current method-tag until the related
+node becomes visible). If there is no containing type for the current tag
+then the node of the tag is probably contained in a toplevel-bucket which is
+currently collapsed; in this case we expand only this bucket-node and try
+highlighting again. Only if this has still no success then we expand the full
+tree-buffer and try to highlight the current tag.
+
+There is another option `ecb-auto-expand-tag-tree-collapse-other': If this
+option is set then auto. expanding the tag-tree collapses all not related
+nodes.  This means that all nodes which have no relevance for the currently
+highlighted node will be collapsed, because they are not necessary to make
+the highlighted node visible. This feature is switched off by default because
+if always collapses the complete Methods-tree before the following
+highlighting of the node for the current tag expands the needed parts of the
+tree-buffer.
+
+
+File: ecb.info,  Node: Customizing the display,  Next: Rebuilding the Methods,  Prev: Expanding,  Up: The Methods buffer
+
+Customizing the display of the Methods-buffer
+---------------------------------------------
+
+The ECB-Methods buffer is probably the most important browsing window offered
+by ECB. It displays all parsing informations of the current source-buffer
+(the buffer displayed in the current active edit-window).
+
+Normally ECB gets all informations displayed in this Methods-buffer from the
+semantic-library - at least for semantic-sources. This library parses auto.
+the current source-buffer in the edit-window of ECB and returns all
+information in form of "tags" to ECB which displays them in a browse-able
+form in its Method-buffer. See *Note ECB Methods-buffer:: for information how
+to use the Methods-buffer.
+
+There are several options to customize which tags ECB should display in
+general, if the tags should be collapsed or expanded, how to fontify them
+(i.e. syntax-highlighting) and something more.
+
+`ecb-show-tags'
+   With the option `ecb-show-tags' you specify how ECB should display the
+   tags returned by the semantic parser. Semantic divides its tags in several
+   so called "tag classes". A tag-class is always a symbol and can be for
+   example `type' (tags which represent a class(1), a interface, an
+   enumeration etc.), `function' (tags which represent function or methods),
+   `variable' (variables and attributes), `include' (import-statements) etc.
+   There is no predefined superset of allowed tag-class-symbols because each
+   language-parser can define its own tag-classes. But to get an overview of
+   the most common tag-classes see the default value of the option
+   `ecb-show-tags'.
+
+   With the option `ecb-show-tags' you can now specify how ECB should display
+   tags of a certain tag-class in a certain major-mode.  You can tell ECB
+   that all tags of a tag-class `X' should be displayed in an expanded bucket
+   and all tags of a tag-class `Y' should be displayed in a collapsed bucket
+   and all tags of a tag-class `Z' should be displayed flattened (means not
+   contained in a expandable/collapsable bucket-node). These settings can be
+   made separately for each major-mode but you can also define a
+   default-display which takes effect when for a major-mode no special
+   setting can be found in `ecb-show-tags'.
+
+   For every tag-class you can tell ECB how the tags should be sorted.
+
+`ecb-font-lock-tags'
+`ecb-type-tag-display'
+   How to fontify the tags in the Method-buffer
+
+`ecb-tag-display-function'
+   ECB and semantic offer several predefined functions for displaying the
+   tags. Here you can customize, what informations tags should contain (only
+   the method-name or the whole signature or something else) and what
+   notation should be used, e.g. UML or not.
+
+These are the most important options for this topic but it is recommended to
+have a look into the customize-group `ecb-methods' (*note ecb-methods::) and
+check all the options offered there!
+
+All these options are only relevant for semantic-sources and take no effect
+for non-semantic-sources!
+
+---------- Footnotes ----------
+
+(1) Do not confuse the term "class" in the context of a tag, which means the
+class of the tag and which is a semantic-term and a "class" in the context of
+an object oriented language like Java or C++! Normally the surrounding
+context sould be sufficient to understand which type of "class" is meant
+whenever the term "class" is used in this manual.
+
+
+File: ecb.info,  Node: Rebuilding the Methods,  Prev: Customizing the display,  Up: The Methods buffer
+
+Rebuilding the Methods-buffer
+-----------------------------
+
+In almost all cases there is *NO* need to manually rebuild the method-buffer,
+because it is always done automatically if necessary; the mechanism depends
+on the sources:
+
+ - semantic-sources: The command `global-semantic-auto-parse-mode' switches
+   on autom.  reparsing of semantic-sources.
+
+ - non-semantic-sources (imenu supported): You can switch on autom.
+   rescanning/reparsing with the option `imenu-auto-rescan'. But nevertheless
+   you have to manually rebuild the Method-buffer (with the autom. updated
+   imenu-tags) via the command `ecb-rebuild-methods-buffer' (bound to `C-c .
+   r').
+
+ - non-semantic-sources (etags supported): For these sources there is no
+   built-in auto-rescan mechanism, because etags is an external tool it can
+   only operate on the saved file-contents. So rescanning the buffer contents
+   would need to save the buffer before. Therefore there is no built-in
+   auto-rescan mechanism because this would always result in saving the
+   buffer and running an external tool. But of course you can program such a
+   an etags-auto-rescan mechanism for yourself!
+
+Besides for etags-supported non-semantic-sources there exist a few rare
+scenarios also for the other sources where a complete manual rebuild can be
+necessary. Here is one example:
+
+Depending on the semantic-version: If an Elisp-file is parsed which contains
+a defun X in the middle where the closing ) is missing, then semantic parses
+only until this defun X is reached and you will get an incomplete ECB-method
+buffer. In such a case you must complete the defun X and then completely
+reparse the Elisp-file and rebuild the ECB method buffer!
+
+A complete manually rebuild is done by `ecb-rebuild-methods-buffer'. For
+etags-parsed non-semantic-sources this causes an automatic saving of the
+source-buffer because otherwise etags would not operate with the latest
+contents!
+
+
+File: ecb.info,  Node: Filtering the tree-buffers,  Next: The ECB-layout,  Prev: The Methods buffer,  Up: Usage of ECB
+
+Applying filters to the special ECB-tree-buffers
+================================================
+
+To get a fast and good overlook of the contents of a tree-buffer ECB offers a
+filter-mechanism for the Directories-, Sources-, the History- and the
+Methods-buffer.
+
+* Menu:
+
+* Filtering Directories::       Applying filters to the Directories-buffer
+* Filtering Sources::           Applying filters to the Sources--buffer
+* Filtering History::           Applying filters to the History-buffer
+* Filtering Methods::           Applying filters to the Methods-buffer
+
+
+File: ecb.info,  Node: Filtering Directories,  Next: Filtering Sources,  Prev: Filtering the tree-buffers,  Up: Filtering the tree-buffers
+
+Applying filters to the Directories-buffer
+------------------------------------------
+
+With the option `ecb-excluded-directories-regexps' certain directories can be
+excluded from being displayed in the directories-browser of ECB. This can be
+done by defining regular expressions. If the name of a directory matches at
+least one of the regexps of this option the directory is not displayed in the
+directories-tree-buffer.
+
+The option `ecb-sources-exclude-cvsignore' allows to exclude source-files
+from the sources-tree-buffer if their name is listed in a so called
+`.cvsignore'-file. This option is a list of regular expressions and if a
+directory-name matches at least one of these regexps then all files listed in
+the `.cvsignore'-file of this directory are not displayed in the
+sources-tree-buffer.
+
+
+File: ecb.info,  Node: Filtering Sources,  Next: Filtering History,  Prev: Filtering Directories,  Up: Filtering the tree-buffers
+
+Applying filters to the Sources-buffer
+--------------------------------------
+
+Interactive Sources-filters
+...........................
+
+The command `ecb-sources-filter' allows to filter these tree-buffer either by
+a regular expression or by an extension (e.g.  java, cc, el for java-, c++-
+rsp elisp-sources). This functionality is also available via the popup-menu
+of the Sources-tree-buffer.
+
+The currently applied filter is indicated in the modeline of the related
+tree-buffer. Applying a new filter replaces an eventually already applied
+filter.
+
+Default Sources-filters
+.......................
+
+The option `ecb-source-file-regexps' allow to specify which source-files
+should be displayed and which not. This is done on a directory-basis, ie. for
+each directory-regexp the files to display can be specified. See the
+documentation of this option for all details.
+
+In addition to this option you should also know the option
+`ecb-sources-exclude-cvsignore' (*note Filtering Directories::).
+

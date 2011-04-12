@@ -1,0 +1,85 @@
+<html lang="en">
+<head>
+<title>ECB - the Emacs Code Browser</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name=description content="ECB - the Emacs Code Browser">
+<meta name=generator content="makeinfo 4.2">
+<link href="http://www.gnu.org/software/texinfo/" rel=generator-home>
+</head>
+<body>
+<p>
+Node:<a name="The%20layout-engine%20API">The layout-engine API</a>,
+Previous:<a rel=previous accesskey=p href="Possible-layout-outlines.html#Possible%20layout-outlines">Possible layout-outlines</a>,
+Up:<a rel=up accesskey=u href="The-layout-engine.html#The%20layout-engine">The layout-engine</a>
+<hr><br>
+
+<h4>The complete layout-engine API of ECB</h4>
+
+<p>This section lists all functions, macros, variables and user-options
+the layout-engine API of ECB offers foreign packages. Call
+<code>describe-function</code> rsp. <code>describe-variable</code> to get a
+detailed description.
+
+<p>Functions for programming with layouts and special ecb-windows:
+<ul>
+<li>ecb-available-layouts-member-p
+<li>ecb-canonical-ecb-windows-list
+<li>ecb-canonical-edit-windows-list
+<li>ecb-compile-window-live-p
+<li>ecb-compile-window-state
+<li>ecb-do-if-buffer-visible-in-ecb-frame
+<li>ecb-get-current-visible-ecb-buffers
+<li>ecb-layout-define
+<li>ecb-layout-switch
+<li>ecb-layout-undefine
+<li>ecb-point-in-compile-window
+<li>ecb-point-in-ecb-window
+<li>ecb-point-in-edit-window
+<li>ecb-select-edit-window
+<li>ecb-split-hor
+<li>ecb-split-ver
+<li>ecb-where-is-point
+<li>ecb-with-dedicated-window
+</ul>
+
+<p>Utility functions/macros:
+<ul>
+<li>ecb-enlarge-window
+<li>ecb-fix-filename
+<li>ecb-window-live-p
+<li>ecb-with-readonly-buffer
+</ul>
+
+<p>Some other maybe useful functions/macros:
+<ul>
+<li>ecb-with-adviced-functions
+<li>ecb-with-original-functions
+<li>ecb-with-some-adviced-functions
+</ul>
+
+<p>Some useful <strong>READONLY</strong> variables:
+<ul>
+<li>ecb-compile-window
+<li>ecb-last-edit-window-with-point
+<li>ecb-last-source-buffer
+</ul>
+
+<p><strong>Caution</strong>: DO NOT USE THE VARIABLE <code>ecb-edit-window</code> IN
+YOUR PROGRAMS!
+
+<p>User-options and hooks related to the layout-engine API:
+<ul>
+<li>ecb-current-buffer-sync-hook
+<li>ecb-hide-ecb-windows-after-hook
+<li>ecb-hide-ecb-windows-before-hook
+<li>ecb-redraw-layout-after-hook
+<li>ecb-redraw-layout-before-hook
+<li>ecb-show-ecb-windows-after-hook
+<li>ecb-show-ecb-windows-before-hook
+<li>ecb-windows-height
+<li>ecb-windows-width
+<li>ecb-compile-window-height
+</ul>
+
+</body></html>
+
