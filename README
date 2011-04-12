@@ -1,0 +1,39 @@
+Ola Bini's Emacs configuration
+------------------------------
+
+This is my personal Emacs configuration. It's not very clean and it suits me personally quite well - but might not suit anyone else. No guarantees. I use this on MacOS X. It should work with minor changes on Linux. It was several years since I tried it on Windows so your mileage there might wary.
+
+To install:
+* Clone as .emacs.d in your home directory
+* Add an optional user file (see below)
+* Restart your Emacs
+* Open a Java file (in order to load CEDET dependencies)
+* Execute (setq filename nil) in *scratch*
+* C-u 0 M-x byte-recompile-directory   (and choose ~/.emacs.d)
+
+After this is done you should see something like this: "Done (Total of 750 files compiled, 14 failed, 9 skipped in 36 directories)." You can definitely use these Emacs files without compiling them, but performance won't be fantastic.
+
+This configuration will try to load a file called ~/.emacs.d/emacs-user-init.el after everything else. This file is ignored by git so you can customize it to your wildest dreams. Or not have it at all. Mine looks something like this:
+
+(setq
+ user-mail-address "ola.bini@gmail.com"
+ user-full-name "Ola Bini"
+ system-name "Orpheus"
+ org-agenda-files (directory-files "~/org/agenda" t "\.org$")
+ frame-title-format '("Emacs@Orpheus: %*%+ %b")
+ erc-autojoin-channels-alist '(("freenode.net" "#jruby" "#ioke" "#seph"))
+ erc-user-full-name "Ola Bini"
+ erc-email-userid "<<REDACTED>>"
+ erc-nick "<<REDACTED>>"
+)
+
+(add-hook 'erc-after-connect '(lambda (SERVER NICK) (erc-message "PRIVMSG" "NickServ identify <<REDACTED>>")))
+
+(switch-to-buffer "*scratch*")
+(fontize-decrease-font-size)
+(fontize-decrease-font-size)
+
+(set-frame-position (selected-frame) 0 0)
+(set-frame-size (selected-frame) 50000 50000)
+(org-todo-list nil)
+
