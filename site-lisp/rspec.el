@@ -60,7 +60,7 @@
 (defun rspec-run-ruby ()
     "Runs rspec on current buffer"
     (interactive)
-    (compile (concat "/usr/local/bin/ruby -S spec " (buffer-file-name)) t))
+    (compile (concat "/usr/bin/env ruby -S spec " (buffer-file-name)) t))
 
 (defun rspec-run-jruby ()
     "Runs rspec on current buffer with JRuby"
@@ -70,7 +70,7 @@
 (defun rspec-run-current-example ()
   "Run spec where the point is"
   (interactive)
-  (compile (concat "/usr/local/bin/ruby -S spec " " --line " (substring (what-line) 5) " " (buffer-file-name)) t))
+  (compile (concat "/usr/bin/env ruby -S spec " " --line " (substring (what-line) 5) " " (buffer-file-name)) t))
 
 (defun rspec-mode-setup ()
   (if rspec-mode 

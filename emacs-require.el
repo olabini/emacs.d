@@ -59,6 +59,7 @@
 (autoload `cyclebuffer-forward "cyclebuffer" "cycle forward" t)
 (autoload `cyclebuffer-backward "cyclebuffer" "cycle backward" t)
 (autoload 'word-count-mode "word-count" "Minor mode to count words." t nil)
+(autoload 'puppet-mode "puppet-mode" nil t)
 
 (load "haskell-site-file")
 (load "fu.el")
@@ -90,5 +91,14 @@
 
 (eval-after-load "erc" 
   '(require 'erc-autojoin))
+
+(defun xscheme ()
+  "Loads xscheme and runs a scheme process in the current buffer."
+  (interactive)
+  (load-library "xscheme")
+  (xscheme-start "scheme -emacs"
+                 (buffer-name)
+                 (buffer-name)))
+
 
 (provide 'emacs-require)

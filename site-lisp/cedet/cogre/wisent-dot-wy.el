@@ -2,8 +2,8 @@
 
 ;; Copyright (C) 2003, 2004, 2009 Eric M. Ludlam
 
-;; Author: Ola Bini <olabini@e4300xp32>
-;; Created: 2010-04-23 09:15:07-0500
+;; Author: Ola Bini <olabini@orpheus.gatx.net>
+;; Created: 2011-06-27 10:39:53-0500
 ;; Keywords: syntax
 ;; X-RCS: $Id$
 

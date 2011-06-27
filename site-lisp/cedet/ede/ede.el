@@ -4,8 +4,8 @@
 
 ;; Author: Eric M. Ludlam <zappo@gnu.org>
 ;; Keywords: project, make
-;; RCS: $Id: ede.el,v 1.147 2010/02/20 21:42:43 zappo Exp $
-(defconst ede-version "1.0pre7"
+;; RCS: $Id: ede.el,v 1.154 2010/07/31 01:12:34 zappo Exp $
+(defconst ede-version "1.0"
   "Current version of the Emacs EDE.")
 
 ;; This software is free software; you can redistribute it and/or modify
@@ -51,13 +51,12 @@
 (require 'custom)
 
 (defgroup ede nil
-  "Emacs Development Environment gloss."
+  "Emacs Development Environment."
   :group 'tools
-  :group 'convenience
-  )
+  :group 'extensions)
 
 (defcustom ede-auto-add-method 'ask
-  "*Determins if a new source file shoud be automatically added to a target.
+  "*Determines if a new source file should be automatically added to a target.
 Whenever a new file is encountered in a directory controlled by a
 project file, all targets are queried to see if it should be added.
 If the value is 'always, then the new file is added to the first
@@ -111,7 +110,9 @@ This object's class determines how to compile and debug from a buffer.")
 If `ede-object' is nil, then commands will operate on this object.")
 
 (defvar ede-constructing nil
-  "Non nil when constructing a project hierarchy.")
+  "Non nil when constructing a project hierarchy.
+If the project is being constructed from an autoload, then the
+value is the autoload object being used.")
 
 (defvar ede-deep-rescan nil
   "Non nil means scan down a tree, otherwise rescans are top level only.
@@ -192,6 +193,18 @@ Argument LIST-O-O is the list of objects to choose from."
 		 (cons 'ede-minor-mode ede-minor-keymap))
     ))
 
+(defun ede-buffer-belongs-to-target-p ()
+  "Return non-nil if this buffer belongs to at least one target."
+  (let ((obj ede-object))
+    (if (consp obj)
+	(setq obj (car obj)))
+    (and obj (obj-of-class-p obj ede-target))))
+
+(defun ede-buffer-belongs-to-project-p ()
+  "Return non-nil if this buffer belongs to at least one target."
+  (if (or (null ede-object) (consp ede-object)) nil
+    (obj-of-class-p ede-object ede-project)))
+
 (defun ede-menu-obj-of-class-p (class)
   "Return non-nil if some member of `ede-object' is a child of CLASS."
   (if (listp ede-object)
@@ -253,9 +266,7 @@ Argument MENU-DEF is the menu definition to use."
 	   (and (ede-current-project)
 		(oref (ede-current-project) targets)) ]
 	 [ "Remove File" ede-remove-file
-	   (and ede-object
-		(or (listp ede-object)
-		    (not (obj-of-class-p ede-object ede-project)))) ]
+	   (ede-buffer-belongs-to-project-p) ]
 	 "-")
        (if (not obj)
 	   nil
@@ -297,7 +308,7 @@ Argument MENU-DEF is the definition of the current menu."
    (easy-menu-create-menu
     "Customize Project"
     (let* ((obj (ede-current-project))
-	   (targ (when (slot-boundp obj 'targets)
+	   (targ (when (and obj (slot-boundp obj 'targets))
 		   (oref obj targets))))
       (when obj
 	;; Make custom menus for everything here.
@@ -389,7 +400,7 @@ mode.  nil means to toggle the mode."
       (if (and ede-minor-mode (not ede-constructing))
 	  (ede-initialize-state-current-buffer)
 	;; If we fail to have a project here, turn it back off.
-	(if (not (interactive-p))
+	(if (not (cedet-called-interactively-p))
 	    (setq ede-minor-mode nil))))))
 
 (defun ede-initialize-state-current-buffer ()
@@ -560,7 +571,7 @@ Optional argument NAME is the name to give this project."
 			  nil t)))
   ;; Make sure we have a valid directory
   (when (not (file-exists-p default-directory))
-    (error "Cannot create project in non-existant directory %s" default-directory))
+    (error "Cannot create project in non-existent directory %s" default-directory))
   (when (not (file-writable-p default-directory))
     (error "No write permissions for %s" default-directory))
   ;; Create the project
@@ -729,12 +740,12 @@ Optional argument FORCE forces the file to be removed without asking."
   (ede-invoke-method 'project-compile-target))
 
 (defun ede-debug-target ()
-  "Debug the current buffer's assocated target."
+  "Debug the current buffer's associated target."
   (interactive)
   (ede-invoke-method 'project-debug-target))
 
 (defun ede-run-target ()
-  "Debug the current buffer's assocated target."
+  "Run the current buffer's associated target."
   (interactive)
   (ede-invoke-method 'project-run-target))
 
@@ -825,7 +836,7 @@ Argument COMMAND is the command to use for compiling the target."
   (error "Make-dist not supported by %s" (object-name this)))
 
 (defmethod project-dist-files ((this ede-project))
-  "Return a list of files that constitutes a distribution of THIS project."
+  "Return a list of files that constitute a distribution of THIS project."
   (error "Dist-files is not supported by %s" (object-name this)))
 
 (defmethod project-rescan ((this ede-project))
@@ -897,7 +908,7 @@ Optional ROOTRETURN will return the root project for DIR."
 			    ede-projects))
       (if (not o)
 	  ;; If not, get it now.
-	  (let ((ede-constructing t))
+	  (let ((ede-constructing pfc))
 	    (setq o (funcall (oref pfc load-type) toppath))
 	    (when (not o)
 	      (error "Project type error: :load-type failed to create a project"))
@@ -934,7 +945,7 @@ Optional ROOTRETURN will return the root project for DIR."
 ;;;###autoload
 (defun ede-parent-project (&optional obj)
   "Return the project belonging to the parent directory.
-nil if there is no previous directory.
+Return nil if there is no previous directory.
 Optional argument OBJ is an object to find the parent of."
   (let* ((proj (or obj ede-object-project)) ;; Current project.
 	 (root (if obj (ede-project-root obj)
@@ -1045,8 +1056,7 @@ could become slow in time."
 
 (defmethod ede-find-target ((proj ede-project) buffer)
   "Fetch the target in PROJ belonging to BUFFER or nil."
-  (save-excursion
-    (set-buffer buffer)
+  (with-current-buffer buffer
     (or ede-object
 	(if (ede-buffer-mine proj buffer)
 	    proj
@@ -1083,9 +1093,8 @@ This includes buffers controlled by a specific target of PROJECT."
   (let ((bl (buffer-list))
 	(pl nil))
     (while bl
-      (save-excursion
-	(set-buffer (car bl))
-	(if (and ede-object (eq (ede-current-project) project))
+      (with-current-buffer (car bl)
+	(if (ede-buffer-belongs-to-project-p)
 	    (setq pl (cons (car bl) pl))))
       (setq bl (cdr bl)))
     pl))
@@ -1095,8 +1104,7 @@ This includes buffers controlled by a specific target of PROJECT."
   (let ((bl (buffer-list))
 	(pl nil))
     (while bl
-      (save-excursion
-	(set-buffer (car bl))
+      (with-current-buffer (car bl)
 	(if (if (listp ede-object)
 		(memq target ede-object)
 	      (eq ede-object target))
@@ -1105,19 +1113,18 @@ This includes buffers controlled by a specific target of PROJECT."
     pl))
 
 (defun ede-buffers ()
-  "Return a list of all buffers controled by an EDE object."
+  "Return a list of all buffers controlled by an EDE object."
   (let ((bl (buffer-list))
 	(pl nil))
     (while bl
-      (save-excursion
-	(set-buffer (car bl))
+      (with-current-buffer (car bl)
 	(if ede-object
 	    (setq pl (cons (car bl) pl))))
       (setq bl (cdr bl)))
     pl))
 
 (defun ede-map-buffers (proc)
-  "Execute PROC on all buffers controled by EDE."
+  "Execute PROC on all buffers controlled by EDE."
   (mapcar proc (ede-buffers)))
 
 (defmethod ede-map-project-buffers ((this ede-project) proc)
@@ -1183,12 +1190,10 @@ Return the first non-nil value returned by PROC."
       (when map
 	;; We can't do a require for the below symbol.
 	(setq semantic-lex-spp-project-macro-symbol-obarray
-	      (semantic-lex-make-spp-table map))
-	)
+	      (semantic-lex-make-spp-table map)))
       (when (consp objs)
 	(message "Choosing preprocessor syms for project %s"
-		 (object-name (car objs))))
-      )))
+		 (object-name (car objs)))))))
 
 (defmethod ede-system-include-path ((this ede-project))
   "Get the system include path used by project THIS."
@@ -1216,35 +1221,31 @@ Return the first non-nil value returned by PROC."
       nil
     (oset project local-variables (cons (list variable)
 					(oref project local-variables)))
-    (mapcar (lambda (b) (save-excursion
-			  (set-buffer  b)
-			  (make-local-variable variable)))
-	    (ede-project-buffers project))))
+    (dolist (b (ede-project-buffers project))
+      (with-current-buffer b
+        (make-local-variable variable)))))
 
 (defmethod ede-set-project-variables ((project ede-project) &optional buffer)
   "Set variables local to PROJECT in BUFFER."
   (if (not buffer) (setq buffer (current-buffer)))
-  (save-excursion
-   (set-buffer buffer)
-   (mapcar (lambda (v)
-	     (make-local-variable (car v))
-	     ;; set its value here?
-	     (set (car v) (cdr v))
-	     )
-	   (oref project local-variables))))
+  (with-current-buffer buffer
+    (dolist (v (oref project local-variables))
+      (make-local-variable (car v))
+      ;; set its value here?
+      (set (car v) (cdr v)))))
 
 (defun ede-set (variable value &optional proj)
   "Set the project local VARIABLE to VALUE.
-If VARIABLE is not project local, just use set."
+If VARIABLE is not project local, just use set.  Optional argument PROJ
+is the project to use, instead of `ede-current-project'."
   (let ((p (or proj (ede-current-project)))
 	a)
     (if (and p (setq a (assoc variable (oref p local-variables))))
 	(progn
 	  (setcdr a value)
-	  (mapc (lambda (b) (save-excursion
-			      (set-buffer b)
-			      (set variable value)))
-		(ede-project-buffers p)))
+      (dolist (b (ede-project-buffers p))
+        (with-current-buffer b
+          (set variable value))))
       (set variable value))
     (ede-commit-local-variables p))
   value)

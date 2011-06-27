@@ -1,10 +1,10 @@
 ;;; autoconf-edit.el --- Keymap for autoconf
 
-;;  Copyright (C) 1998, 1999, 2000, 2009  Eric M. Ludlam
+;;  Copyright (C) 1998, 1999, 2000, 2009, 2010  Eric M. Ludlam
 
 ;; Author: Eric M. Ludlam <zappo@gnu.org>
 ;; Keywords: project
-;; RCS: $Id: autoconf-edit.el,v 1.12.2.1 2010/02/21 02:35:49 zappo Exp $
+;; RCS: $Id: autoconf-edit.el,v 1.15 2010/07/24 13:55:40 zappo Exp $
 
 ;; This software is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -39,20 +39,6 @@
   (add-to-list 'auto-mode-alist '("\\<configure\\.in$" . autoconf-mode))
   )
 
-(defvar autoconf-new-automake-string
-  "dnl Process this file with autoconf to produce a configure script
-
-AC_INIT(%s)
-AM_INIT_AUTOMAKE([%s], 0)
-AM_CONFIG_HEADER(config.h)
-
-dnl End the configure script.
-AC_OUTPUT(Makefile, [date > stamp-h] )\n"
-  "This string is used to initialize a new configure.in.
-The default is designed to be used with automake.
-The first %s will be filled with the test file.
-The second %s will be filled with the program name.")
-
 (defun autoconf-new-program (rootdir program testfile)
   "Initialize a new configure.in in ROOTDIR for PROGRAM using TESTFILE.
 ROOTDIR is the root directory of a given autoconf controlled project.
@@ -73,7 +59,12 @@ configure the initial configure script using `autoconf-new-automake-string'"
       (find-file cf2)))
   ;; Note, we only ask about overwrite if a string/path is specified.
   (erase-buffer)
-  (insert (format autoconf-new-automake-string testfile program)))
+  (ede-srecode-setup)
+  (ede-srecode-insert
+   "file:ede-empty"
+   "TEST_FILE" testfile
+   "PROGRAM" program)
+  )
 
 (defvar autoconf-preferred-macro-order
   '("AC_INIT"
@@ -163,7 +154,7 @@ From the autoconf manual:
     (looking-at (concat "\\(A[CM]_" macro "\\|" macro "\\)"))))
 
 (defun autoconf-find-last-macro (macro &optional ignore-bol)
-  "Move to the last occurance of MACRO in FILE, and return that point.
+  "Move to the last occurrence of MACRO in FILE, and return that point.
 The last macro is usually the one in which we would like to insert more
 items such as CHECK_HEADERS."
   (let ((op (point)) (atbol (if ignore-bol "" "^")))
@@ -176,7 +167,7 @@ items such as CHECK_HEADERS."
       nil)))
 
 (defun autoconf-parameter-strip (param)
-  "Strip the parameter PARAM  of whitespace and misc characters."
+  "Strip the parameter PARAM  of whitespace and miscellaneous characters."
   ;; force greedy match for \n.
   (when (string-match "\\`\n*\\s-*\\[?\\s-*" param)
     (setq param (substring param (match-end 0))))
@@ -241,7 +232,7 @@ Optional argument PARAM is the parameter to pass to the macro as one string."
 	 (autoconf-insert-macro-at-point macro param))
 	((member macro autoconf-multiple-multiple-macros)
 	 (if (not param)
-	     (error "You must have a paramter for %s" macro))
+	     (error "You must have a parameter for %s" macro))
 	 (if (not (autoconf-find-last-macro macro))
 	     (progn
 	       ;; Doesn't exist yet....

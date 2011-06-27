@@ -1,10 +1,10 @@
 ;;; ede-gnustep.el --- EDE GNUstep Project file driver
 
-;;;  Copyright (C) 2008,2009  Marco Bardelli
+;;;  Copyright (C) 2008,2009,2010  Marco Bardelli
 
 ;; Author: Marco (Bj) Bardelli <bardelli.marco@gmail.com>
 ;; Keywords: project, make, gnustep, gnustep-make
-;; RCS: $Id: ede-gnustep.el,v 1.11 2010/01/09 23:05:05 safanaj Exp $
+;; RCS: $Id: ede-gnustep.el,v 1.13 2010/06/12 00:44:16 zappo Exp $
 
 ;; This software is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -172,7 +172,7 @@ Include some dir via the -I preprocessor flag, for this target.")
 	      :custom (repeat (string :tag "File"))
 	      :label "Auxiliary Source Files"
 	      :group (default source)
-	      :documentation "Auxilliary source files included in this target.
+	      :documentation "Auxiliary source files included in this target.
 Each of these is considered equivalent to a source file, but it is not
 distributed, and each should have a corresponding rule to build it.")
    (dirty :initform nil
@@ -182,8 +182,8 @@ distributed, and each should have a corresponding rule to build it.")
 "Abstract class for ede-step targets.")
 
 (defclass ede-step-target-ctool (ede-step-target)
-  ((sourcetype :initform (ede-source-gnustep-c
-			  ede-source-header-gnustep-c))
+  ((sourcetype :initform '(ede-source-gnustep-c
+			   ede-source-header-gnustep-c))
    (type :initform 'ctool)
    (cflags :initarg :cflags
 	   :initform nil
@@ -198,10 +198,10 @@ distributed, and each should have a corresponding rule to build it.")
   "Class for CTool targets.")
 
 (defclass ede-step-target-tool (ede-step-target)
-  ((sourcetype :initform (ede-source-gnustep-objc
-			  ede-source-gnustep-c
-			  ede-source-header-gnustep-c
-			  ede-source-header-gnustep-objc))
+  ((sourcetype :initform '(ede-source-gnustep-objc
+			   ede-source-gnustep-c
+			   ede-source-header-gnustep-c
+			   ede-source-header-gnustep-objc))
    (type :initform 'tool)
    (cflags :initarg :cflags
 	   :initform nil
@@ -217,8 +217,8 @@ distributed, and each should have a corresponding rule to build it.")
 
 ;; FIX XXX :  _LIBS_DEPEND
 (defclass ede-step-target-clibrary (ede-step-target)
-  ((sourcetype :initform (ede-source-gnustep-c
-			  ede-source-header-gnustep-c))
+  ((sourcetype :initform '(ede-source-gnustep-c
+			   ede-source-header-gnustep-c))
    (type :initform 'clibrary)
 ;;;    (header-install-dir :initarg :header-install-dir
 ;;; 		       :initform ""
@@ -239,10 +239,10 @@ distributed, and each should have a corresponding rule to build it.")
   "Class for CLib targets.")
 
 (defclass ede-step-target-library (ede-step-target)
-  ((sourcetype :initform (ede-source-gnustep-objc
-			  ede-source-gnustep-c
-			  ede-source-header-gnustep-objc
-			  ede-source-header-gnustep-c))
+  ((sourcetype :initform '(ede-source-gnustep-objc
+			   ede-source-gnustep-c
+			   ede-source-header-gnustep-objc
+			   ede-source-header-gnustep-c))
    (type :initform 'library)
 ;;;    (header-install-dir :initarg :header-install-dir
 ;;; 		       :initform ""
@@ -263,10 +263,10 @@ distributed, and each should have a corresponding rule to build it.")
   "Class for Lib targets.")
 
 (defclass ede-step-target-application (ede-step-target)
-  ((sourcetype :initform (ede-source-gnustep-objc
-			  ede-source-gnustep-c
-			  ede-source-header-gnustep-objc
-			  ede-source-header-gnustep-c))
+  ((sourcetype :initform '(ede-source-gnustep-objc
+			   ede-source-gnustep-c
+			   ede-source-header-gnustep-objc
+			   ede-source-header-gnustep-c))
    (type :initform 'application)
    (cflags :initarg :cflags
 	   :initform nil
@@ -281,7 +281,7 @@ distributed, and each should have a corresponding rule to build it.")
   "Class for App targets.")
 
 (defclass ede-step-target-documentation (ede-step-target)
-  ((sourcetype :initform (ede-source-gnustep-texi))
+  ((sourcetype :initform '(ede-source-gnustep-texi))
    (type :initform 'documentation))
   "Class for Doc targets.")
 
@@ -393,20 +393,20 @@ The variable GNUSTEP_INSTALLATION_DOMAIN is set at this value.")
 	     :type (or null list)
 	     :custom (repeat (string :tag "Makefile"))
 	     :group make
-	     :documentation "The auxilliary makefile for additional variables.
+	     :documentation "The auxiliary makefile for additional variables.
 Included just before the specific target files.")
    (included-makefiles :initarg :included-makefiles
 		       :type (or null list)
 		       :custom (repeat (string :tag "Makefile"))
 		       :group make
-		       :documentation "The auxilliary makefile for targets rules.
+		       :documentation "The auxiliary makefile for targets rules.
 Included common and specific target files.")
    (postamble :initarg :postamble
 	     :initform '("GNUmakefile.postamble")
 	     :type (or null list)
 	     :custom (repeat (string :tag "Makefile"))
 	     :group make
-	     :documentation "The auxilliary makefile for additional rules.
+	     :documentation "The auxiliary makefile for additional rules.
 Included just after the specific target files.")
 
    (metasubproject

@@ -1,10 +1,10 @@
 ;;; ede-proj-elisp.el --- EDE Generic Project Emacs Lisp support
 
-;;;  Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2007, 2008, 2009  Eric M. Ludlam
+;;;  Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2007, 2008, 2009, 2010  Eric M. Ludlam
 
 ;; Author: Eric M. Ludlam <zappo@gnu.org>
 ;; Keywords: project, make
-;; RCS: $Id: ede-proj-elisp.el,v 1.40 2009/10/01 02:24:22 zappo Exp $
+;; RCS: $Id: ede-proj-elisp.el,v 1.42 2010/06/12 00:35:06 zappo Exp $
 
 ;; This software is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -34,10 +34,10 @@
   ((menu :initform nil)
    (keybindings :initform nil)
    (phony :initform t)
-   (sourcetype :initform (ede-source-emacs))
-   (availablecompilers :initform (ede-emacs-compiler 
-				  ede-xemacs-compiler
-				  ede-emacs-preload-compiler))
+   (sourcetype :initform '(ede-source-emacs))
+   (availablecompilers :initform '(ede-emacs-compiler 
+				   ede-xemacs-compiler
+				   ede-emacs-preload-compiler))
    (aux-packages :initarg :aux-packages
 		 :initform nil
 		 :type list
@@ -177,9 +177,8 @@ is found, such as a `-version' variable, or the standard header."
       (let ((vs (oref this versionsource))
 	    (match nil))
 	(while vs
-	  (save-excursion
-	    (set-buffer (find-file-noselect
-			 (ede-expand-filename this (car vs))))
+	  (with-current-buffer (find-file-noselect
+                            (ede-expand-filename this (car vs)))
 	    (goto-char (point-min))
 	    (let ((case-fold-search t))
 	      (if (re-search-forward "-version\\s-+\"\\([^\"]+\\)\"" nil t)
@@ -287,8 +286,7 @@ is found, such as a `-version' variable, or the standard header."
   (let ((ec (ede-expand-filename this "elisp-comp" 'newfile))
 	)
     (if (and ec (file-exists-p ec))
-	(save-excursion
-	  (set-buffer (find-file-noselect ec t))
+	(with-current-buffer (find-file-noselect ec t)
 	  (goto-char (point-min))
 	  (while (re-search-forward "(cons \\([^ ]+\\) load-path)"
 				    nil t)
@@ -304,7 +302,7 @@ is found, such as a `-version' variable, or the standard header."
 ;; Autoload generators
 ;;
 (defclass ede-proj-target-elisp-autoloads (ede-proj-target-elisp)
-  ((availablecompilers :initform (ede-emacs-cedet-autogen-compiler))
+  ((availablecompilers :initform '(ede-emacs-cedet-autogen-compiler))
    (aux-packages :initform ("cedet-autogen"))
    (phony :initform t)
    (autoload-file :initarg :autoload-file
@@ -427,7 +425,7 @@ Argument THIS is the target which needs to insert an info file."
 
 (defmethod ede-proj-tweak-autoconf ((this ede-proj-target-elisp-autoloads))
   "Tweak the configure file (current buffer) to accomodate THIS."
-  (error "Autoloads not supported in autoconf yet."))
+  (error "Autoloads not supported in autoconf yet"))
 
 (defmethod ede-proj-flush-autoconf ((this ede-proj-target-elisp-autoloads))
   "Flush the configure file (current buffer) to accomodate THIS."

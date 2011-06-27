@@ -1,12 +1,12 @@
 ;;; semantic-grammar.el --- Major mode framework for Semantic grammars
 ;;
-;; Copyright (C) 2002, 2003, 2004, 2005, 2007, 2008, 2009 David Ponce
+;; Copyright (C) 2002, 2003, 2004, 2005, 2007, 2008, 2009, 2010 David Ponce
 ;;
 ;; Author: David Ponce <david@dponce.com>
 ;; Maintainer: David Ponce <david@dponce.com>
 ;; Created: 15 Aug 2002
 ;; Keywords: syntax
-;; X-RCS: $Id: semantic-grammar.el,v 1.78 2009/08/29 20:10:05 zappo Exp $
+;; X-RCS: $Id: semantic-grammar.el,v 1.80 2010/08/19 23:28:10 zappo Exp $
 ;;
 ;; This file is not part of GNU Emacs.
 ;;
@@ -668,7 +668,7 @@ The symbols in the list are local variables in
                  (car delim-spec) (symbolp (car delim-spec))
                  (cadr delim-spec) (symbolp (cadr delim-spec)))
             delim-spec
-          (error)))
+          (error "Invalid delimiter")))
     (error
      (error "Invalid delimiters specification %s in block token %s"
             (cdr block-spec) (car block-spec)))))
@@ -908,6 +908,12 @@ Lisp code."
         ;; If running interactively, eval declarations and epilogue
         ;; code, then pop to the buffer visiting the generated file.
         (eval-region (point) (point-max))
+	;; Loop over the defvars and eval them explicitly to force
+	;; them to be evaluated and ready to use.
+        (goto-char (point-min))
+	(while (re-search-forward "(defvar " nil t)
+	  (eval-defun nil))
+	;; Move cursor to a logical spot in the generated code.
         (goto-char (point-min))
         (pop-to-buffer (current-buffer))
         ;; The generated code has been evaluated and updated into
@@ -915,7 +921,7 @@ Lisp code."
         ;; have created this language for, and force them to call our
         ;; setup function again, refreshing all semantic data, and
         ;; enabling them to work with the new code just created.
-;;;; FIXME?
+
         ;; At this point, I don't know any user's defined setup code :-(
         ;; At least, what I can do for now, is to run the generated
         ;; parser-install function.
@@ -927,7 +933,7 @@ Lisp code."
     output))
 
 (defun semantic-grammar-recreate-package ()
-  "Unconditionnaly create Lisp code from grammar in current buffer.
+  "Unconditionally create Lisp code from grammar in current buffer.
 Like \\[universal-argument] \\[semantic-grammar-create-package]."
   (interactive)
   (semantic-grammar-create-package t))
@@ -1516,7 +1522,7 @@ library found in DEF."
           (list mac lib))))
 
 (defun semantic--grammar-macro-compl-dict ()
-  "Return a completion dictionnary of macro definitions."
+  "Return a completion dictionary of macro definitions."
   (let ((defs (semantic-grammar-macros))
         def dups dict)
     (while defs
@@ -1879,8 +1885,7 @@ Optional argument COLOR determines if color is added to the text."
   (if (semantic-grammar-in-lisp-p)
       (with-mode-local emacs-lisp-mode
 	(semantic-analyze-possible-completions context))
-    (save-excursion
-      (set-buffer (oref context buffer))
+    (with-current-buffer (oref context buffer)
       (let* ((prefix (car (oref context :prefix)))
 	     (completetext (cond ((semantic-tag-p prefix)
 				  (semantic-tag-name prefix))

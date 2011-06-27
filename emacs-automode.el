@@ -23,6 +23,10 @@
 (auto-mode "\\.sch$" 'scheme-mode)
 (auto-mode "\\.rb$" 'ruby-mode)
 (auto-mode "^Rakefile$" 'ruby-mode)
+(auto-mode "^rakefile$" 'ruby-mode)
+(auto-mode "^RAKEFILE$" 'ruby-mode)
+(auto-mode "\\.gemspec$" 'ruby-mode)
+(auto-mode "^Gemfile$" 'ruby-mode)
 (auto-mode "\\.rake$" 'ruby-mode)
 (auto-mode "\\.spec$" 'ruby-mode)
 (auto-mode "\\.sql$" 'sql-mode)
@@ -47,6 +51,7 @@
 (auto-mode "\\.coffee$" 'coffee-mode)
 (auto-mode "Cakefile" 'coffee-mode)
 (auto-mode "\\.fan$" 'fan-mode)
+(auto-mode "\\.pp$" 'puppet-mode)
 
 (add-to-list 'magic-mode-alist '("<＼＼?xml " . nxml-mode))
 

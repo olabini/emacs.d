@@ -6,7 +6,7 @@
 ;; Author: David Ponce <david@dponce.com>
 ;; Maintainer: David Ponce <david@dponce.com>
 ;; Keywords: compatibility
-;; X-RCS: $Id: cedet-compat.el,v 1.8 2010/02/19 22:43:21 zappo Exp $
+;; X-RCS: $Id: cedet-compat.el,v 1.10 2010/04/09 01:12:18 zappo Exp $
 
 ;; This file is not part of Emacs
 
@@ -194,6 +194,56 @@ Note: Doesn't work if this version is being loaded."
     ;; The implementation for the interpreter is basically trivial.
     (car (last body))))
 
+
+(if (not (fboundp 'called-interactively-p))
+    (defmacro cedet-called-interactively-p (&optional arg)
+      "Compat function.  Calls `interactive-p'"
+      '(interactive-p))
+  ;; Else, it is defined, but perhaps too old?
+  (condition-case nil
+      (progn
+	;; This condition case also prevents this from running twice.
+	(called-interactively-p nil)
+	;; An alias for the real deal.
+	(defalias 'cedet-called-interactively-p 'called-interactively-p))
+    (error
+     ;; Create a new one
+     (defmacro cedet-called-interactively-p (&optional arg)
+       "Revised from the built-in version to accept an optional arg."
+       (case (eval arg)
+	 (interactive '(interactive-p))
+	 ((any nil) '(called-interactively-p))))
+     )))
+
+
+;;; TESTS
+;;
+;;;###autoload
+(defun cedet-compat-utest ()
+  "Test compatability functions."
+  (interactive)
+  (when (not noninteractive)
+    ;; Interactive tests need to be called interactively.
+    (call-interactively 'cedet-utest-interactivep))
+  ;; Other...
+  )
+
+(defun cedet-utest-interactivep ()
+  "Test that `cedet-called-interactively-p' works."
+  (interactive)
+  (unless (cedet-called-interactively-p 'interactive)
+    (error "Failed interactive test"))
+  (unless (cedet-called-interactively-p 'any)
+    (error "Failed interactive any test"))
+  (cedet-utest-interactivep-subfcn)
+  (message "All CEDET called-interactively tests pass."))
+
+(defun cedet-utest-interactivep-subfcn ()
+  "Test that `cedet-called-interactively-p' works noninteractively."
+  (when (cedet-called-interactively-p 'interactive)
+    (error "Failed non-interactive test"))
+  (when (cedet-called-interactively-p 'any)
+    (error "Failed non-interactive any test")))
 
 (provide 'cedet-compat)
 

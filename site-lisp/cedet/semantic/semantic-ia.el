@@ -4,7 +4,7 @@
 
 ;; Author: Eric M. Ludlam <zappo@gnu.org>
 ;; Keywords: syntax
-;; X-RCS: $Id: semantic-ia.el,v 1.33.2.1 2010/02/26 01:59:24 zappo Exp $
+;; X-RCS: $Id: semantic-ia.el,v 1.38 2010/08/05 03:03:04 zappo Exp $
 
 ;; This file is not part of GNU Emacs.
 
@@ -52,8 +52,8 @@
 ;; functions.
 
 (defcustom semantic-ia-completion-format-tag-function
-  'semantic-prototype-nonterminal
-  "*Function used to convert a tag to a string during completion."
+  'semantic-format-tag-prototype
+  "Function used to convert a tag to a string during completion."
   :group 'semantic
   :type semantic-format-tag-custom-list)
 
@@ -90,18 +90,20 @@ Use `semantic-analyze-possible-completions' instead."
     (semantic-analyze-possible-completions context))
 
 ;;;###autoload
-(defun semantic-ia-complete-symbol (point)
-  "Complete the current symbol at POINT.
+(defun semantic-ia-complete-symbol (&optional pos)
+  "Complete the current symbol at POS.
+If POS is nil, default to point.
 Completion options are calculated with `semantic-analyze-possible-completions'."
   (interactive "d")
+  (or pos (setq pos (point)))
   ;; Calculating completions is a two step process.
   ;;
   ;; The first analyzer the current context, which finds tags
   ;; for all the stuff that may be references by the code around
-  ;; POINT.
+  ;; POS.
   ;;
   ;; The second step derives completions from that context.
-  (let* ((a (semantic-analyze-current-context point))
+  (let* ((a (semantic-analyze-current-context pos))
 	 (syms (semantic-analyze-possible-completions a))
 	 (pre (car (reverse (oref a prefix))))
 	 )
@@ -239,8 +241,49 @@ Completion options are calculated with `semantic-analyze-possible-completions'."
 	       ;; tag associated with the current context.
 	       (semantic-analyze-interesting-tag ctxt)))
 	)
-    (when pf
-      (message "%s" (semantic-format-tag-summarize pf nil t)))))
+    (if pf
+	(message "%s" (semantic-format-tag-summarize pf nil t))
+      (message "No summary info availalble"))))
+
+;;; Variants
+;;
+;; Show all variants for the symbol under point.
+
+;;;###autoload
+(defun semantic-ia-show-variants (point)
+  "Display a list of all variants for the symbol under POINT."
+  (interactive "P")
+  (let* ((ctxt (semantic-analyze-current-context point))
+	 (comp nil)
+	 )
+    
+    ;; We really want to look at the function if we are on an
+    ;; argument.  Are there some additional rules we care about for
+    ;; changing the CTXT we look at?
+    (when (semantic-analyze-context-functionarg-p ctxt)
+      (goto-char (cdr (oref ctxt bounds)))
+      (setq ctxt (semantic-analyze-current-context (point))))
+
+    ;; Get the "completion list", but remove ALL filters to get the master list
+    ;; of all the possible things.
+    (setq comp (semantic-analyze-possible-completions ctxt 'no-unique 'no-tc))
+
+    ;; Special case for a single type.  List the constructors?
+    (when (and (= (length comp) 1) (semantic-tag-of-class-p (car comp) 'type))
+      (setq comp (semantic-find-tags-by-name (semantic-tag-name (car comp))
+					     (semantic-tag-type-members (car comp)))))
+
+    ;; Display the results.
+    (cond ((= (length comp) 0)
+	   (message "No Variants found."))
+	  ((= (length comp) 1)
+	   (message "%s" (semantic-format-tag-summarize (car comp) nil t)))
+	  (t
+	   (with-output-to-temp-buffer "*Symbol Variants*"
+	     (semantic-analyze-princ-sequence comp "" (current-buffer)))
+	   (shrink-window-if-larger-than-buffer
+	    (get-buffer-window "*Symbol Variants*")))
+	  )))
 
 ;;; FAST Jump
 ;;
@@ -378,18 +421,21 @@ See `semantic-ia-fast-jump' for details on how it works.
       ;; The default tries to find a comment in front of the tag
       ;; and then strings off comment prefixes.
       (let ((doc (semantic-documentation-for-tag (car pf))))
-	(with-output-to-temp-buffer "*TAG DOCUMENTATION*"
-	  (princ "Tag: ")
-	  (princ (semantic-format-tag-prototype (car pf)))
-	  (princ "\n")
-	  (princ "\n")
-	  (princ "Snarfed Documentation: ")
-	  (princ "\n")
-	  (princ "\n")
-	  (if doc
-	      (princ doc)
-	    (princ "  Documentation unavailable."))
-	  )))
+	(if (or (null doc) (string= doc ""))
+	    (message "Doc unavailable for: %s"
+		     (semantic-format-tag-prototype (car pf)))
+	  (with-output-to-temp-buffer "*TAG DOCUMENTATION*"
+	    (princ "Tag: ")
+	    (princ (semantic-format-tag-prototype (car pf)))
+	    (princ "\n")
+	    (princ "\n")
+	    (princ "Snarfed Documentation: ")
+	    (princ "\n")
+	    (princ "\n")
+	    (if doc
+		(princ doc)
+	      (princ "  Documentation unavailable."))
+	    ))))
      (t
       (message "Unknown tag.")))
     ))

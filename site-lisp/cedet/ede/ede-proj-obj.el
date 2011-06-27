@@ -1,10 +1,10 @@
 ;;; ede-proj-obj.el --- EDE Generic Project Object code generation support
 
-;;;  Copyright (C) 1998, 1999, 2000, 2005, 2008, 2009  Eric M. Ludlam
+;;;  Copyright (C) 1998, 1999, 2000, 2005, 2008, 2009, 2010  Eric M. Ludlam
 
 ;; Author: Eric M. Ludlam <zappo@gnu.org>
 ;; Keywords: project, make
-;; RCS: $Id: ede-proj-obj.el,v 1.17 2009/10/14 02:18:42 zappo Exp $
+;; RCS: $Id: ede-proj-obj.el,v 1.22 2010/07/24 13:54:53 zappo Exp $
 
 ;; This software is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@
 ;; Handles a superclass of target types which create object code in
 ;; and EDE Project file.
 
+(eval-when-compile (require 'cl))
 (require 'ede-proj)
 ;; (require 'ede-pmake)
 ;; The above require is needed for ede-pmake-varname, but introduces
@@ -40,28 +41,32 @@
    (configuration-variables :initform ("debug" . (("CFLAGS" . "-g")
 						  ("LDFLAGS" . "-g"))))
    ;; @TODO - add an include path.
-   (availablecompilers :initform (ede-gcc-compiler
-				  ede-g++-compiler
-				  ede-gfortran-compiler
-				  ede-gfortran-module-compiler
-				  ;; More C and C++ compilers, plus
-				  ;; fortran or pascal can be added here
-				  ))
-   (availablelinkers :initform (ede-g++-linker
-				ede-cc-linker
-				ede-ld-linker
-				ede-gfortran-linker
-				;; Add more linker thingies here.
-				))
-   (sourcetype :initform (ede-source-c
-			  ede-source-c++
-			  ede-source-f77
-			  ede-source-f90
-			  ;; ede-source-other
-			  ;; This object should take everything that
-			  ;; gets compiled into objects like fortran
-			  ;; and pascal.
-			  ))
+   (availablecompilers :initform '(ede-gcc-compiler
+				   ede-g++-compiler
+				   ede-gfortran-compiler
+				   ede-gfortran-module-compiler
+				   ede-lex-compiler
+				   ede-yacc-compiler
+				   ;; More C and C++ compilers, plus
+				   ;; fortran or pascal can be added here
+				   ))
+   (availablelinkers :initform '(ede-g++-linker
+				 ede-cc-linker
+				 ede-ld-linker
+				 ede-gfortran-linker
+				 ;; Add more linker thingies here.
+				 ))
+   (sourcetype :initform '(ede-source-c
+			   ede-source-c++
+			   ede-source-f77
+			   ede-source-f90
+			   ede-source-lex
+			   ede-source-yacc
+			   ;; ede-source-other
+			   ;; This object should take everything that
+			   ;; gets compiled into objects like fortran
+			   ;; and pascal.
+			   ))
    )
   "Abstract class for Makefile based object code generating targets.
 Belonging to this group assumes you could make a .o from an element source
@@ -116,15 +121,15 @@ file.")
    :name "cc"
    :sourcetype '(ede-source-c)
    :variables  '(("C_LINK" . "$(CC) $(CFLAGS) $(LDFLAGS) -L."))
-   :commands '("$(C_LINK) -o $@ $^")
+   :commands '("$(C_LINK) -o $@ $^ $(LDDEPS)")
    :objectextention "")
    "Linker for C sourcecode.")
 
 (defvar ede-source-c++
   (ede-sourcecode "ede-source-c++"
 		  :name "C++"
-		  :sourcepattern "\\.\\(cpp\\|cc\\|cxx\\)$"
-		  :auxsourcepattern "\\.\\(hpp\\|hh?\\|hxx\\)$"
+		  :sourcepattern "\\.\\(c\\(pp?\\|c\\|xx\\|++\\)\\|C\\\(PP\\)?\\)$"
+		  :auxsourcepattern "\\.\\(hpp?\\|hh?\\|hxx\\|H\\)$"
 		  :garbagepattern '("*.o" "*.obj" ".deps/*.P" ".lo"))
   "C++ source code definition.")
 
@@ -159,10 +164,42 @@ file.")
    ;; Only use this linker when c++ exists.
    :sourcetype '(ede-source-c++)
    :variables  '(("CXX_LINK" . "$(CXX) $(CFLAGS) $(LDFLAGS) -L."))
-   :commands '("$(CXX_LINK) -o $@ $^")
+   :commands '("$(CXX_LINK) -o $@ $^ $(LDDEPS)")
    :autoconf '("AC_PROG_CXX")
    :objectextention "")
   "Linker needed for c++ programs.")
+
+;;; LEX
+(defvar ede-source-lex
+  (ede-sourcecode "ede-source-lex"
+		  :name "lex"
+		  :sourcepattern "\\.l\\(l\\|pp\\|++\\)")
+  "Lex source code definition.
+No garbage pattern since it creates C or C++ code.")
+
+(defvar ede-lex-compiler
+  (ede-object-compiler
+   "ede-lex-compiler"
+   ;; Can we support regular makefiles too??
+   :autoconf '("AC_PROG_LEX")
+   :sourcetype '(ede-source-lex))
+  "Compiler used for Lexical source.")
+
+;;; YACC
+(defvar ede-source-yacc
+  (ede-sourcecode "ede-source-yacc"
+		  :name "yacc"
+		  :sourcepattern "\\.y\\(y\\|pp\\|++\\)")
+  "Yacc source code definition.
+No garbage pattern since it creates C or C++ code.")
+
+(defvar ede-yacc-compiler
+  (ede-object-compiler
+   "ede-yacc-compiler"
+   ;; Can we support regular makefiles too??
+   :autoconf '("AC_PROG_YACC")
+   :sourcetype '(ede-source-yacc))
+  "Compiler used for yacc/bison grammar files source.")
 
 ;;; Fortran Compiler/Linker
 ;;
@@ -234,7 +271,7 @@ file.")
    :name "ld"
    :variables  '(("LD" . "ld")
 		 ("LD_LINK" . "$(LD) $(LDFLAGS) -L."))
-   :commands '("$(LD_LINK) -o $@ $^")
+   :commands '("$(LD_LINK) -o $@ $^ $(LDDEPS)")
    :objectextention "")
   "Linker needed for c++ programs.")
 

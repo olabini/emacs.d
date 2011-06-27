@@ -30,7 +30,7 @@
 (defun ruby-run-ruby  ()
     "Runs ruby on current buffer"
     (interactive)
-    (compile (concat "/usr/local/bin/ruby " (buffer-file-name)) t))
+    (compile (concat "/usr/bin/env ruby " (buffer-file-name)) t))
 
 
 (defun ruby-visit-source ()

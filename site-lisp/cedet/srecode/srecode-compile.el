@@ -22,12 +22,13 @@
 ;; Compile a Semantic Recoder template file.
 ;;
 ;; Template files are parsed using a Semantic/Wisent parser into
-;; a tag table.  The code therin is then further parsed down using
+;; a tag table.  The code therein is then further parsed down using
 ;; a regular expression parser.
 ;;
 ;; The output are a series of EIEIO objects which represent the
 ;; templates in a way that could be inserted later.
 
+(eval-when-compile (require 'cl))
 (require 'semantic-fw)
 (require 'eieio)
 (require 'eieio-base)
@@ -37,7 +38,7 @@
 
 ;;; Template Class
 ;;
-;; Templatets describe a patter of text that can be inserted into a
+;; Templates describe a pattern of text that can be inserted into a
 ;; buffer.
 ;;
 (defclass srecode-template (eieio-named)
@@ -76,7 +77,7 @@ for push, pop, and peek for the active template.")
 
 (defun srecode-flush-active-templates ()
   "Flush the active template storage.
-Useful if something goes wrong in SRecode, and the active tempalte
+Useful if something goes wrong in SRecode, and the active template
 stack is broken."
   (interactive)
   (if (oref srecode-template active)
@@ -101,13 +102,13 @@ stack is broken."
   ((secondname :initarg :secondname
 	       :type (or null string)
 	       :documentation
-	       "If there is a colon in the inserter's name, it represents 
+	       "If there is a colon in the inserter's name, it represents
 additional static argument data."))
   "This represents an item to be inserted via a template macro.
 Plain text strings are not handled via this baseclass."
   :abstract t)
 
-(defmethod srecode-parse-input ((ins srecode-template-inserter) 
+(defmethod srecode-parse-input ((ins srecode-template-inserter)
 				tag input STATE)
   "For the template inserter INS, parse INPUT.
 Shorten input only by the amount needed.
@@ -150,7 +151,7 @@ Arguments ESCAPE-START and ESCAPE-END are the current escape sequences in use."
    )
   "Current state of the compile.")
 
-(defmethod srecode-compile-add-prompt ((state srecode-compile-state) 
+(defmethod srecode-compile-add-prompt ((state srecode-compile-state)
 				       prompttag)
   "Add PROMPTTAG to the current list of prompts."
   (with-slots (prompts) state
@@ -180,6 +181,8 @@ Arguments ESCAPE-START and ESCAPE-END are the current escape sequences in use."
 	  (set-buffer (semantic-find-file-noselect fname))
 	(set-buffer peb))
       ;; Do the compile.
+      (unless (semantic-active-p)
+        (semantic-new-buffer-fcn))
       (srecode-compile-templates)
       ;; Trash the buffer if we had to read it in.
       (if (not peb)
@@ -225,7 +228,7 @@ Arguments ESCAPE-START and ESCAPE-END are the current escape sequences in use."
        ((eq class 'prompt)
 	(srecode-compile-add-prompt STATE tag)
 	)
-	    
+
        ;; VARIABLE tags can specify operational control
        ((eq class 'variable)
 	(let* ((name (semantic-tag-name tag))
@@ -286,7 +289,7 @@ Arguments ESCAPE-START and ESCAPE-END are the current escape sequences in use."
 
     ;;
     ;; Calculate priority
-    ;; 
+    ;;
     (if (not priority)
 	(let ((d (expand-file-name (file-name-directory (buffer-file-name))))
 	      (sd (expand-file-name (file-name-directory (locate-library "srecode"))))
@@ -313,51 +316,52 @@ Arguments ESCAPE-START and ESCAPE-END are the current escape sequences in use."
     )
 )
 
-(defun srecode-compile-one-template-tag (tag STATE)
-  "Compile a template tag TAG into an srecode template class.
-STATE is the current compile state as an object `srecode-compile-state'."
-  (let* ((context (oref STATE context))
-	 (codeout  (srecode-compile-split-code
-		    tag (semantic-tag-get-attribute tag :code)
-		    STATE))
-	 (code (cdr codeout))
-	 (args (semantic-tag-function-arguments tag))
-	 (binding (semantic-tag-get-attribute tag :binding))
-	 (rawdicts (semantic-tag-get-attribute tag :dictionaries))
-	 (sdicts (srecode-create-section-dictionary rawdicts STATE))
-	 (addargs nil)
-	 )
-;    (message "Compiled %s to %d codes with %d args and %d prompts."
-;	     (semantic-tag-name tag)
-;	     (length code)
-;	     (length args)
-;	     (length prompts))
-    (while args
-      (setq addargs (cons (intern (car args)) addargs))
-      (when (eq (car addargs) :blank)
-	;; If we have a wrap, then put wrap inserters on both
-	;; ends of the code.
-	(setq code (append 
-		    (list (srecode-compile-inserter "BLANK"
-						    "\r"
-						    STATE
-						    :secondname nil
-						    :where 'begin))
-		    code
-		    (list (srecode-compile-inserter "BLANK"
-						    "\r"
-						    STATE
-						    :secondname nil
-						    :where 'end))
-			  )))
-      (setq args (cdr args)))
+(defun srecode-compile-one-template-tag (tag state)
+  "Compile a template tag TAG into a srecode template object.
+STATE is the current compile state as an object of class
+`srecode-compile-state'."
+  (let* ((context   (oref state context))
+	 (code      (cdr (srecode-compile-split-code
+			  tag (semantic-tag-get-attribute tag :code)
+			  state)))
+	 (args      (semantic-tag-function-arguments tag))
+	 (binding   (semantic-tag-get-attribute tag :binding))
+	 (dict-tags (semantic-tag-get-attribute tag :dictionaries))
+	 (root-dict (when dict-tags
+		      (srecode-create-dictionaries-from-tags
+		       dict-tags state)))
+	 (addargs))
+    ;; Examine arguments.
+    (dolist (arg args)
+      (let ((symbol (intern arg)))
+	(push symbol addargs)
+
+	;; If we have a wrap, then put wrap inserters on both ends of
+	;; the code.
+	(when (eq symbol :blank)
+	  (setq code (append
+		      (list (srecode-compile-inserter
+			     "BLANK"
+			     "\r"
+			     state
+			     :secondname nil
+			     :where 'begin))
+		      code
+		      (list (srecode-compile-inserter
+			     "BLANK"
+			     "\r"
+			     state
+			     :secondname nil
+			     :where 'end)))))))
+
+    ;; Construct and return the template object.
     (srecode-template (semantic-tag-name tag)
-		      :context context
-		      :args (nreverse addargs)
-		      :dictionary sdicts
-		      :binding binding
-		      :code code)
-    ))
+		      :context    context
+		      :args       (nreverse addargs)
+		      :dictionary root-dict
+		      :binding    binding
+		      :code       code))
+  )
 
 (defun srecode-compile-do-hard-newline-p (comp)
   "Examine COMP to decide if the upcoming newline should be hard.
@@ -523,9 +527,9 @@ A list of defined variables VARS provides a variable table."
 	(contexthash (make-hash-table :test 'equal :size 10))
 	(lp templates)
 	)
-    
+
     (while lp
-      
+
       (let* ((objname (oref (car lp) :object-name))
 	     (context (oref (car lp) :context))
 	     (globalname (concat context ":" objname))
@@ -564,7 +568,7 @@ A list of defined variables VARS provides a variable table."
 	(oset (car tmpl) :table table)
 	(setq tmpl (cdr tmpl))))
     ))
-    
+
 
 
 ;;; DEBUG

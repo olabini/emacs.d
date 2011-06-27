@@ -2,7 +2,7 @@
 ;; EDE project file.
 (ede-proj-project "semantic"
   :name "semantic"
-  :version "2.0pre7"
+  :version "2.0"
   :file "Project.ede"
   :targets (list 
    (ede-proj-target-elisp-autoloads "autoloads"
@@ -33,7 +33,7 @@
    (ede-proj-target-elisp "Database"
     :name "Database"
     :path ""
-    :source '("semanticdb.el" "semanticdb-mode.el" "semanticdb-debug.el" "semanticdb-ebrowse.el" "semanticdb-el.el" "semanticdb-file.el" "semanticdb-find.el" "semanticdb-mk.el" "semanticdb-ref.el" "semanticdb-search.el" "semanticdb-typecache.el" "semanticdb-javascript.el" "semanticdb-global.el")
+    :source '("semanticdb.el" "semanticdb-mode.el" "semanticdb-debug.el" "semanticdb-ebrowse.el" "semanticdb-el.el" "semanticdb-file.el" "semanticdb-find.el" "semanticdb-mk.el" "semanticdb-ref.el" "semanticdb-search.el" "semanticdb-typecache.el" "semanticdb-javascript.el" "semanticdb-global.el" "semanticdb-cscope.el")
     :compiler 'ede-emacs-preload-compiler
     :aux-packages '("semantic-symref")
     :pre-load-packages '("cedet-compat")

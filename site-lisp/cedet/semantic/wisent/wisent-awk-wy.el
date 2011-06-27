@@ -2,8 +2,8 @@
 
 ;; Copyright (C) 2002 David Ponce
 
-;; Author: Ola Bini <olabini@e4300xp32>
-;; Created: 2010-04-23 09:14:50-0500
+;; Author: Ola Bini <olabini@orpheus.gatx.net>
+;; Created: 2011-06-27 10:38:58-0500
 ;; Keywords: syntax
 ;; X-RCS: $Id$
 
