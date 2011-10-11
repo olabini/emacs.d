@@ -60,6 +60,8 @@
 (autoload `cyclebuffer-backward "cyclebuffer" "cycle backward" t)
 (autoload 'word-count-mode "word-count" "Minor mode to count words." t nil)
 (autoload 'puppet-mode "puppet-mode" nil t)
+(autoload 'speedbar-make-specialized-keymap "jde" nil t)
+(autoload 'dart-mode "dart-mode" nil t)
 
 (load "haskell-site-file")
 (load "fu.el")

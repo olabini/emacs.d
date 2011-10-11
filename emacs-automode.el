@@ -52,6 +52,8 @@
 (auto-mode "Cakefile" 'coffee-mode)
 (auto-mode "\\.fan$" 'fan-mode)
 (auto-mode "\\.pp$" 'puppet-mode)
+(auto-mode "\\.dart$" 'dart-mode)
+(auto-mode "\\.feature$" 'feature-mode)
 
 (add-to-list 'magic-mode-alist '("<＼＼?xml " . nxml-mode))
 

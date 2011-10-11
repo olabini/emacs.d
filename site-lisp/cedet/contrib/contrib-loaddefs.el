@@ -4,7 +4,7 @@
 
 
 ;;;### (autoloads (eassist-list-methods eassist-switch-h-cpp) "eassist"
-;;;;;;  "eassist.el" (19976 41794))
+;;;;;;  "eassist.el" (19976 42283))
 ;;; Generated autoloads from eassist.el
 
 (defvar eassist-header-switches '(("h" "cpp" "cc" "c") ("hpp" "cpp" "cc") ("cpp" "h" "hpp") ("c" "h") ("C" "H") ("H" "C" "CPP" "CC") ("cc" "h" "hpp")) "\
@@ -28,7 +28,7 @@ This function is recommended to be bound to some convinient hotkey.
 
 ;;;***
 
-;;;### (autoloads nil "ede-gnustep" "ede-gnustep.el" (19976 41794))
+;;;### (autoloads nil "ede-gnustep" "ede-gnustep.el" (19976 42283))
 ;;; Generated autoloads from ede-gnustep.el
 
 (add-to-list 'ede-project-class-files (ede-project-autoload "edegnustep" :name "GNUstep-Make" :file 'ede-gnustep :proj-file "ProjStep.ede" :load-type 'ede-step-load :class-sym 'ede-step-project) t)
@@ -43,7 +43,7 @@ This function is recommended to be bound to some convinient hotkey.
 
 ;;;### (autoloads (semantic-tag-folding-mode global-semantic-tag-folding-mode
 ;;;;;;  global-semantic-tag-folding-mode) "semantic-tag-folding"
-;;;;;;  "semantic-tag-folding.el" (19976 41794))
+;;;;;;  "semantic-tag-folding.el" (19976 42283))
 ;;; Generated autoloads from semantic-tag-folding.el
 
 (defvar global-semantic-tag-folding-mode nil "\
@@ -74,7 +74,7 @@ minor mode is enabled.
 ;;;***
 
 ;;;### (autoloads (wisent-csharp-default-setup) "wisent-csharp" "wisent-csharp.el"
-;;;;;;  (19976 41794))
+;;;;;;  (19976 42283))
 ;;; Generated autoloads from wisent-csharp.el
 
 (autoload 'wisent-csharp-default-setup "wisent-csharp" "\
@@ -87,7 +87,7 @@ Not documented
 ;;;***
 
 ;;;### (autoloads (wisent-php-default-setup) "wisent-php" "wisent-php.el"
-;;;;;;  (19976 41794))
+;;;;;;  (19976 42283))
 ;;; Generated autoloads from wisent-php.el
 
 (autoload 'wisent-php-default-setup "wisent-php" "\
@@ -101,8 +101,8 @@ Use the alternate LALR(1) parser.
 ;;;***
 
 ;;;### (autoloads nil nil ("cedet-contrib-load.el" "cedet-contrib.el"
-;;;;;;  "semantic-ectag-scala.el" "wisent-ruby.el") (19976 42062
-;;;;;;  221820))
+;;;;;;  "semantic-ectag-scala.el" "wisent-csharp-wy.el" "wisent-php-wy.el"
+;;;;;;  "wisent-ruby-wy.el" "wisent-ruby.el") (19976 42470 362032))
 
 ;;;***
 
