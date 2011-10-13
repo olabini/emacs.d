@@ -21,7 +21,6 @@
                   (define-key rspec-mode-map (kbd "<f5>") 'ri-ruby-show-args)
                   (define-key rspec-mode-map [?\C-/] 'comment-or-uncomment-region)))))
 
-
 (defun ruby-find-tags-file (dir)
   (let* ((directory-sep-char ?/)
          (file (find "TAGS"
@@ -119,5 +118,8 @@
 )
 (add-hook 'rails-test:compilation-mode-hook 'setup-ansi-color-for-rails-buffer)
 
+(add-hook 'dart-mode-hook 
+          (lambda ()
+            (require 'run-dart)))
 
 (provide 'emacs-hooks)
