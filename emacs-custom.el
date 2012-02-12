@@ -10,6 +10,7 @@
  '(default-tab-width 4 t)
  '(ecb-options-version "2.31")
  '(erc-prompt-for-password nil)
+ '(fill-column 140)
  '(fuel-listener-factor-binary "/Applications/factor/Factor.app/Contents/MacOS/factor")
  '(fuel-listener-factor-image "/Applications/factor/factor.image")
  '(grep-command "grep -nH -r -e *")

@@ -47,7 +47,6 @@
 (auto-mode "\\.fs[iylx]?$" 'fsharp-mode)
 (auto-mode "\\.org$" 'org-mode)
 (auto-mode "\\.cs$" 'csharp-mode)
-(auto-mode "\\.clj$" 'clojure-mode)
 (auto-mode "\\.coffee$" 'coffee-mode)
 (auto-mode "Cakefile" 'coffee-mode)
 (auto-mode "\\.fan$" 'fan-mode)

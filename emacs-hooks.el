@@ -72,15 +72,14 @@
                            (local-set-key [?\M-+] 'fontize-next-font)
                            (local-set-key [?\M--] 'fontize-previous-font)))
 
+(add-hook 'org-mode-hook (lambda ()
+                           (auto-fill-mode 1)))
+
 (add-hook 'comint-output-filter-functions 'comint-strip-ctrl-m)
 (add-hook 'comint-output-filter-functions 'shell-strip-ctrl-m nil t)
 (add-hook 'comint-output-filter-functions 'comint-watch-for-password-prompt nil t)
 
 (add-hook 'lisp-mode-hook (lambda () (slime-mode t)))
-(add-hook 'clojure-mode-hook (lambda () (slime-mode t)))
-(add-hook 'slime-mode-hook (lambda () 
-                             (unless (slime-connected-p) 
-                               (save-excursion (slime)))))
 
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 

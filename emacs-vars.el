@@ -16,7 +16,7 @@
  interpreter-mode-alist              (append '(("ruby" . ruby-mode)) interpreter-mode-alist)
  Info-default-directory-list         (append Info-default-directory-list '("~/.emacs.d/info"))
  lisp-indent-function                'common-lisp-indent-function
- slime-complete-symbol-function      'slime-fuzzy-complete-symbol
+; slime-complete-symbol-function      'slime-fuzzy-complete-symbol
  common-lisp-hyperspec-root          (concat "file://" (expand-file-name "~/.emacs.d/HyperSpec"))
  common-lisp-hyperspec-symbol-table  (concat common-lisp-hyperspec-root "/Data/Map_Sym.txt")
  slime-startup-animation             nil

@@ -40,7 +40,11 @@
 (defvar jde-ola-include-cvs-vars t "Should generated Java-files include cvs variables like revision and version")
 
 (defun jde-ola-find-package ()
-    (mapconcat (function (lambda (inp) inp)) (split-string (directory-file-name (file-name-directory (find-current-dir))) "/") "."))
+    (mapconcat (function (lambda (inp) inp)) 
+               (let ((split (split-string (directory-file-name (file-name-directory (find-current-dir))) "/")))
+                 (if (equal (elt split 0) "..")
+                     (cdr (cdr split))
+                     split)) "."))
 
 
 (defun find-current-dir ()
@@ -122,12 +126,12 @@
 ;;    (if jde-ola-include-cvs-vars "\" */\" '>'n" "")
     "\"package \" (jde-ola-find-package) \";\" '>'n '>'n"
     "(jde-gen-get-class-information)"
-    "\"/**\" '>'n"
+;;    "\"/**\" '>'n"
 ;;  "\" * <p>Info about this class</p>\" '>'n"
 ;;    "\" *\" '>'n"
-    "\" * @author <a href=\\\"mailto:\" (eval user-mail-address) \"\\\">\" (user-full-name) \"</a>\" '>'n"
+;;    "\" * @author <a href=\\\"mailto:\" (eval user-mail-address) \"\\\">\" (user-full-name) \"</a>\" '>'n"
 ;;   (if jde-ola-include-cvs-vars "\" * @version $Revision: 1.4 $\" '>'n" "")
-    "\" */\" '>'n"
+;;    "\" */\" '>'n"
     "\"public class \" (file-name-sans-extension (file-name-nondirectory buffer-file-name))"
     "(jde-gen-get-extend-class)"
     "(if jde-gen-k&r "
@@ -149,9 +153,10 @@
 ;;    "'>'p'n"
 ;;    "\"}\">"
     "(jde-gen-view-interface-implementation class-interfaces)"
-    "'>'n\"}\">"
-    "\"// \""
-    "(file-name-sans-extension (file-name-nondirectory buffer-file-name))"
+;;    "'>'n\"}\">"
+    "\"}\">"
+;;    "\"// \""
+;;    "(file-name-sans-extension (file-name-nondirectory buffer-file-name))"
     "'>'n")
   "*Template for new Java class.
 Setting this variable defines a template instantiation

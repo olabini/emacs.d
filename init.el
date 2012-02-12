@@ -18,8 +18,6 @@
           "~/.emacs.d/site-lisp/mozart"
           "~/.emacs.d/site-lisp/nxml"
           "~/.emacs.d/site-lisp/ocaml"
-          "~/.emacs.d/site-lisp/slime"
-          "~/.emacs.d/site-lisp/slime/contrib"
           "~/.emacs.d/site-lisp/sml"
           "~/.emacs.d/site-lisp/org"
           "~/.emacs.d/site-lisp/own"
@@ -39,6 +37,7 @@
 (require 'emacs-keys)
 (require 'emacs-mac)
 (require 'emacs-utf8)
+(require 'emacs-short)
 
 ;; This file contains user specific customization and should not be checked in to the shared repository
 ;; No error will be displayed if it can't be loaded

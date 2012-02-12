@@ -9,6 +9,10 @@
 (require 'io-templates)
 (require 'fontize)
 (require 'comp)
+;(require 'quack)
+
+(require 'pretty-lambdada)
+(pretty-lambda-for-modes)
 
 (autoload 'unfill-paragraph "utils" nil t)
 (autoload 'syntax-highlight-region "utils" nil t)
@@ -38,14 +42,13 @@
 (autoload 'run-ioke "inf-ioke" nil t)
 (autoload 'run-seph "inf-seph" nil t)
 (autoload 'run-ruby "inf-ruby" nil t)
-(autoload 'js2-mode "js2" nil t)
+(autoload 'js2-mode "js2-mode" nil t)
 (autoload 'rspec-mode "rspec" nil t)
 (autoload 'smenu-choose "simple-menu" nil t)
 (autoload 'fsharp-mode "fsharp" "Major mode for editing F# code." t)
 (autoload 'run-fsharp "inf-fsharp" "Run an inferior F# process." t)
 (autoload 'csharp-mode "csharp-mode" "Major mode for editing C# code." t)
 (autoload 'ack "ack" "Call ack" t)
-(autoload 'clojure-mode "clojure-mode" nil t)
 (autoload 'rebol-mode "rebol" nil t)
 (autoload 'j-mode "j-mode.el" "Major mode for J" t)
 (autoload 'j-shell "j-mode.el" "Run J from Emacs" t)
@@ -62,6 +65,8 @@
 (autoload 'puppet-mode "puppet-mode" nil t)
 (autoload 'speedbar-make-specialized-keymap "jde" nil t)
 (autoload 'dart-mode "dart-mode" nil t)
+(autoload 'haml-mode "haml-mode" nil t)
+(autoload 'csv-mode "csv-mode" nil t)
 
 (load "haskell-site-file")
 (load "fu.el")
@@ -71,9 +76,6 @@
 
 (require 'org-install)
 (require 'scala-mode-auto)
-(require 'slime-autoloads)
-
-(slime-setup '(slime-repl slime-fuzzy))
 
 (eval-after-load "jde" 
   '(progn 
@@ -101,6 +103,11 @@
   (xscheme-start "scheme -emacs"
                  (buffer-name)
                  (buffer-name)))
+
+(require 'package)
+(add-to-list 'package-archives
+             '("marmalade" . "http://marmalade-repo.org/packages/"))
+(package-initialize)
 
 
 (provide 'emacs-require)
