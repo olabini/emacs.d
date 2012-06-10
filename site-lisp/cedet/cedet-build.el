@@ -3,7 +3,7 @@
 ;; Copyright (C) 2008, 2009 Eric M. Ludlam
 
 ;; Author: Eric M. Ludlam <eric@siege-engine.com>
-;; X-RCS: $Id: cedet-build.el,v 1.12 2009/12/28 14:16:12 zappo Exp $
+;; X-RCS: $Id: cedet-build.el,v 1.12 2009-12-28 14:16:12 zappo Exp $
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -195,10 +195,11 @@ OVERRIDE-CHECK to override cedet short-cicuit."
       ;; and run a build on them.
       (cedet-build-msg "Building project %s\n" d)
 
-      (let ((Tproj (ede-current-project (file-name-as-directory
-					 (expand-file-name
-					  d cedet-build-location))))
-	    )
+      (let* ((ede-project-directories t)
+	     (Tproj (ede-load-project-file (file-name-as-directory
+					    (expand-file-name
+					     d cedet-build-location))))
+	     )
 	(dolist (proj (cons Tproj (oref Tproj subproj)))
 	  (cedet-build-msg "  Project: %s\n" (object-name-string proj))
 	  (dolist (targ (oref proj targets))

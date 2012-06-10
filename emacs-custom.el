@@ -1,8 +1,8 @@
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(Info-additional-directory-list (quote ("~/.emacs.d/site-lisp/cedet/cogre/" "~/.emacs.d/site-lisp/cedet/ede/" "~/.emacs.d/site-lisp/cedet/eieio/" "~/.emacs.d/site-lisp/cedet/semantic/doc/" "~/.emacs.d/site-lisp/cedet/speedbar/" "~/.emacs.d/site-lisp/ecb/info-help/" "~/.emacs.d/info/" "~/.emacs.d/site-lisp/nxml/")))
  '(bsh-jar "~/.emacs.d/jde/java/lib/bsh.jar")
  '(completion-ignored-extensions (quote ("CVS/" ".cache" ".o" "~" ".bin" ".bak" ".obj" ".map" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".dvi" ".fmt" ".tfm" ".pdf" ".class" ".fas" ".lib" ".x86f" ".sparcf" ".lo" ".la" ".toc" ".log" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".vr" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".svn/")))
@@ -21,6 +21,7 @@
  '(jde-ant-args "-emacs" t)
  '(jde-ant-read-target t)
  '(jde-ant-send-buffer nil t)
+ '(jde-check-version-flag nil)
  '(jde-complete-unique-method-names t)
  '(jde-electric-return-p t)
  '(jde-enable-abbrev-mode t)
@@ -40,16 +41,25 @@
  '(nxml-auto-insert-xml-declaration-flag t)
  '(nxml-slash-auto-complete-flag t)
  '(rails-tags-command "ctags -e -a --Ruby-kinds=-f -o %s -R %s")
- '(semanticdb-default-save-directory "~/.emacs.d/semantic/" t)
+ '(semanticdb-default-save-directory "~/.emacs.d/semantic/")
  '(tab-width 4)
  '(x-select-enable-clipboard t))
 
 
+
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(font-lock-builtin-face ((((class color) (min-colors 88) (background dark)) (:foreground "SlateBlue"))))
+ '(font-lock-comment-face ((((class color) (min-colors 88) (background dark)) (:foreground "DarkGreen"))))
+ '(font-lock-constant-face ((((class color) (min-colors 88) (background dark)) (:foreground "gray"))))
+ '(font-lock-function-name-face ((((class color) (min-colors 88) (background dark)) (:foreground "firebrick"))))
+ '(font-lock-keyword-face ((((class color) (min-colors 88) (background dark)) (:foreground "MediumBlue"))))
+ '(font-lock-string-face ((((class color) (min-colors 88) (background dark)) (:foreground "RoyalBlue"))))
+ '(font-lock-type-face ((((class color) (min-colors 88) (background dark)) (:foreground "SteelBlue"))))
+ '(font-lock-variable-name-face ((((class color) (min-colors 88) (background dark)) (:foreground "SeaGreen"))))
  '(ioke-font-lock-kind-face ((((class color)) (:foreground "BlueViolet"))))
  '(ioke-font-lock-known-kind-face ((((class color)) (:foreground "DarkRed"))))
  '(ioke-font-lock-operator-name-face ((((class color)) (:foreground "CornflowerBlue"))))

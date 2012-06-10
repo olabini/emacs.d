@@ -1,31 +1,25 @@
-CEDET: Collection of Emacs Development Enviromnent Tools
+CEDET: Collection of Emacs Development Environment Tools
 
-CEDET is a top-level project containing several individual package for Emacs,
-includeing:
+CEDET is a top-level project containing several individual packages for Emacs,
+including:
 
    EIEIO -    CLOS layer for Emacs Lisp
    Semantic - Parser Infrastructure for Emacs
    Speedbar - Everything browser
    EDE -      File manager/ Makefile generator
-   SRecode -  Templte manager/ code generator
+   SRecode -  Template manager/ code generator
    COGRE -    Connected Graph Editor
 
 REQUIREMENTS:
 
    The full CEDET suite requires Emacs 22.1 or newer.
-   CEDET works well with either Emacs 21.3 or XEmacs 21.3.
-   Older versions of either will also work with fewer CEDET
-   features being available.
 
    If you use a binary install of Emacs, you may need the .el
    files for Emacs available for some aspects of the build.
 
-   CEDET is always developed on a recent CVS build of Emacs, and often
-   takes advantage of such new features.
-
 INSTALL:
 
-You can install all these packagees at once with the CEDET build and
+You can install all these packages at once with the CEDET build and
 install scripts:
 
 1) Copy source files somewhere.
@@ -72,18 +66,22 @@ install scripts:
 
   If the version of Make you are using doesn't work with the CEDET
   Makefiles, (such as the version on AIX) you will need to download and
-  install GNU Make to use with these Makefiles.  Alternately, 
-  see cedet-build.el
+  install GNU Make to use with these Makefiles.  Alternatively, 
+  see cedet-build.el.
 
-3) Install load hooks into your .emacs file.  For more detail on
-   any topic, see the info file common/cedet.info for more details on
-   installaiton.
+3) Install load hooks into your .emacs file.  For newer Emacsen which
+   already ship with CEDET, you should place the `load-file' command
+   near the beginning of your init file, otherwise parts of CEDET like
+   EIEIO might already be loaded. For more detail on any topic, see
+   the info file common/cedet.info.
 
 -----------
 ;; Load CEDET.
 ;; See cedet/common/cedet.info for configuration details.
+;; IMPORTANT: For Emacs >= 23.2, you must place this *before* any
+;; CEDET component (including EIEIO) gets activated by another 
+;; package (Gnus, auth-source, ...).
 (load-file "~/cedet-VERSION/common/cedet.el")
-
 
 ;; Enable EDE (Project Management) features
 (global-ede-mode 1)
@@ -98,19 +96,19 @@ install scripts:
 ;; * This enables the database and idle reparse engines
 (semantic-load-enable-minimum-features)
 
-;; * This enables some tools useful for coding, such as summary mode
+;; * This enables some tools useful for coding, such as summary mode,
 ;;   imenu support, and the semantic navigator
 (semantic-load-enable-code-helpers)
 
-;; * This enables even more coding tools such as intellisense mode
+;; * This enables even more coding tools such as intellisense mode,
 ;;   decoration mode, and stickyfunc mode (plus regular code helpers)
 ;; (semantic-load-enable-gaudy-code-helpers)
 
-;; * This enables the use of Exuberent ctags if you have it installed.
+;; * This enables the use of Exuberant ctags if you have it installed.
 ;;   If you use C++ templates or boost, you should NOT enable it.
 ;; (semantic-load-enable-all-exuberent-ctags-support)
 ;;   Or, use one of these two types of support.
-;;   Add support for new languges only via ctags.
+;;   Add support for new languages only via ctags.
 ;; (semantic-load-enable-primary-exuberent-ctags-support)
 ;;   Add support for using ctags as a backup parser.
 ;; (semantic-load-enable-secondary-exuberent-ctags-support)
@@ -127,8 +125,7 @@ install scripts:
 3.1) CODE COMPLETION
 
   If you are installing CEDET to get code completion, see the info
-  manual in common/cedet.info for more specifically about code
-  completion.
+  manual in common/cedet.info for more information.
 
 3.2) INSTALL INFO
 
@@ -142,7 +139,7 @@ install scripts:
 
 4) CONFIGURE:
 
-   You can configure how the individual packages loaded in the above
+   You can configure how the individual packages are loaded in the above
    example by adding settings in the comment section.  Please read
    individual info manuals for each package for details on configuring
    them.  See the texinfo manuals for details on more specific
@@ -175,12 +172,18 @@ install scripts:
 
    http://lists.sourceforge.net/lists/listinfo/cedet-devel
 
+   All mailing lists are also available via Gmane (gmane.org) as
+
+     gmane.emacs.semantic
+     gmane.emacs.cedet
+     gmane.emacs.eieio
+
 OTHER REQUIREMENTS:
 
    You may also need to download some of the following files for more
    obscure features.
 
-   To use the JavaScript parser:
+   To use the JavaScript parser on older Emacsen (23.1 or older):
    javascript-mode.el : http://www.emacswiki.org/cgi-bin/wiki/JavaScriptMode
    
    To use Exuberent CTags to parse files:

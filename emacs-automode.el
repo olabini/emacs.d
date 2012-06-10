@@ -53,6 +53,7 @@
 (auto-mode "\\.pp$" 'puppet-mode)
 (auto-mode "\\.dart$" 'dart-mode)
 (auto-mode "\\.feature$" 'feature-mode)
+(auto-mode "\\.pjs$" 'processing-mode)
 
 (add-to-list 'magic-mode-alist '("<＼＼?xml " . nxml-mode))
 

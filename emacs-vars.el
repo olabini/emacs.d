@@ -63,6 +63,7 @@
 
 (setenv "TERM" "dumb")
 
+
 (setq ibuffer-saved-filter-groups
       (quote (("default"      
                ("Ioke"
@@ -71,6 +72,8 @@
                 (filename . "workspace/seph"))
                ("JRuby"
                 (filename . "workspace/jruby"))
+               ("Annai"
+                (filename . "workspace/tw/annai"))
                ("Programming"
                 (or
                  (mode . ioke-mode)
@@ -78,6 +81,9 @@
                  (mode . python-mode)
                  (mode . emacs-lisp-mode)
                  (mode . jde-mode)
+                 (name . "^\\*.c$")
+                 (name . "^\\*.h$")
+                 (name . "^\\*SConstruct$")
                  )) 
                ("IRC"   (mode . erc-mode))
                ("Book"   (name . ".pml"))

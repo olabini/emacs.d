@@ -42,3 +42,4 @@
 ;; This file contains user specific customization and should not be checked in to the shared repository
 ;; No error will be displayed if it can't be loaded
 (load "emacs-user-init" t)
+(put 'downcase-region 'disabled nil)

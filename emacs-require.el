@@ -67,6 +67,8 @@
 (autoload 'dart-mode "dart-mode" nil t)
 (autoload 'haml-mode "haml-mode" nil t)
 (autoload 'csv-mode "csv-mode" nil t)
+(autoload 'processing-mode "processing-mode" nil t)
+(autoload 'actionscript-mode "actionscript-mode" nil t)
 
 (load "haskell-site-file")
 (load "fu.el")
@@ -91,6 +93,8 @@
     (require 'rails)
     (require 'custom-ruby)
     (require 'ruby-templates)
+    (require 'rvm)
+    (rvm-use-default)
     ))
 
 (eval-after-load "erc" 
