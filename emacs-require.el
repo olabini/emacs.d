@@ -1,4 +1,5 @@
 
+(require 'cedet)
 (require 'cl)
 (require 'time) 
 (require 'pabbrev)
