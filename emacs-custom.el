@@ -9,6 +9,7 @@
  '(current-language-environment "UTF-8")
  '(default-tab-width 4 t)
  '(ecb-options-version "2.31")
+ '(edit-server-port 9393)
  '(erc-prompt-for-password nil)
  '(fill-column 140)
  '(fuel-listener-factor-binary "/Applications/factor/Factor.app/Contents/MacOS/factor")
