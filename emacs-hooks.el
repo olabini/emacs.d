@@ -121,4 +121,6 @@
           (lambda ()
             (require 'run-dart)))
 
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
 (provide 'emacs-hooks)

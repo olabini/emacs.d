@@ -1,8 +1,8 @@
 
-(setq load-path 
-      (append 
-       (mapcar 
-        'expand-file-name 
+(setq load-path
+      (append
+       (mapcar
+        'expand-file-name
         '(
           "~/.emacs.d/site-lisp/cedet/common"
           "~/.emacs.d/site-lisp/ecb"
@@ -11,7 +11,6 @@
           "~/.emacs.d/site-lisp/erc"
           "~/.emacs.d/site-lisp/fsharp"
           "~/.emacs.d/site-lisp/fuel"
-          "~/.emacs.d/site-lisp/git"
           "~/.emacs.d/site-lisp/jde/lisp"
           "~/.emacs.d/site-lisp/mmm"
           "~/.emacs.d/site-lisp/mozart"

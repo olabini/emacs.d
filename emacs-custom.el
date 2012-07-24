@@ -5,6 +5,7 @@
  ;; If there is more than one, they won't work right.
  '(Info-additional-directory-list (quote ("~/.emacs.d/site-lisp/cedet/cogre/" "~/.emacs.d/site-lisp/cedet/ede/" "~/.emacs.d/site-lisp/cedet/eieio/" "~/.emacs.d/site-lisp/cedet/semantic/doc/" "~/.emacs.d/site-lisp/cedet/speedbar/" "~/.emacs.d/site-lisp/ecb/info-help/" "~/.emacs.d/info/" "~/.emacs.d/site-lisp/nxml/")))
  '(bsh-jar "~/.emacs.d/jde/java/lib/bsh.jar")
+ '(coffee-tab-width 2)
  '(completion-ignored-extensions (quote ("CVS/" ".cache" ".o" "~" ".bin" ".bak" ".obj" ".map" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".dvi" ".fmt" ".tfm" ".pdf" ".class" ".fas" ".lib" ".x86f" ".sparcf" ".lo" ".la" ".toc" ".log" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".vr" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".svn/")))
  '(current-language-environment "UTF-8")
  '(default-tab-width 4 t)

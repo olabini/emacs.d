@@ -1,9 +1,8 @@
 
 (require 'cedet)
 (require 'cl)
-(require 'time) 
+(require 'time)
 (require 'pabbrev)
-(require 'paredit)
 (require 'complete)
 (require 'tempo)
 (require 'tempo-support)
@@ -30,7 +29,6 @@
 (autoload 'io-mode "io-mode" nil t)
 (autoload 'ioke-mode "ioke-mode" nil t)
 (autoload 'seph-mode "seph-mode" nil t)
-(autoload 'git-blame-mode "git-blam" "Minor mode for incremental blame for Git." t) 
 (autoload 'php-mode "php-mode" nil t)
 (autoload 'awk-mode "awk" nil t)
 (autoload 'sql-mode "sql" nil t)
@@ -63,16 +61,16 @@
 (load-library "rng-auto")
 
 (require 'org-install)
-(require 'ibuffer) 
+(require 'ibuffer)
 
-(eval-after-load "jde" 
-  '(progn 
+(eval-after-load "jde"
+  '(progn
     (require 'jde-ola)
     (require 'java-templates)
     ))
 
-(eval-after-load "ruby-mode" 
-  '(progn 
+(eval-after-load "ruby-mode"
+  '(progn
     (require 'ruby-electric)
     (require 'html-helper-mode)
     (require 'mmm-setup)
@@ -83,7 +81,7 @@
     (rvm-use-default)
     ))
 
-(eval-after-load "erc" 
+(eval-after-load "erc"
   '(require 'erc-autojoin))
 
 (defun xscheme ()
@@ -97,6 +95,8 @@
 (require 'package)
 (add-to-list 'package-archives
              '("marmalade" . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.milkbox.net/packages/"))
 (package-initialize)
 
 (require 'edit-server)
