@@ -45,7 +45,6 @@
 (autoload 'run-fsharp "inf-fsharp" "Run an inferior F# process." t)
 (autoload 'rebol-mode "rebol" nil t)
 (autoload 'oz-mode "mozart" nil t)
-(autoload 'rainbow-mode "rainbow-mode" nil t)
 (autoload 'google-maps "google-maps" nil t)
 (autoload 'fan-mode "fan-mode" nil t)
 (autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
@@ -56,6 +55,9 @@
 (autoload 'dart-mode "dart-mode" nil t)
 (autoload 'processing-mode "processing-mode" nil t)
 (autoload 'actionscript-mode "actionscript-mode" nil t)
+(autoload 'json-fix "json-fix" nil t)
+(autoload 'outline-presentation-mode "outline-presentation" nil t)
+(autoload 'org-present "org-present" nil t)
 
 (load "fu.el")
 (load-library "rng-auto")
@@ -81,9 +83,6 @@
     (rvm-use-default)
     ))
 
-(eval-after-load "erc"
-  '(require 'erc-autojoin))
-
 (defun xscheme ()
   "Loads xscheme and runs a scheme process in the current buffer."
   (interactive)
@@ -101,6 +100,5 @@
 
 (require 'edit-server)
 (edit-server-start)
-
 
 (provide 'emacs-require)

@@ -54,6 +54,7 @@
 (auto-mode "\\.dart$" 'dart-mode)
 (auto-mode "\\.feature$" 'feature-mode)
 (auto-mode "\\.pjs$" 'processing-mode)
+(auto-mode "\\.scala$" 'scala-mode)
 
 (add-to-list 'magic-mode-alist '("<＼＼?xml " . nxml-mode))
 

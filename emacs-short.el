@@ -23,5 +23,9 @@
   (interactive)
   (find-file (expand-file-name "~/workspace/tw/annai/hippogriff")))
 
+(defun mnemosyne ()
+  (interactive)
+  (find-file (expand-file-name "~/workspace/tw/annai/mnemosyne")))
+
 
 (provide 'emacs-short)
