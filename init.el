@@ -1,30 +1,18 @@
-
 (setq load-path
       (append
        (mapcar
         'expand-file-name
         '(
-          "~/.emacs.d/site-lisp/cedet/common"
-          "~/.emacs.d/site-lisp/ecb"
-          "~/.emacs.d/site-lisp/elib"
-          "~/.emacs.d/site-lisp/emacs-rails"
-          "~/.emacs.d/site-lisp/erc"
-          "~/.emacs.d/site-lisp/fsharp"
-          "~/.emacs.d/site-lisp/fuel"
           "~/.emacs.d/site-lisp/jde/lisp"
-          "~/.emacs.d/site-lisp/mmm"
-          "~/.emacs.d/site-lisp/mozart"
-          "~/.emacs.d/site-lisp/nxml"
-          "~/.emacs.d/site-lisp/ocaml"
-          "~/.emacs.d/site-lisp/sml"
+          "~/.emacs.d/site-lisp/downloaded"
           "~/.emacs.d/site-lisp/own"
-          "~/.emacs.d/site-lisp"
           "~/.emacs.d/"
           )) load-path))
 
 (setq custom-file (expand-file-name "~/.emacs.d/emacs-custom.el"))
 
 (require 'emacs-custom)
+(require 'emacs-packages)
 (require 'emacs-require)
 (require 'emacs-vars)
 (require 'emacs-automode)

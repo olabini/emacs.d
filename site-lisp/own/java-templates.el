@@ -1,3 +1,5 @@
+(require 'tempo-support)
+
 (tempo-define-template "java-main"
                        '("public static void main(String[] args) throws Exception {" > n > r > n "}" > n)
                        "main"
@@ -23,7 +25,7 @@
                        'java-tempo-tags)
 
 (tempo-define-template "java-attr"
-                       '("private " (p "Type: " type) " " (p "Name: " var) ";" > n n 
+                       '("private " (p "Type: " type) " " (p "Name: " var) ";" > n n
                          "public " > (s type) " get" (upcase-initials (tempo-lookup-named 'var))
                          "() {" > n
                          "return this." (s var)  ";" > n "}" > n n

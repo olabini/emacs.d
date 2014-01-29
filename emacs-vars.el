@@ -12,11 +12,9 @@
  require-final-newline               t
  next-line-add-newlines              nil
  display-time-24hr-format            t
- ri-ruby-script                      (expand-file-name "~/.emacs.d/site-lisp/ri-emacs.rb")
  interpreter-mode-alist              (append '(("ruby" . ruby-mode)) interpreter-mode-alist)
  Info-default-directory-list         (append Info-default-directory-list '("~/.emacs.d/info"))
  lisp-indent-function                'common-lisp-indent-function
-; slime-complete-symbol-function      'slime-fuzzy-complete-symbol
  common-lisp-hyperspec-root          (concat "file://" (expand-file-name "~/.emacs.d/HyperSpec"))
  common-lisp-hyperspec-symbol-table  (concat common-lisp-hyperspec-root "/Data/Map_Sym.txt")
  slime-startup-animation             nil
@@ -31,7 +29,6 @@
  rails-tags-dirs                     '("app" "lib" "test" "db" "vendor")
  efc-query-options-function          (lambda (options prompt title)
                                        (smenu-choose options (or prompt "Choose:")))
- j-path                              "/Applications/j602/bin"
  ispell-program-name                 "aspell"
  ispell-extra-args                   '("--sug-mode=ultra")
  ibuffer-expert                      t

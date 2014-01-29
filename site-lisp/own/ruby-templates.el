@@ -1,3 +1,5 @@
+(require 'tempo-support)
+
 (defun simple-block (name)
   (list '> name " " '> 'r '> 'n "end" '> 'n))
 

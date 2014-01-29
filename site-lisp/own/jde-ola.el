@@ -1,5 +1,5 @@
 ;;; jde-ola.el -- Mod for Java Development Environment for Emacs
-;; $Revision: 1.4 $ $Date: 2007/11/23 17:03:23 $ 
+;; $Revision: 1.4 $ $Date: 2007/11/23 17:03:23 $
 
 ;; Author: Ola Gustafsson <Ola.Gustafsson@lime.ki.se>
 ;; Maintainer: Ola Gustafsson
@@ -34,13 +34,15 @@
 
 ;;; Code:
 
+(require 'tempo-support)
+
 (defvar jde-ola-source-directory (expand-file-name "~/src")
 "The source directory for this project")
 
 (defvar jde-ola-include-cvs-vars t "Should generated Java-files include cvs variables like revision and version")
 
 (defun jde-ola-find-package ()
-    (mapconcat (function (lambda (inp) inp)) 
+    (mapconcat (function (lambda (inp) inp))
                (let ((split (split-string (directory-file-name (file-name-directory (find-current-dir))) "/")))
                  (if (equal (elt split 0) "..")
                      (cdr (cdr split))
@@ -48,7 +50,7 @@
 
 
 (defun find-current-dir ()
-  (if (stringp jde-ola-source-directory) 
+  (if (stringp jde-ola-source-directory)
       (let ((xout (get-guess buffer-file-name jde-ola-source-directory)))
         (if (numberp (is-correct-part xout buffer-file-name))
             nil
@@ -67,17 +69,17 @@
           (find-current-dir-list (cdr inp))
         xout))))
 
-(defun is-correct-part (is-this-it file-name) 
+(defun is-correct-part (is-this-it file-name)
   (let ((fname (length file-name))
         (full (length is-this-it)))
-    (if (< full fname) 
+    (if (< full fname)
         t
       nil)))
 
-(defun jde-gen-junit-get-package-statement () 
+(defun jde-gen-junit-get-package-statement ()
   (jde-ola-find-package))
 
-(defun jde-gen-junit-get-test-class (startpack) 
+(defun jde-gen-junit-get-test-class (startpack)
   (read-from-minibuffer "Class to test (with package): " (concat startpack ".")))
 
 (defun jde-gen-read-interfaces ()
@@ -85,10 +87,10 @@
 	(setq final-interfaces '())
 	(while do-cont
 		(setq temp-inter (read-from-minibuffer "Implements: "))
-		(if (string= temp-inter "") 
+		(if (string= temp-inter "")
 			(setq do-cont nil)
 			(setq final-interfaces (append (list temp-inter) final-interfaces))
-		    
+
 		)
 	)
 	final-interfaces
@@ -97,7 +99,7 @@
 (defun jde-gen-get-class-information ()
 	"This function fetch all information about a class"
 		(setq class-interfaces  (jde-gen-read-interfaces))
-		()) 
+		())
 
 
 (defun jde-gen-view-interfaces (ifc)
@@ -107,7 +109,7 @@
 
 (defun jde-gen-view-interface-implementation (interfaces)
 	(while interfaces
-		(let ((result (jde-wiz-implement-interface-internal (car interfaces)))) 
+		(let ((result (jde-wiz-implement-interface-internal (car interfaces))))
 			(if (not result) (setq result "Correct"))
 			(if (or (string= result "Error evaluating Java expresson. See *Messages* buffer.")
                     (not (numberp (compare-strings "Cannot find interface " 0 21 result 0 21))))
@@ -362,7 +364,7 @@ command `jde-gen-interface', as a side-effect."
     "\"}\">"
     "'>'n"
 	"'>'n"
-	"\"/**\" '>'n"  
+	"\"/**\" '>'n"
     "\" * Set up the fixture before every test.\" '>'n"
     "\" */\" '>'n"
 	"\"protected void setUp() \""
@@ -373,7 +375,7 @@ command `jde-gen-interface', as a side-effect."
      "\"}\">"
 	"'>'n"
 	"'>'n"
-	"\"/**\" '>'n"  
+	"\"/**\" '>'n"
     "\" * Tear down the fixture after every test.\" '>'n"
     "\" */\" '>'n"
 	"\"protected void tearDown() \""
@@ -516,7 +518,7 @@ It then moves the point to the location inside the interface."
 	(setq final-params '())
 	(while do-cont
 		(setq temp-type (read-from-minibuffer "Parameter type: "))
-		(if (string= temp-type "") 
+		(if (string= temp-type "")
 			(setq do-cont nil)
 			(setq temp-name (read-from-minibuffer "Parameter name: "))
 			(if (string= temp-name "")
@@ -538,10 +540,10 @@ It then moves the point to the location inside the interface."
 	(setq final-throws '())
 	(while do-cont
 		(setq temp-throws (read-from-minibuffer "Throws: "))
-		(if (string= temp-throws "") 
+		(if (string= temp-throws "")
 			(setq do-cont nil)
 			(setq final-throws (append (list temp-throws) final-throws))
-		    
+
 		)
 	)
 	final-throws
@@ -552,7 +554,7 @@ It then moves the point to the location inside the interface."
 	(setq final-mod '())
 	(while do-cont
 		(setq temp-mod (completing-read "Modifiers: " '(("static" 1) ("abstract" 2) ("final" 3) ("synchronized" 4) ("native" 5) ("volatile" 6) ("transient" 7)) nil t))
-		(if (string= temp-mod "") 
+		(if (string= temp-mod "")
 			(setq do-cont nil)
 			(setq final-mod (append (list temp-mod) final-mod))
 		)
@@ -575,14 +577,14 @@ It then moves the point to the location inside the interface."
 		(setq func-throws (jde-gen-read-throws))
 		(setq func-mod	  (jde-gen-read-mod))
 		()
-) 
+)
 
 (defun jde-gen-view-doc-params (pars)
 	(setq params-final-string "")
 	(setq pars (reverse pars))
 	(while pars
 		(setq params-final-string (concat params-final-string "     * @param " (car (cdr (car pars))) " Description here\n"))
-		(setq pars (cdr pars))		
+		(setq pars (cdr pars))
 	)
 	params-final-string
 )
@@ -592,7 +594,7 @@ It then moves the point to the location inside the interface."
 	(setq thr (reverse thr))
 	(while thr
 		(setq thr-final-string (concat thr-final-string "     * @throws " (car thr) " Comment here\n"))
-		(setq thr (cdr thr))		
+		(setq thr (cdr thr))
 	)
 	thr-final-string
 )
@@ -602,7 +604,7 @@ It then moves the point to the location inside the interface."
 	(setq pars (reverse pars))
 	(while pars
 		(setq params-final-string (concat params-final-string (car (car pars)) " " (car (cdr (car pars)))))
-		(setq pars (cdr pars))		
+		(setq pars (cdr pars))
 		(if (car pars) (setq params-final-string (concat params-final-string ", ")))
 	)
 	params-final-string
@@ -613,7 +615,7 @@ It then moves the point to the location inside the interface."
 	(setq thr (reverse thr))
 	(while thr
 		(setq thr-final-string (concat thr-final-string (car thr) ))
-		(setq thr (cdr thr))		
+		(setq thr (cdr thr))
 		(if (car thr) (setq thr-final-string (concat thr-final-string ", ")) (setq thr-final-string (concat thr-final-string " ")))
 	)
 	thr-final-string
@@ -624,7 +626,7 @@ It then moves the point to the location inside the interface."
 	(setq mod (reverse mod))
 	(while mod
 		(setq mod-final-string (concat mod-final-string (car mod) " " ))
-		(setq mod (cdr mod))		
+		(setq mod (cdr mod))
 	)
 	mod-final-string
 )
@@ -668,7 +670,7 @@ It then moves the point to the location inside the interface."
 	"\"//TODO: Add implementation\" '>'n"
 	"\"//------------------------\" '>'n"
 	 "'>'p'n"
-	 "\"}\"'>'n"    
+	 "\"}\"'>'n"
 	)
   "*Template for creating a java method.
 Setting this variable defines a template instantiation
@@ -698,7 +700,7 @@ command `jde-gen-method', as a side-effect."
 
 		(setq ctor-throws (jde-gen-read-throws))
 		()
-) 
+)
 
 
 (defcustom jde-gen-ctor
@@ -728,7 +730,7 @@ command `jde-gen-method', as a side-effect."
 	"\"//TODO: Add implementation\" '>'n"
 	"\"//------------------------\" '>'n"
 	 "'>'p'n"
-	 "\"}\"'>'n"    
+	 "\"}\"'>'n"
 	)
   "*Template for creating a java constructor.
 Setting this variable defines a template instantiation
@@ -820,7 +822,7 @@ command `jde-gen-ctor', as a side-effect."
 (provide 'jde-ola)
 
 
-;; Change History 
+;; Change History
 
 ;;
 ;; $Log: jde-ola.el,v $

@@ -14,6 +14,14 @@
     (shell)
     (rename-buffer "*bash-shell*" t)))
 
+(defun zsh ()
+  (interactive)
+  (let* ((explicit-shell-file-name "/usr/local/bin/zsh")
+         (shell-file-name explicit-shell-file-name)
+         (comint-prompt-read-only t))
+    (shell)
+    (rename-buffer "*zsh-shell*" t)))
+
 (setq mac-command-modifier 'meta)
 (setq mac-option-modifier nil)
 

@@ -1,3 +1,5 @@
+(require 'tempo)
+
 (defvar ruby-tempo-tags nil
   "Tempo tags for Ruby mode")
 

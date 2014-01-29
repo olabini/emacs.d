@@ -1,55 +1,5 @@
 (global-set-key [f7] 'cut-ctrlM)
 
-;; (eval-after-load "slime"
-;;   '(progn
-;;     (define-key slime-mode-map (kbd "(") 'paredit-open-list)
-;;     (define-key slime-mode-map (kbd ")") 'paredit-close-list)
-;;     (define-key slime-mode-map (kbd "C-/") 'paredit-backward-slurp-sexp)
-;;     (define-key slime-mode-map (kbd "C-=") 'paredit-forward-slurp-sexp)
-;;     (define-key slime-mode-map (kbd "C-?") 'paredit-backward-barf-sexp)
-;;     (define-key slime-mode-map (kbd "C-+") 'paredit-forward-barf-sexp)
-;;     (define-key slime-mode-map (kbd "\"") 'paredit-doublequote)
-;;     (define-key slime-mode-map (kbd "\\") 'paredit-backslash)
-;;     (define-key slime-mode-map (kbd "RET") 'paredit-newline)
-;;     (define-key slime-mode-map (kbd "<return>") 'paredit-newline)
-;;     (define-key slime-mode-map (kbd "C-j") 'newline)
-;;     (define-key slime-mode-map (kbd "C-h") 'backward-sexp)
-;;     (define-key slime-mode-map (kbd "C-t") 'transpose-sexps)
-;;     (define-key slime-mode-map (kbd "C-M-t") 'transpose-chars)
-;;     (define-key slime-mode-map (kbd "C-n") 'forward-sexp)
-;;     (define-key slime-mode-map (kbd "C-k") 'kill-sexp)
-;;     (define-key slime-mode-map (kbd "C-M-k") 'paredit-kill)
-;;     (define-key slime-mode-map (kbd "C-'") 'paredit-splice-sexp)
-;;     (define-key slime-mode-map (kbd "C-,") 'backward-up-list)
-;;     (define-key slime-mode-map (kbd "C-.") 'down-list)
-;;     (define-key slime-mode-map (kbd "C-M-l") 'paredit-recentre-on-sexp)
-;;     (define-key slime-mode-map (kbd "TAB") 'slime-indent-and-complete-symbol)
-;;     (define-key slime-mode-map (kbd "C-c TAB") 'slime-complete-form)
-;;     ))
-
-;; (eval-after-load "slime-repl"
-;;   '(progn
-;;     (define-key slime-repl-mode-map (kbd "(") 'paredit-open-list)
-;;     (define-key slime-repl-mode-map (kbd ")") 'paredit-close-list)
-;;     (define-key slime-repl-mode-map (kbd "C-/") 'paredit-backward-slurp-sexp)
-;;     (define-key slime-repl-mode-map (kbd "C-=") 'paredit-forward-slurp-sexp)
-;;     (define-key slime-repl-mode-map (kbd "C-?") 'paredit-backward-barf-sexp)
-;;     (define-key slime-repl-mode-map (kbd "C-+") 'paredit-forward-barf-sexp)
-;;     (define-key slime-repl-mode-map (kbd "\"") 'paredit-doublequote)
-;;     (define-key slime-repl-mode-map (kbd "\\") 'paredit-backslash)
-;;     (define-key slime-repl-mode-map (kbd "C-j") 'newline)
-;;     (define-key slime-repl-mode-map (kbd "C-h") 'backward-sexp)
-;;     (define-key slime-repl-mode-map (kbd "C-t") 'transpose-sexps)
-;;     (define-key slime-repl-mode-map (kbd "C-M-t") 'transpose-chars)
-;;     (define-key slime-repl-mode-map (kbd "C-n") 'forward-sexp)
-;;     (define-key slime-repl-mode-map (kbd "C-k") 'kill-sexp)
-;;     (define-key slime-repl-mode-map (kbd "C-M-k") 'paredit-kill)
-;;     (define-key slime-repl-mode-map (kbd "C-'") 'paredit-splice-sexp)
-;;     (define-key slime-repl-mode-map (kbd "C-,") 'backward-up-list)
-;;     (define-key slime-repl-mode-map (kbd "C-.") 'down-list)
-;;     (define-key slime-repl-mode-map (kbd "C-M-l") 'paredit-recentre-on-sexp)
-;;     ))
-
 (define-key global-map (kbd "<f10>") 'slime-selector)
 
 (global-set-key "\C-x\C-m" 'execute-extended-command)
@@ -114,8 +64,5 @@
                   (flyspell-buffer)))
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
-
-(global-set-key [f11] `cyclebuffer-forward)
-(global-set-key [f12] `cyclebuffer-backward)
 
 (provide 'emacs-keys)

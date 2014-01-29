@@ -30,17 +30,6 @@
           (if (not (string= expanded "/"))
               (ruby-find-tags-file (expand-file-name ".." dir)))))))
 
-;; (add-hook 'ruby-mode-hook
-;;           '(lambda ()
-;;             (let ((file (ruby-find-tags-file (directory-of-file (buffer-file-name)))))
-;;               (if file
-;;                   (kill-local-variable 'tags-file-name)
-;;                   (setq tags-file-name file)
-;;                   (make-local-variable 'tags-file-name)
-;;                   (setq tags-file-name file)
-;;                   (require 'rails-rake-test)
-;;                   ))))
-
 (add-hook 'io-mode-hook
           '(lambda ()
             (tempo-use-tag-list 'io-tempo-tags)
@@ -121,5 +110,29 @@
             (require 'run-dart)))
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+(add-hook 'ido-setup-hook
+          (lambda ()
+            (define-key ido-completion-map "\C-w" 'ido-delete-backward-updir)))
+
+(eval-after-load "io-mode"
+  '(progn
+    (require 'io-templates)
+    ))
+
+(eval-after-load "jde"
+  '(progn
+    (require 'jde-ola)
+    (require 'java-templates)
+    ))
+
+(eval-after-load "ruby-mode"
+  '(progn
+    (require 'ruby-electric)
+    (require 'custom-ruby)
+    (require 'ruby-templates)
+    (require 'rvm)
+    (rvm-use-default)
+    ))
 
 (provide 'emacs-hooks)
