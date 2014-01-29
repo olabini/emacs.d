@@ -5,8 +5,11 @@
                      ack-and-a-half
                      adoc-mode
                      apache-mode
+                     asciidoc
                      auto-complete
                      bigint
+                     blank-mode
+                     bundler
                      caml
                      cider
                      clojure-mode
@@ -15,6 +18,7 @@
                      clojurescript-mode
                      coffee-mode
                      color-theme
+                     command-t
                      crontab-mode
                      csharp-mode
                      csv-mode
@@ -32,6 +36,7 @@
                      erc-image
                      erc-view-log
                      erlang
+                     feature-mode
                      fringe-helper
                      fsharp-mode
                      fuel
@@ -47,6 +52,7 @@
                      haml-mode
                      haskell-mode
                      htmlize
+                     ibuffer-git
                      inf-ruby
                      io-mode
                      ioccur
@@ -58,6 +64,7 @@
                      levenshtein
                      magit
                      magithub
+                     malabar-mode
                      markup-faces
                      midje-mode
                      minitest
@@ -83,6 +90,8 @@
                      racket-mode
                      rainbow-delimiters
                      rainbow-mode
+                     rhtml-mode
+                     rinari
                      rspec-mode
                      ruby-additional
                      ruby-block
@@ -115,6 +124,13 @@
                      url-shortener
                      xml-rpc
                      yaml-mode
+                     rbenv
+                     shell-here
+                     w3m
+                     wc-mode
+                     web-beautify
+                     wgrep
+                     wgrep-ack
                      ))
 
 (setq package-archives '(("elpa" . "http://tromey.com/elpa/")
