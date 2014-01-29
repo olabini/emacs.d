@@ -1,4 +1,4 @@
-(setq 
+(setq
  inhibit-startup-message             t
  line-number-mode                    t
  column-number-mode                  t
@@ -39,12 +39,6 @@
  inferior-lisp-program               "sbcl"
 )
 
-(set-background-color        "black")
-(set-foreground-color        "white")
-(set-cursor-color            "white")
-(set-face-background 'region "light gray")
-(set-face-foreground 'region "black")
-
 (eval-after-load "erc-join"
   '(erc-autojoin-mode 1))
 
@@ -65,7 +59,7 @@
 
 
 (setq ibuffer-saved-filter-groups
-      (quote (("default"      
+      (quote (("default"
                ("Ioke"
                 (filename . "workspace/ioke"))
                ("Seph"
@@ -84,11 +78,11 @@
                  (name . "^\\*.c$")
                  (name . "^\\*.h$")
                  (name . "^\\*SConstruct$")
-                 )) 
+                 ))
                ("IRC"   (mode . erc-mode))
                ("Book"   (name . ".pml"))
                ("Org"
-                (or 
+                (or
                  (mode . org-mode)
                  (name . "^\\*Org Agenda\\*$")))
                ("Emacs"

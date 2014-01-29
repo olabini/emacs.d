@@ -1,6 +1,5 @@
 (add-hook 'ruby-mode-hook
           '(lambda ()
-            (inf-ruby-keys)
             (ruby-electric-mode t)
             (define-key ruby-mode-map (kbd "<f1>") 'ri)
             (define-key ruby-mode-map "\M-\C-i" 'ri-ruby-complete-symbol)
@@ -31,16 +30,16 @@
           (if (not (string= expanded "/"))
               (ruby-find-tags-file (expand-file-name ".." dir)))))))
 
-(add-hook 'ruby-mode-hook
-          '(lambda ()
-            (let ((file (ruby-find-tags-file (directory-of-file (buffer-file-name)))))
-              (if file
-                  (kill-local-variable 'tags-file-name)
-                  (setq tags-file-name file)
-                  (make-local-variable 'tags-file-name)
-                  (setq tags-file-name file)
-                  (require 'rails-rake-test)
-                  ))))
+;; (add-hook 'ruby-mode-hook
+;;           '(lambda ()
+;;             (let ((file (ruby-find-tags-file (directory-of-file (buffer-file-name)))))
+;;               (if file
+;;                   (kill-local-variable 'tags-file-name)
+;;                   (setq tags-file-name file)
+;;                   (make-local-variable 'tags-file-name)
+;;                   (setq tags-file-name file)
+;;                   (require 'rails-rake-test)
+;;                   ))))
 
 (add-hook 'io-mode-hook
           '(lambda ()
@@ -110,14 +109,14 @@
 
 (defun colorize-rails-compilation-buffer (start end len)
   (ansi-color-apply-on-region (point-min) (point-max))
-) 
+)
 
 (defun setup-ansi-color-for-rails-buffer ()
   (add-hook 'after-change-functions 'colorize-rails-compilation-buffer)
 )
 (add-hook 'rails-test:compilation-mode-hook 'setup-ansi-color-for-rails-buffer)
 
-(add-hook 'dart-mode-hook 
+(add-hook 'dart-mode-hook
           (lambda ()
             (require 'run-dart)))
 

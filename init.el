@@ -35,6 +35,7 @@
 (require 'emacs-mac)
 (require 'emacs-utf8)
 (require 'emacs-short)
+(require 'emacs-looks)
 
 ;; This file contains user specific customization and should not be checked in to the shared repository
 ;; No error will be displayed if it can't be loaded

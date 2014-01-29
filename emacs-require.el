@@ -9,6 +9,7 @@
 (require 'io-templates)
 (require 'fontize)
 (require 'comp)
+(require 'wdired)
 ;(require 'quack)
 
 (require 'pretty-lambdada)
@@ -58,6 +59,7 @@
 (autoload 'json-fix "json-fix" nil t)
 (autoload 'outline-presentation-mode "outline-presentation" nil t)
 (autoload 'org-present "org-present" nil t)
+(autoload 'org-tree-slide-mode "org-tree-slide" nil t)
 
 (load "fu.el")
 (load-library "rng-auto")
@@ -76,7 +78,7 @@
     (require 'ruby-electric)
     (require 'html-helper-mode)
     (require 'mmm-setup)
-    (require 'rails)
+;    (require 'rails)
     (require 'custom-ruby)
     (require 'ruby-templates)
     (require 'rvm)

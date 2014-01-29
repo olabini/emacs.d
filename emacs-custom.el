@@ -43,36 +43,13 @@
  '(nrepl-lein-command "lein2")
  '(nxml-auto-insert-xml-declaration-flag t)
  '(nxml-slash-auto-complete-flag t)
+ '(org-hide-leading-stars t)
+ '(org-odd-levels-only t)
  '(rails-tags-command "ctags -e -a --Ruby-kinds=-f -o %s -R %s")
  '(safe-local-variable-values (quote ((encoding . utf-8))))
  '(semanticdb-default-save-directory "~/.emacs.d/semantic/")
  '(tab-width 4)
+ '(wdired-allow-to-change-permissions t)
  '(x-select-enable-clipboard t))
-
-
-
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(font-lock-builtin-face ((((class color) (min-colors 88) (background dark)) (:foreground "SlateBlue"))))
- '(font-lock-comment-face ((((class color) (min-colors 88) (background dark)) (:foreground "DarkGreen"))))
- '(font-lock-constant-face ((((class color) (min-colors 88) (background dark)) (:foreground "gray"))))
- '(font-lock-function-name-face ((((class color) (min-colors 88) (background dark)) (:foreground "firebrick"))))
- '(font-lock-keyword-face ((((class color) (min-colors 88) (background dark)) (:foreground "MediumBlue"))))
- '(font-lock-string-face ((((class color) (min-colors 88) (background dark)) (:foreground "RoyalBlue"))))
- '(font-lock-type-face ((((class color) (min-colors 88) (background dark)) (:foreground "SteelBlue"))))
- '(font-lock-variable-name-face ((((class color) (min-colors 88) (background dark)) (:foreground "SeaGreen"))))
- '(ioke-font-lock-kind-face ((((class color)) (:foreground "BlueViolet"))))
- '(ioke-font-lock-known-kind-face ((((class color)) (:foreground "DarkRed"))))
- '(ioke-font-lock-operator-name-face ((((class color)) (:foreground "CornflowerBlue"))))
- '(ioke-font-lock-operator-symbol-face ((((class color)) (:foreground "deep sky blue"))))
- '(ioke-font-lock-symbol-face ((((class color)) (:foreground "SlateGray4"))))
- '(jde-java-font-lock-api-face ((((class color)) (:foreground "DarkRed"))))
- '(jde-java-font-lock-constant-face ((((class color)) (:foreground "BlueViolet"))))
- '(jde-java-font-lock-package-face ((((class color)) (:foreground "SlateGray4"))))
- '(nxml-delimited-data-face ((nil (:foreground "gray"))))
- '(nxml-name-face ((nil (:foreground "#33aaff")))))
 
 (provide 'emacs-custom)
