@@ -41,7 +41,6 @@
 
 (auto-compression-mode t)
 (auto-insert-mode t)
-(partial-completion-mode)
 (global-font-lock-mode t)
 (show-paren-mode t)
 (display-time)
