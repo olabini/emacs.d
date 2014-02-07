@@ -1,5 +1,5 @@
 ;;; jde-gen.el -- Integrated Development Environment for Java.
-;; $Id: jde-gen.el 209 2010-01-22 02:59:00Z paullandes $
+;; $Id: jde-gen.el 278 2013-03-12 19:54:51Z shyamalprasad $
 
 ;; Author: Paul Kinnucan <paulk@mathworks.com>
 ;; Maintainer: Paul Landes <landes <at> mailc dt net>
@@ -106,8 +106,8 @@ ids and return as \"id1, id2, ...\"."
   (mapconcat
    (lambda (arg)
      (nth 1 (split-string
-	     (replace-in-string
-	      (replace-in-string arg "^[ \t\n\f\l]+" "")
+	     (jde-replace-in-string
+	      (jde-replace-in-string arg "^[ \t\n\f\l]+" "")
 	      "[ \t\n\f\l]+$" ""))))
    (split-string params "[,]") ", "))
 
@@ -188,7 +188,7 @@ Note that anonymous classes are implicitly final."
       (let ((comma nil)
 	    (arg-list (split-string method-args ",")))
 	(setq method-args "")
-	(mapcar
+	(mapc
 	 (lambda (arg)
 	   (if (string-match "\\<final\\>" arg)
 	       (setq method-args (concat method-args comma arg))
@@ -510,11 +510,26 @@ If a parameter to this function is empty or nil, then it is omitted
 	  ()))))
   sig))
 
+(defcustom jde-gen-class-create-constructor t
+  "*If non-nil, generate constructor for `jde-gen-class-buffer'."
+  :group 'jde-gen
+  :type  'boolean)
+
+(defcustom jde-gen-class-create-package 'jde-gen-get-package-statement
+  "*If non-nil, generate constructor for `jde-gen-class-buffer'."
+  :group 'jde-gen
+  :type  '(choice
+	   (const :tag "Prompt for package" jde-gen-get-package-statement)
+	   (const :tag "Package updates automatically" jde-package-update)))
+
 ;;(makunbound 'jde-gen-class-buffer-template)
 (defcustom jde-gen-class-buffer-template
   (list
    "(funcall jde-gen-boilerplate-function)"
-   "(jde-gen-get-package-statement)"
+   "(let ((s (funcall jde-gen-class-create-package)))"
+   "  (if (or (null s) (not (string-match \"\n\n$\" s)))"
+   "      (list 'l s 'n)"
+   "    s))"
    "(when jde-gen-create-javadoc"
    "(progn (require 'jde-javadoc) (jde-javadoc-insert-start-block))"
    "'(l \" * Describe class \""
@@ -542,10 +557,14 @@ If a parameter to this function is empty or nil, then it is omitted
    " (jde-gen-save-excursion"
    "  (jde-gen-get-interface-implementation t))"
    " (jde-gen-save-excursion"
-   "  (jde-wiz-gen-method \"public\" \"\""
-   "   (file-name-sans-extension (file-name-nondirectory buffer-file-name)) \"\" \"\" \"\")))"
+   "  (if jde-gen-class-create-constructor"
+   "     (jde-wiz-gen-method \"public\" \"\""
+   "       (file-name-sans-extension (file-name-nondirectory buffer-file-name)) \"\" \"\" \"\"))))"
    ";; Move to constructor body. Set tempo-marks to nil in order to prevent tempo moving to mark."
-   "(progn (re-search-forward \"^[ \\t]*$\") (setq tempo-marks nil) nil)")
+   "(progn (re-search-forward \"^[ \\t]*$\") (setq tempo-marks nil) nil)"
+   "(when jde-gen-class-create-constructor"
+   "  (up-list)"
+   "  (forward-char))")
   "*Template for new Java class.
 Setting this variable defines a template instantiation
 command `jde-gen-class', as a side-effect."
@@ -790,8 +809,7 @@ NO-MOVE-POINT if nil move the point, either way, we return the position.
     pos))
 
 
-(defun jde-gen-insert-at-class-top (&optional class-regexp
-						     no-move-point)
+(defun jde-gen-insert-at-class-top (&optional class-regexp no-move-point)
   "Position point at top of class, inserting space if needed.
 
 CLASS-REGEXP the symbol used to find the class to find the top of.  See
@@ -803,6 +821,14 @@ moved also."
       (insert "\n"))
   (insert "\n")
   (backward-char 1))
+
+(defun jde-gen-get-set-member-annotations (type name)
+  "This is meant to override returning template symbols for private members.
+Members include the private encapsulated data of the class.
+TYPE is the type of member.
+NAME is the member name.
+See `jde-gen-get-set-var-template'."
+  nil)
 
 ;;(makunbound 'jde-gen-get-set-var-template)
 (defcustom jde-gen-get-set-var-template
@@ -819,11 +845,14 @@ moved also."
     ;; add class member
     "(P \"Variable type: \" type t)"
     "(P \"Variable name: \" name t)"
-    "'&'n'>"
+    "'&'>"
     "(when jde-gen-create-javadoc "
     " (progn (require 'jde-javadoc) (jde-javadoc-insert-start-block))"
     " '(l \"* Describe \" (s name) \" here.\" '>'n"
     "'> (jde-javadoc-insert-end-block)))"
+    "(jde-gen-get-set-member-annotations"
+    "  (tempo-lookup-named 'type)"
+    "  (tempo-lookup-named 'name))"
     "'& \"private \" (s type) \" \""
     "(s name) \";\" '>"
     "(progn (goto-char (marker-position (tempo-lookup-named 'mypos))) nil)"
@@ -860,7 +889,7 @@ moved also."
     "\"* Set the <code>\" (jde-gen-lookup-and-capitalize 'name) \"</code> value.\" '>'n"
     "\"*\" '>'n"
     ;; ToDo: use jde-wiz-get-set-variable-prefix
-    "\"* @param new\" (jde-gen-lookup-and-capitalize 'name)"
+    "\"* @param \" (jde-gen-lookup-named 'name)"
     "\" The new \" (jde-gen-lookup-and-capitalize 'name) \" value.\" '>'n"
     "'> (jde-javadoc-insert-end-block)))"
 
@@ -869,14 +898,14 @@ moved also."
     "  \"public\""
     "  \"void\""
     "  (concat \"set\" (jde-gen-lookup-and-capitalize 'name))"
-    "  (concat (jde-gen-lookup-named 'type) \" new\" "
-    "          (jde-gen-lookup-and-capitalize 'name))"
+    "  (concat (jde-gen-lookup-named 'type) \" \" "
+    "          (jde-gen-lookup-named 'name))"
     " )"
 
    "(jde-gen-electric-brace)"
 
-    "'>\"this.\" (s name) \" = new\" (jde-gen-lookup-and-capitalize 'name)"
-    "\";\" '>'n \"}\" '>"
+    "'>\"this.\" (s name) \" = \" (jde-gen-lookup-named 'name)"
+    "\";\" '>'n \"}\" '>'n"
     "(when (looking-at \"\\\\s-*\\n\\\\s-*$\")"
     "  (forward-line 1) (end-of-line) nil)"
     )
@@ -962,6 +991,82 @@ It then moves the point to the location of the constructor."
   (interactive "F")
   (find-file file)
   (jde-gen-bean))
+
+;(makunbound 'jde-gen-hibernate-pojo-equals-method-template)
+(defcustom jde-gen-hibernate-pojo-equals-method-template
+  '("'>"
+    "(when jde-gen-create-javadoc"
+    "'(l \"/**\" '> 'n"
+    "    \" * Check if this object is equal (equivalent) to another object.\" '> 'n"
+    "    \" */\" '> 'n"
+    "))"
+    "(jde-gen-method-signature \"protected\" \"boolean\" \"equalsHelper\" \"Object obj\")"
+    "(jde-gen-electric-brace)"
+    "(jde-gen-equals-return \"obj\" \"o\" nil \"equalsHelper\") '> 'n"
+    "\"}\" '> 'n))"
+    )
+  "*Template for creating an equals method in a hibernate pojo.
+The generated class would extend a persistable pojo used by hibernate.
+Setting this variable defines a template instantiation command
+`jde-gen-equals-method', as a side-effect."
+  :group 'jde-gen
+  :type '(repeat string)
+  :set '(lambda (sym val)
+	  (defalias 'jde-gen-hibernate-pojo-equals-method
+	    (tempo-define-template
+	     "java-hibernate-pojo-equals-method"
+	     (jde-gen-read-template val)
+	     nil
+	     "Create an equals method at the current point."))
+	  (set-default sym val)))
+
+;(makunbound 'jde-gen-hibernate-pojo-template)
+(defcustom jde-gen-hibernate-pojo-buffer-template
+  '("'>"
+    "(jde-gen-class)"
+    "(flet ((jde-gen-get-set-member-annotations (type name)"
+    "         (format \"@Column(name = \\\"%s\\\", nullable = false)\" name)))"
+    "   (call-interactively 'jde-gen-get-set-methods)"
+    "    nil)"
+    "'n"
+    "(progn"
+    "  (semantic-fetch-tags)"
+    "  (jde-gen-hashcode-method)"
+    "  'n)"
+    "(progn"
+    "  (jde-gen-hibernate-pojo-equals-method)"
+    "  'n)"
+    "(progn"
+    "  (jde-gen-tostring-method)"
+    "  nil)"
+    "(progn"
+    "  (jde-parse-get-top-of-class)"
+    "  (beginning-of-line)"
+    "  nil)"
+    "(jde-import-insert-import '(\"javax.persistence.Entity\"))"
+    "(jde-import-insert-import '(\"javax.persistence.Table\"))"
+    "(jde-import-insert-import '(\"javax.persistence.Column\"))"
+    "(progn (jde-import-organize) nil)"
+    " '> \"@Entity\" 'n"
+    " '> \"@Table(name = \\\"\" "
+    "(progn (tempo-save-named 'table-pos (point-marker)) nil)"
+    " (file-name-sans-extension (file-name-nondirectory buffer-file-name))"
+    "\"\\\") \" 'n"
+    "(progn (goto-char (marker-position (tempo-lookup-named 'table-pos))) nil)"
+    )
+  "*Template for creating an equals method.
+Setting this variable defines a template instantiation command
+`jde-gen-equals-method', as a side-effect."
+  :group 'jde-gen
+  :type '(repeat string)
+  :set '(lambda (sym val)
+	  (defalias 'jde-gen-hibernate-pojo
+	    (tempo-define-template
+	     "java-hibernate-pojo-buffer-template"
+	     (jde-gen-read-template val)
+	     nil
+	     "Create an equals method at the current point."))
+	  (set-default sym val)))
 
 (defcustom jde-gen-jfc-app-buffer-template
   (list
@@ -2230,7 +2335,7 @@ command, `jde-gen-main-method', as a side-effect."
   '(
     "(p \"Listener class (fully qualified): \" listenerFQN 'noinsert)"
     "(tempo-save-named 'listener-class "
-    " (replace-in-string (tempo-lookup-named 'listenerFQN)"
+    " (jde-replace-in-string (tempo-lookup-named 'listenerFQN)"
     "                    \"[^\\\\.]+\\\\.\" \"\"))"
     "(tempo-save-named 'listener-vector "
     " (concat (jde-wiz-downcase-initials (tempo-lookup-named 'listener-class))"
@@ -2312,7 +2417,7 @@ command, `jde-gen-main-method', as a side-effect."
     "(p \"Method name: \" return-type 'noinsert)"
     "(p \"Method name: \" params 'noinsert)"
     "(tempo-save-named 'listener-class "
-    " (replace-in-string (tempo-lookup-named 'listenerFQN)"
+    " (jde-replace-in-string (tempo-lookup-named 'listenerFQN)"
     "                    \"[^\\\\.]+\\\\.\" \"\"))"
     "(tempo-save-named 'listener-vector "
     " (concat (jde-wiz-downcase-initials (tempo-lookup-named 'listener-class))"
@@ -2745,16 +2850,18 @@ Or, with `jde-gen-equals-trailing-and-operators' set to t:
 ;;;###autoload
 (defcustom jde-gen-equals-method-template
   '("'>"
-    "\"/**\" '> 'n"
-    "\" * Check if this object is equal (equivalent) to another object.\" '> 'n"
-    "\" */\" '> 'n"
-    "(jde-gen-method-signature \"public\" \"boolean\" \"equals\" \"Object obj\")"
+   "(when jde-gen-create-javadoc"
+    "'(l \"/**\" '> 'n"
+    "    \" * Check if this object is equal (equivalent) to another object.\" '> 'n"
+    "    \" */\" '> 'n"
+    "))"
+    "(jde-gen-method-signature \"public\" \"boolean\" \"equals\" \"Persistable obj\")"
     "(jde-gen-electric-brace)"
     "\"if (obj == this) return true;\" '> 'n"
     "\"if ((obj == null) || !getClass().equals(obj.getClass())) return false;\" '> 'n"
     "'> 'n"
     "(jde-gen-equals-return \"obj\" \"o\") '> 'n"
-    "\"}\" '> 'n '>))"
+    "\"}\" '> 'n))"
     )
   "*Template for creating an equals method.
 Setting this variable defines a template instantiation command
@@ -2771,7 +2878,7 @@ Setting this variable defines a template instantiation command
 	  (set-default sym val)))
 
 ;;;###autoload
-(defun jde-gen-equals-return (&optional parm-name var-name class)
+(defun jde-gen-equals-return (&optional parm-name var-name class super-method)
   "Generate a body of an appropriate override for the
 java.lang.Object#equals(Object) function. This function gets the
 list of member variables from`jde-parse-get-serializable-members'.
@@ -2815,11 +2922,12 @@ Or, with `jde-gen-equals-trailing-and-operators' set to t:
 			'jde-parse-compare-member-types))
 	 (super (car (semantic-tag-type-superclasses class-tag)))
 	 (extends (and super (not (string= "Object" super)))))
+    (setq super-method (or super-method "equals"))
     (list 'l '>
 	  class-name " " var " = (" class-name ") " parm ";" '>'n '>'n
 	  "return "
 	  (if jde-gen-equals-parens-around-expression "(")
-	  (if extends (list 'l "super.equals(" var ")")) '>
+	  (if extends (list 'l (format "super.%s(" super-method) var ")")) '>
 	  (cons 'l (mapcar
 	      (lambda (tag)
 		(let ((name (semantic-tag-name tag))
@@ -2870,6 +2978,8 @@ Or, with `jde-gen-equals-trailing-and-operators' set to t:
 ;;;###autoload
 (defcustom jde-gen-hashcode-method-template
   '("'>"
+    "(when jde-gen-create-javadoc"
+    "'(l "
     "\"/**\" '> 'n"
     "\" * Calculate the hash code for this object.\" '> 'n"
     "\" * \" '> 'n"
@@ -2879,7 +2989,7 @@ Or, with `jde-gen-equals-trailing-and-operators' set to t:
     "\" * @return the hash code.\" '> 'n"
     "\" * \" '> 'n"
     "\" * @see java.lang.Object#hashCode\" '> 'n"
-    "\" */\" '> 'n"
+    "\" */\" '> 'n))"
     "(jde-gen-method-signature \"public\"\ \"int\" \"hashCode\" nil)"
     "(jde-gen-electric-brace)"
     "(jde-gen-hashcode-body) '> 'n"
@@ -3659,7 +3769,7 @@ Returns t, if the template has been inserted, otherwise nil."
 	   (template (assoc-string abbrev jde-gen-abbrev-templates t)))
       (if template
 	  (progn
-	    (delete-backward-char (length abbrev))
+	    (delete-char (- (length abbrev)))
 	    ;; Following let avoids infinite expansion.
 	    ;; Infinite expansions could be caused by
 	    ;; (newline) in templates.
@@ -3845,18 +3955,12 @@ time to enable or disable eelctric return mode."
 	  (setq jde-electric-return-mode val)
 	  (set-default sym val)))
 
-(defcustom jde-newline-function  '(newline)
-  "Indent command that `jde-electric-return' calls."
+(defcustom jde-newline-function  'newline-and-indent
+  "Indent command that `jde-electric-return' calls.  Functions
+that may be useful include newline, newline-and-indent,
+align-newline-and-indent, or your own custom function."
   :group 'jde-gen
-  :type '(list
-	  (radio-button-choice
-	   :format "%t \n%v"
-	   :tag "Function: "
-	   :entry-format " %b %v"
-	   (const newline)
-	   (const newline-and-indent)
-	   (const align-newline-and-indent)
-	   (function my-custom-newline-function))))
+  :type 'function)
 
 (defun jde-gen-embrace()
   "Match an open brace at the end of a line
@@ -3910,7 +4014,7 @@ After:
 	  (re-search-backward "{\\s-*" (line-beginning-position) t))
 	(looking-at "}?\\s-*$"))
       (jde-gen-embrace)
-    (call-interactively (car jde-newline-function))))
+    (call-interactively jde-newline-function)))
 
 (defvar jde-electric-return-mode nil
   "Nonnil indicates that electric return mode is on.")

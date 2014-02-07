@@ -65,4 +65,9 @@
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
+(global-set-key (vector '(shift super left))  'windmove-left)
+(global-set-key (vector '(shift super right)) 'windmove-right)
+(global-set-key (vector '(shift super up))    'windmove-up)
+(global-set-key (vector '(shift super down))  'windmove-down)
+
 (provide 'emacs-keys)

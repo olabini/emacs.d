@@ -1,5 +1,3 @@
-;;(require 'cedet)
-
 (autoload 'unfill-paragraph "utils" nil t)
 (autoload 'syntax-highlight-region "utils" nil t)
 (autoload 'syntax-highlight-region-span "utils" nil t)

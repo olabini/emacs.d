@@ -61,6 +61,7 @@
                      js3-mode
                      json-mode
                      lein
+                     less-css-mode
                      levenshtein
                      magit
                      magithub

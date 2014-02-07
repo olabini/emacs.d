@@ -32,7 +32,8 @@
 ;;; Code:
 
 (require 'eieio)
-(require 'beanshell)
+(eval-when-compile
+  (require 'beanshell))
 (require 'jde-parse-expr)
 
 (declare-function jde-build-classpath "jde" (path &optional sym quote-path-p))
@@ -203,8 +204,7 @@ prints out, Emacs has nothing to evaluate or report."
   (flet ((log
 	  (msg logtype)
 	  (when jde-jeval-debug
-	    (save-excursion
-	      (set-buffer (get-buffer-create "*Bsh Debug Log*"))
+	    (with-current-buffer (get-buffer-create "*Bsh Debug Log*")
 	      (goto-char (point-max))
 	      (insert (format "%S<" logtype))
 	      (insert (if (stringp msg) msg (prin1-to-string msg)))
@@ -285,10 +285,10 @@ a file in the current directory:
 
     (if finish-fcn
 	(lexical-let ((finish finish-fcn))
-	  (setq compilation-finish-function
+	  (setq compilation-finish-functions
 		(lambda (buf msg)
 		  (funcall finish buf msg)
-		  (setq compilation-finish-function nil)))))
+		  (setq compilation-finish-functions nil)))))
 
 
     (if (not (featurep 'xemacs))
@@ -301,8 +301,7 @@ a file in the current directory:
 	  (funcall compilation-process-setup-function)))
 
 
-    (save-excursion
-      (set-buffer native-buf)
+    (with-current-buffer native-buf
 
       (if buffer-head
 	  (insert buffer-head)

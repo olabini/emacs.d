@@ -1,5 +1,5 @@
 ;;; jde-imenu.el --- imenu setup for the JDE
-;; $Id: jde-imenu.el 127 2009-08-12 08:22:57Z paullandes $
+;; $Id: jde-imenu.el 238 2010-06-03 17:43:40Z paullandes $
 
 ;; Author: Paul Kinnucan <paulk@mathworks.com>,
 ;;         David Ponce <david@dponce.com>
@@ -28,8 +28,8 @@
 
 ;;; Code:
 
-(require 'semantic-java)
-(require 'semantic-imenu)
+(jde-semantic-require 'semantic-java)
+(jde-semantic-require 'semantic-imenu)
 (require 'regexp-opt)
 
 ;;; Compatibility
@@ -216,7 +216,10 @@ See also `semantic-prototype-nonterminal'."
 					  tag-cat))))
     (if (fboundp prototyper)
 	(funcall prototyper tag parent color)
-      (semantic-format-prototype-tag-java-mode tag parent color))))
+      (if (fboundp 'semantic-format-prototype-tag-java-mode)
+	  (semantic-format-prototype-tag-java-mode tag parent color) ;; cedet-1.0pre6 and earlier
+	(semantic-format-tag-prototype-java-mode tag parent color)) ;; cedet-1.0pre7
+      )))
 
 (defun jde-imenu-prototype-function (tag &optional parent color)
   "Return a function (method) prototype for TAG.
@@ -306,9 +309,9 @@ index to go to class definition."
   "Creates an imenu index for class parts in TAGS.
 When`jde-imenu-include-signature' is non-nil the
 index menu displays full method signatures and field types."
-  (let ((methods (semantic-find-nonterminal-by-token 'function tags))
-	(fields  (semantic-find-nonterminal-by-token 'variable tags))
-	(classes (semantic-find-nonterminal-by-token 'type     tags))
+  (let ((methods (semantic-brute-find-tag-by-class 'function tags))
+	(fields  (semantic-brute-find-tag-by-class 'variable tags))
+	(classes (semantic-brute-find-tag-by-class 'type     tags))
 	index)
 
     (setq methods (jde-imenu-sort-tags methods))
@@ -372,9 +375,9 @@ This function uses the semantic bovinator to index the buffer."
     (semantic-fetch-tags)
 
     (let* ((tags   (semantic-fetch-tags))
-	   (packages (semantic-find-nonterminal-by-token 'package tags))
-	   (depends  (semantic-find-nonterminal-by-token 'include tags))
-	   (classes  (semantic-find-nonterminal-by-token 'type tags))
+	   (packages (semantic-brute-find-tag-by-class 'package tags))
+	   (depends  (semantic-brute-find-tag-by-class 'include tags))
+	   (classes  (semantic-brute-find-tag-by-class 'type tags))
 	   depend-index
 	   index)
 

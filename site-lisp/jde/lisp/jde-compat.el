@@ -1,5 +1,5 @@
 ;;; jde-compat.el -- Integrated Development Environment for Java.
-;; $Id: jde-compat.el 175 2009-12-24 02:59:33Z lenbok $
+;; $Id: jde-compat.el 254 2011-06-22 03:34:47Z lenbok $
 
 ;; Author: Paul Kinnucan <paulk@mathworks.com>
 ;; Maintainer: Paul Landes <landes <at> mailc dt net>
@@ -82,7 +82,7 @@
       (defun add-menu (&rest args))
       (defun easy-menu-create-keymaps (&rest args))
       (defun locate-data-directory (&rest args))
-      (defun temp-directory (&rest args))
+      (defun temp-directory (&rest args) temporary-file-directory)
       (defun extent-at (&rest args))
       (defun make-extent (&rest args))
       (defun set-extent-face (&rest args))

@@ -1,5 +1,5 @@
 ;; jde-run.el --- runs the Java app in the current buffer.
-;; $Id: jde-run.el 175 2009-12-24 02:59:33Z lenbok $
+;; $Id: jde-run.el 263 2012-11-04 19:50:00Z shyamalprasad $
 
 ;; Author: Paul Kinnucan <paulk@mathworks.com>
 ;; Maintainer: Paul Landes <landes <at> mailc dt net>
@@ -744,8 +744,7 @@ panel to specifying the applet document."
 				       (jde-run-make-arg-string
 					prog-args)
 				       "\n\n")))
-	  (save-excursion
-	    (set-buffer run-buffer)
+	  (with-current-buffer run-buffer
 	    (erase-buffer)
 	    (cd working-directory)
 	    (insert (concat "cd " working-directory "\n"))
@@ -1283,8 +1282,7 @@ buffer belongs is running."
 				       (mapconcat (lambda (arg) arg)
 						  prog-args " ")
 				       "\n\n")))
-	  (save-excursion
-	    (set-buffer run-buffer)
+	  (with-current-buffer run-buffer
 	    (erase-buffer)
 	    (cd working-directory)
 	    (insert (concat "cd " working-directory "\n"))
@@ -1338,8 +1336,7 @@ buffer belongs is running."
 a command shell subprocess rather than as a subprocess of Emacs. This
 is necessary to avoid displaying a DOS window when starting a viewer
 under Windows."
-  (save-excursion
-    (set-buffer buffer)
+  (with-current-buffer buffer
     (let ((proc (get-buffer-process buffer)))	; Blast any old process.
       (if proc (delete-process proc)))
     ;; Crank up a new process
@@ -1398,8 +1395,7 @@ under Windows."
 				       (jde-run-make-arg-string
 					prog-args)
 				       "\n\n")))
-	  (save-excursion
-	    (set-buffer run-buffer)
+	  (with-current-buffer run-buffer
 	    (erase-buffer)
 	    (cd doc-directory)
 	    (insert (concat "cd " doc-directory "\n"))
@@ -1518,8 +1514,7 @@ Here goes all the error message parsing."
 		     "\\.<?[a-zA-Z0-9_]+>?" ; method
 		     "(\\([a-zA-Z0-9_]+\\)\\.java:" ; java file = public class
 		     "\\([0-9]+\\))"))); line number
-    (save-excursion
-      (set-buffer (marker-buffer here))
+    (with-current-buffer (marker-buffer here)
       (goto-char here)
       ;; In order to display the current match at the top of
       ;; the error screen the previous match was set to be
@@ -1554,7 +1549,8 @@ Here goes all the error message parsing."
 	    (progn
 	      (setq buf (if file (find-file-noselect file)))
 	      (set-buffer buf)
-	      (goto-line line)
+	      (goto-char (point-min))
+	      (forward-line (1- line))
 	      (set-marker there (point) buf))
 	  (error err))))
     jde-run-etrace-current-marker))

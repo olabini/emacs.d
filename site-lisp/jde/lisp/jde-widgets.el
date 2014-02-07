@@ -1,5 +1,5 @@
 ;;; jde-widgets.el -- Custom-style widgets used by the JDE
-;; $Id: jde-widgets.el 127 2009-08-12 08:22:57Z paullandes $
+;; $Id: jde-widgets.el 261 2012-11-04 19:49:12Z shyamalprasad $
 
 ;; Author: Paul Kinnucan <paulk@mathworks.com>
 ;; Maintainer: Paul Landes <landes <at> mailc dt net>
@@ -134,7 +134,8 @@
   (let ((inhibit-read-only t))
     (erase-buffer))
   (let ((all (overlay-lists)))
-    (mapcar 'delete-overlay (car all))    (mapcar 'delete-overlay (cdr all)))
+    (mapc 'delete-overlay (car all))
+    (mapc 'delete-overlay (cdr all)))
 
   (widget-insert "Test tree widget. \n\n")
 
@@ -437,7 +438,8 @@ expand button causes the widget to display the values of the array."
   (let ((inhibit-read-only t))
     (erase-buffer))
   (let ((all (overlay-lists)))
-    (mapcar 'delete-overlay (car all))    (mapcar 'delete-overlay (cdr all)))
+    (mapc 'delete-overlay (car all))
+    (mapc 'delete-overlay (cdr all)))
 
   (widget-insert "Test object tree. \n\n")
 
@@ -534,8 +536,8 @@ expand button causes the widget to display the values of the array."
   (let ((inhibit-read-only t))
     (erase-buffer))
   (let ((all (overlay-lists)))
-    (mapcar 'delete-overlay (car all))
-    (mapcar 'delete-overlay (cdr all)))
+    (mapc 'delete-overlay (car all))
+    (mapc 'delete-overlay (cdr all)))
 
   (widget-insert "Test panel widget. \n\n")
 

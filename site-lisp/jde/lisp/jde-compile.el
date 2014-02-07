@@ -1,12 +1,14 @@
 ;;; jde-compile.el -- Integrated Development Environment for Java.
-;; $Id: jde-compile.el 179 2009-12-27 01:58:29Z lenbok $
+;; $Id: jde-compile.el 274 2013-03-03 04:04:55Z shyamalprasad $
 
 ;; Author: Paul Kinnucan <paulk@mathworks.com>
+;; Author: Suraj Acharya <sacharya@cs.indiana.edu>
 ;; Maintainer: Paul Landes <landes <at> mailc dt net>
 ;; Keywords: java, tools
 
 ;; Copyright (C) 1997, 1998, 2001, 2002, 2003, 2004, 2005, 2008 Paul Kinnucan.
 ;; Copyright (C) 2009 by Paul Landes
+;; Copyright (C) 2006-2007 by Suraj Acharya
 
 ;; GNU Emacs is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -25,15 +27,36 @@
 
 ;;; Commentary:
 
-;; This is one of a set of packages that make up the
-;; Java Development Environment (JDE) for Emacs. See the
-;; JDE User's Guide for more information.
+;; This is one of a set of packages that make up the Java Development
+;; Environment (JDE) for Emacs. See the JDE User's Guide for more
+;; information. It includes code for using the Eclipse compiler
+;; originally written by Suraj Acharya.
+
+;; When customizing the jde-compiler variable to use the option for
+;; "eclipse java compiler server" you will also need to specify the
+;; location of the eclipse java compiler classes.
+
+;; If you've installed eclipse locally then this is the jdtcore.jar
+;; under <eclipse dir>/plugins/org.eclipse.jdt.core_x.x.x/, where
+;; x.x.x depends on the version of eclipse you have.
+
+;; If you don't have eclipse you can download just the JDT
+;; compiler.  Go to http://download.eclipse.org/eclipse/downloads/ and
+;; pick the release you want, the latest release is usually stable
+;; enough to use.  Once you get to the downloads page for the release,
+;; scroll down to find the link to download the "JDT Core Batch
+;; Compiler".  The 1 MB ecj.jar file is all you need to download.
+
+;; Check that you have the correct jar by trying to run the compiler
+;; from a command line like so:
+;; java -cp <path to jar> org.eclipse.jdt.internal.compiler.batch.Main
+;; This should print out a usage message for the "Eclipse Java Compiler".
 
 ;; The latest version of the JDE is available at
 ;; <URL:http://jdee.sourceforge.net/>.
 
 ;; Please send any comments, bugs, or upgrade requests to
-;; Paul Kinnucan at paulk@mathworks.com.
+;; Paul Landes <landes <at> mailc dt net>
 
 ;;; Code:
 
@@ -53,11 +76,11 @@
   :prefix "jde-compile-option-")
 
 ;; (makunbound 'jde-compiler)
-(defcustom jde-compiler '("javac server" "")
+(defcustom jde-compiler '("javac server")
   "Specify the type, and if necessary, the location of the compiler to
 be used to compile source files for the current project. The JDE
 supports three compilers: javac server, javac executable, and
-jikes. The javac server runs the com.sun.tools.javac package included
+the eclipse java compiler (ecj). The javac server runs the com.sun.tools.javac package included
 with the JDK in the Beanshell. The javac executable shipped with the
 JDK also uses this package. The advantage of the javac server is that
 it avoids the vm startup time that accounts for most of the
@@ -68,20 +91,29 @@ use the javac executable to compile your project's source files,
 select \"javac\" as the compiler type and, optionally, specify
 the path to the executable in the \"Path\" field. If you do
 not specify a path, the JDE uses the javac executable included in the
-JDK for the current project. Similarly, to use jikes, select \"jikes\"
-and, if jikes is not on the command path of the Emacs
-environment, specify the path of the jikes executable."
+JDK for the current project. Similarly, to use ecj, select \"eclipse java compiler server\"
+and specify the path of the eclipse compiler ecj.jar."
   :group 'jde-project
   :type '(list
 	  (radio-button-choice
 	   :format "%t \n%v"
 	   :tag "Compiler type"
+           (item "javac")
 	   (item "javac server")
-	   (item "javac")
-	   (item "jikes"))
-	  (file
-	   :tag "Path")))
+	   (list :format "%v"
+                 (const "eclipse java compiler server")
+                 (file :tag "Path to  ecj.jar (or jdt core jar)"))
+           ))
+  )
 
+;; convert jde-compiler values from the old format to the one used these days
+(let ((compiler-name (car jde-compiler)))
+(when (not (listp compiler-name))
+  (setq jde-compiler
+        (cond
+         ((equal compiler-name "javac") '("javac"))
+         ((equal compiler-name "javac server") '("javac server"))
+         (t "javac server")))))
 
 (defcustom jde-read-compile-args nil
 "*Specify whether to prompt for additional compiler arguments.
@@ -92,6 +124,37 @@ variables. The JDE maintains a history list of arguments
 entered in the minibuffer."
   :group 'jde-project
   :type 'boolean)
+
+(defcustom jde-compiler-new-compile-el
+  (boundp 'compilation-error-regexp-alist-alist)
+  "Check if we have the new (21.3+) compile.el.
+Set this to t if you are running an Emacs with the new compile.el
+and want to get slightly better font-locking in the compile
+buffer.  A value of nil will force the use of older style
+compilation-error-regexp.  This variable tries to auto-detect the
+compile.el version by checking if
+`compilation-error-regexp-alist-alist' is defined."
+  :group 'jde-compile-options
+  :type 'boolean)
+
+(if jde-compiler-new-compile-el
+    (progn
+      (setq compilation-error-regexp-alist
+            (cons '("----------\n\\([0-9]+. ERROR in \\(.*\\)\n (at line \\([0-9]+\\))\n\\(\\(.*\n\\)+?\\).*^+\n\\(.*\n\\)\\)"
+                    2 3 nil 2 1 (6 compilation-error-face)
+                    )
+                  compilation-error-regexp-alist))
+      
+      (setq compilation-error-regexp-alist
+            (cons '("----------\n\\([0-9]+. WARNING in \\(.*\\)\n (at line \\([0-9]+\\))\n\\(\\(.*\n\\)+?\\).*^+\n\\(.*\n\\)\\)"
+                    2 3 nil 1 1 (6 compilation-warning-face)
+                    )
+                  compilation-error-regexp-alist)))
+  ;; else
+  (setq compilation-error-regexp-alist
+        (cons '("----------\n[0-9]+. \\(ERROR\\|WARNING\\) in \\(.*\\)\n (at line \\([0-9]+\\))\n\\(\\(.*\n\\)+?\\).*^+\n\\(.*\n\\)"
+                2 3)
+              compilation-error-regexp-alist)))
 
 (defvar jde-interactive-compile-args ""
 "String of compiler arguments entered in the minibuffer.")
@@ -169,14 +232,13 @@ don't know which classes were recompiled."
 ;; Thanks to Jack Donohue <donohuej@synovation.com>.
 (defun jde-compile-finish-kill-buffer (buf msg)
   "Removes the jde-compile window after a few seconds if no errors."
-  (save-excursion
-    (set-buffer buf)
+  (with-current-buffer buf
     (if (null (or (string-match ".*exited abnormally.*" msg)
 		  (string-match ".*BUILD FAILED.*" (buffer-string))))
 	;;no errors, make the compilation window go away in a few seconds
-	(if (or (and (numberp jde-compile-enable-kill-buffer)
-		     (not (minusp jde-compile-enable-kill-buffer)))
-		jde-compile-enable-kill-buffer)
+	(if (if (numberp jde-compile-enable-kill-buffer)
+		(not (minusp jde-compile-enable-kill-buffer))
+	      jde-compile-enable-kill-buffer)
 	    (lexical-let ((compile-buffer buf))
 	      (run-at-time
 	       (format "%d sec" (if (numberp jde-compile-enable-kill-buffer)
@@ -337,18 +399,14 @@ dependency checking differs among Java compilers. Choose
 from the following options:
 
   -Xdepend  Full dependency checking (post JDK 1.1.6)
-  -depend   Full dependency checking (jikes and pre-JDK 1.1.6)
-  +F        Check everything except jar and zip files (jikes only)
-  +U        Check everything including jar and zip files (jikes only)"
+  -depend   Full dependency checking (pre-JDK 1.1.6)"
   :group 'jde-compile-options
   :type '(list
 	  (radio-button-choice
 	   :format "%t \n%v"
-	   :tag "Select -Xdepend (javac) or -depend (jikes):"
+	   :tag "Select -Xdepend (javac) or -depend (pre-JDK 1.1.6):"
 	   (const "-Xdepend")
-	   (const "-depend")
-	   (const "+F")
-	   (const "+U"))))
+	   (const "-depend"))))
 
 (defcustom jde-compile-option-vm-args nil
 "*Specify command-line arguments for Java interpreter.
@@ -479,14 +537,11 @@ source files.
 	   (const "1.6"))))
 
 ;;(makunbound 'jde-compile-option-target)
-(defcustom jde-compile-option-target (list "1.1")
+(defcustom jde-compile-option-target (list "default")
 "*Generate class files that will work on VMs with the specified version.
 
-The default is to generate class files to be compatible with both
-1.1 and 1.2 VMs. The versions supported by javac in JDK1.2 are:
-
   1.1     Ensure that generated class files will be compatible
-	  with 1.1 and 1.2 VMs. This is the default.
+	  with 1.1 and 1.2 VMs.
 
   1.2     Generate class files that will run on 1.2 VMs, but
 	  not on 1.1 VMs.
@@ -497,6 +552,16 @@ The default is to generate class files to be compatible with both
 
   1.4     Generate class files that are compatible only with
 	  1.4 VMs.
+
+  1.5     Generate class files that are compatible only with
+	  1.5 VMs.
+
+  1.6     Generate class files that are compatible only with
+	  1.6 VMs.
+
+Select \"default\" to use the source features that the compiler
+supports by default, i.e., to not include the -target switch on
+the compiler command line.
 
 By default, classes are compiled against the bootstrap and extension classes
 of the JDK that javac shipped with. But javac also supports cross-compiling,
@@ -509,10 +574,13 @@ cross-compiling."
 	  (radio-button-choice
 	   :format "%t \n%v"
 	   :tag "Target VM:"
+	   (const "default")
 	   (const "1.1")
 	   (const "1.2")
 	   (const "1.3")
-	   (const "1.4"))))
+	   (const "1.4")
+	   (const "1.5")
+	   (const "1.6"))))
 
 (defcustom jde-compile-option-bootclasspath nil
 "*Cross-compile against the specified set of boot classes.
@@ -542,7 +610,7 @@ source and class files.
 
 (defcustom jde-compile-enable-kill-buffer -1
   "* Time in seconds to display the compilation buffer before 
-'jde-compile-finish-kill-buffer will kill the compilation buffer.
+`jde-compile-finish-kill-buffer' will kill the compilation buffer.
 
 If less than zero (or nil), do not kill the compilation buffer.
 If t (or other non-nil non-number) then kill in 2 secs."
@@ -768,7 +836,7 @@ If t (or other non-nil non-number) then kill in 2 secs."
 (defmethod jde-compile-target-arg ((this jde-compile-compiler))
   "Get compiler target argument for this compiler."
     (let ((target (car jde-compile-option-target)))
-      (if (not (string= target "1.1"))
+      (if (not (string= target "default"))
 	  (list "-target" target))))
 
 (defmethod jde-compile-source-arg ((this jde-compile-compiler))
@@ -808,8 +876,7 @@ If t (or other non-nil non-number) then kill in 2 secs."
 		(oref this :interactive-args)
 		(list source-file))))
 
-    (save-excursion
-      (set-buffer outbuf)
+    (with-current-buffer outbuf
 
       (let ((inhibit-read-only t)) ; make compilation buffer temporarily writable
 	(insert (format "cd %s\n" default-directory))
@@ -865,8 +932,9 @@ If t (or other non-nil non-number) then kill in 2 secs."
 
       (setq arg-array (concat arg-array "}"))
 
-      (save-excursion
-	(set-buffer (oref (oref this buffer) buffer))
+      (with-current-buffer (oref (oref this buffer) buffer)
+
+	(insert "CompileServer output:\n\n")
 
 	(let* ((inhibit-read-only t)
 	       flag
@@ -885,7 +953,6 @@ If t (or other non-nil non-number) then kill in 2 secs."
 			 x))))
 		 args " ")))
 
-	  (insert "CompileServer output:\n\n")
 	  (insert arg-string " " source-path "\n")))
 
       (if (not (jde-bsh-running-p))
@@ -1130,6 +1197,9 @@ If t (or other non-nil non-number) then kill in 2 secs."
 (defmethod jde-compile-get-args ((this jde-compile-javac-16))
   (append
    (jde-compile-classpath-arg this)
+   (jde-compile-sourcepath-arg this)
+   (jde-compile-bootclasspath-arg this)
+   (jde-compile-extdirs-arg this)
    (jde-compile-encoding-arg this)
    (jde-compile-debug-arg this)
    (jde-compile-output-dir-arg this)
@@ -1143,83 +1213,86 @@ If t (or other non-nil non-number) then kill in 2 secs."
    (jde-compile-vm-args this)
    (jde-compile-verbose-arg this)
    (jde-compile-nowarn-arg this)
-   (jde-compile-command-line-args this)))
-
-
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;                                                                            ;;
-;; Jikes Compiler                                                             ;;
-;;                                                                            ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defclass jde-compile-jikes (jde-compile-compiler)
-  ()
-  "Class of jikes compilers.")
-
-(defmethod initialize-instance ((this jde-compile-jikes) &rest fields)
- ;; Call parent initializer.
-
-  (call-next-method)
-
-  ;; Set compiler name.
-  (oset this :name "jikes")
-
-  ;; Set compiler version.
-  (oset this version "1.14"))
-
-(defmethod jde-compile-debug-arg ((this jde-compile-jikes))
-  "Get the debug arg for this compiler."
-  (let ((include-option (nth 0 jde-compile-option-debug)))
-    (cond
-     ((string= include-option "all")
-      (list "-g"))
-     ((string= include-option "selected")
-      (error "Jikes does not support jde-compile-option-debug's selected debug info option.")))))
-
-(defmethod jde-compile-depend-arg ((this jde-compile-jikes))
-  "Get dependency-checking argument for this compiler."
-  (if jde-compile-option-depend
-    (list "-depend")))
-
-(defmethod jde-compile-command-line-args ((this jde-compile-jikes))
-  "Get additional command line arguments for this compiler."
-	(append
-	 (list "+E")
-	 jde-compile-option-command-line-args))
-
-(defmethod jde-compile-classpath-arg ((this jde-compile-jikes))
-  "Returns the classpath argument for this compiler."
-  (let ((classpath (call-next-method))
-	(rt        (expand-file-name "jre/lib/rt.jar" (jde-get-jdk-dir))))
-    (if (file-exists-p rt)
-	(if classpath
-	    (or (string-match "jre/lib/rt\.jar" (cadr classpath))
-		(setcar (cdr classpath)
-			(concat (cadr classpath)
-				jde-classpath-separator
-				rt)))
-	  (setq classpath (list "-classpath" rt))))
-    classpath))
-
-(defmethod jde-compile-get-args ((this jde-compile-jikes))
-  (append
-   (jde-compile-classpath-arg this)
-   (jde-compile-sourcepath-arg this)
-   (jde-compile-bootclasspath-arg this)
-   (jde-compile-extdirs-arg this)
-   (jde-compile-encoding-arg this)
-   (jde-compile-debug-arg this)
-   (jde-compile-output-dir-arg this)
-   (jde-compile-deprecation-arg this)
-   (jde-compile-source-arg this)
-   (jde-compile-optimize-arg this)
-   (jde-compile-depend-arg this)
-   (jde-compile-verbose-arg this)
-   (jde-compile-verbose-path-arg this)
-   (jde-compile-nowarn-arg this)
    (jde-compile-target-arg this)
+   (jde-compile-source-arg this)
    (jde-compile-command-line-args this)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
+;; Eclipse Compiler                                                             ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defclass jde-compile-ejc-server (jde-compile-compiler)
+  ()
+  "Class for using the Eclipse java compiler as a JDEE compile server."
+)
+
+(defmethod jde-compile-run-server ((this jde-compile-ejc-server))
+    (let* ((directory-sep-char ?/)
+	   (args
+	    (append
+             (list
+              "-Xemacs"
+              "-noExit"
+;;               "-sourcepath"
+;;               (mapconcat 'identity (jde-expand-wildcards-and-normalize jde-sourcepath) ":")
+              )
+	    (jde-compile-get-args this)))
+	   (source-path
+	    (jde-normalize-path buffer-file-name))
+	   (arg-array (concat "new String[] {\"" source-path "\"")))
+    
+      (if args
+	  (setq arg-array
+		(concat
+		 arg-array
+		 ","
+		 (mapconcat
+		  (lambda (arg)
+		    (concat "\"" arg "\""))
+		  args
+		  ","))))
+
+      (setq arg-array (concat arg-array "}"))
+     
+      (with-current-buffer (oref (oref this buffer) buffer)
+
+	(insert "CompileServer output:\n\n")
+
+	(let (flag temp)
+	  (setq temp
+	    (mapconcat
+	     (lambda (x)
+	       (if (and flag
+			jde-compile-option-hide-classpath)
+		   (progn
+		     (setq flag nil)
+		     "...")
+		 (if (not (string= x "-classpath"))
+		     x
+		   (progn
+		     (setq flag t)
+		     x)))) args " "))
+
+	  (insert temp " "))
+	(insert source-path "\n"))
+
+      (if (not (jde-bsh-running-p))
+	  (progn
+	    (bsh-launch (oref 'jde-bsh the-bsh))
+	    (bsh-eval (oref 'jde-bsh the-bsh) (jde-create-prj-values-str))))
+      (bsh-eval (oref 'jde-bsh the-bsh)
+                   (format "addClassPath(\"%s\");" (oref this :path)))
+      (bsh-buffer-eval
+       (oref 'jde-bsh the-bsh)
+       (concat
+	(format
+         "if ((new org.eclipse.jdt.internal.compiler.batch.Main(new java.io.PrintWriter(System.out), new java.io.PrintWriter(System.out), true, null, null)).compile(%s)) { print (\"0\");} else {print (\"1\");};"
+         arg-array)
+	"\n")
+       (oref this buffer))))
+
+
 
 
 (defvar jde-compile-javac-compilers
@@ -1262,7 +1335,9 @@ If t (or other non-nil non-number) then kill in 2 secs."
 	    (oset compiler
 		  :path
 		  (let ((compiler-path
-			 (substitute-in-file-name (nth 1 jde-compiler))))
+                         (if (listp (car jde-compiler))
+                             (substitute-in-file-name (nth 1 (car jde-compiler)))
+                           "")))
 		    (if (string= compiler-path "")
 			(setq compiler-path (jde-get-jdk-prog 'javac))
 		      (if (file-exists-p compiler-path)
@@ -1271,40 +1346,28 @@ If t (or other non-nil non-number) then kill in 2 secs."
 				       compiler-path)))))))))
     compiler))
 
-
-(defun jde-compile-get-jikes ()
+(defun jde-compile-get-ejc ()
+  "Get the ejc compiler object."
   (let ((compiler-path
-		(substitute-in-file-name (nth 1 jde-compiler))))
+         (substitute-in-file-name (nth 1 (car jde-compiler)))))
 
     (if (string= compiler-path "")
-	(if (executable-find "jikes")
-	    (setq compiler-path "jikes")
-	  (error "Cannot find jikes."))
-      (unless
-	  (or
-	   (file-exists-p
-	    (if (and
-		 (eq system-type 'windows-nt)
-		 (not (string-match "[.]exe$" compiler-path)))
-		(concat compiler-path ".exe")
-	      compiler-path))
-	   (executable-find compiler-path))
-	(error "Invalid compiler path: %s" compiler-path)))
-
-  (jde-compile-jikes
-     "Jikes"
-     :use-server-p nil
+        (error "Cannot find jdt core jar"))
+    (jde-compile-ejc-server
+     "Eclipse java compiler server"
+     :use-server-p t
      :path compiler-path)))
 
 (defun jde-compile-get-the-compiler ()
   "Get a compiler object that represents the compiler specified
 by `jde-compiler'."
-  (let ((compiler-name (car jde-compiler)))
+  (let* ((car-jde-compiler (car jde-compiler))
+         (compiler-name (if (listp car-jde-compiler) (car car-jde-compiler) car-jde-compiler)))
     (cond
      ((string-match "javac" compiler-name)
        (jde-compile-get-javac))
-     ((string-match "jikes" compiler-name)
-      (jde-compile-get-jikes))
+     ((string-match "eclipse java compiler server" compiler-name)
+      (jde-compile-get-ejc))
      (t
       (error "The JDEE does not support a compiler named %s" compiler-name)))))
 
@@ -1357,10 +1420,10 @@ uses the compiler executable specified by
 	  (setq last-nonmenu-event temp))
       (save-some-buffers (not compilation-ask-about-save) nil))
 
-    (setq compilation-finish-function
+    (setq compilation-finish-functions
       (lambda (buf msg)
 	(run-hook-with-args 'jde-compile-finish-hook buf msg)
-	(setq compilation-finish-function nil)))
+	(setq compilation-finish-functions nil)))
 
     (let ((compiler (jde-compile-get-the-compiler)))
       (if compiler

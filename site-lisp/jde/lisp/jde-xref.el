@@ -1,5 +1,5 @@
 ;; jde-xref.el --- Class cross-reference commands for the JDEE.
-;; $Id: jde-xref.el 178 2009-12-27 01:39:52Z lenbok $
+;; $Id: jde-xref.el 263 2012-11-04 19:50:00Z shyamalprasad $
 ;;
 ;; Copyright (C) 2002, 2003 Andrew Hyatt
 ;; Copyright (C) 2009 by Paul Landes
@@ -26,7 +26,7 @@
 ;; LCD Archive Entry:
 ;; jde-xref|Andrew Hyatt|
 ;; |Java class cross-referencing commands for the JDEE
-;; |$Date: 2009-12-26 19:39:52 -0600 (Sat, 26 Dec 2009) $|$Revision: 178 $|~/packages/jde-xref.el
+;; |$Date: 2012-11-04 11:50:00 -0800 (Sun, 04 Nov 2012) $|$Revision: 263 $|~/packages/jde-xref.el
 
 ;;; Commentary:
 
@@ -157,7 +157,7 @@ FILENAME must be created by `jde-xref-pickle-hash'"
     (puthash (car item) (cdr item) hash)))
 
 (defun jde-xref-get-db-directory ()
-  (concat (jde-normalize-path jde-xref-db-base-directory) "/xrefdb"))
+  (concat (jde-normalize-path 'jde-xref-db-base-directory) "/xrefdb"))
 
 (defun jde-xref-guess-and-set-prefixes ()
   (let ((prefixes (jde-xref-guess-prefixes)))
@@ -190,7 +190,12 @@ FILENAME must be created by `jde-xref-pickle-hash'"
     (when (and (eq major-mode 'jde-mode) jde-sourcepath)
       (let ((first-prefix (car (split-string (jde-parse-get-package-name)
 					     "\\."))) (prefixes))
-	(dolist (path (remove-if-not (lambda (path) (file-exists-p path)) jde-sourcepath) prefixes)
+	(dolist (path (remove-if-not
+				   (lambda (path)
+					 (file-exists-p path))
+				   (jde-expand-wildcards-and-normalize jde-sourcepath
+													   'jde-sourcepath))
+				  prefixes)
 	  (when (member first-prefix (directory-files path nil "[^.]$"))
 	    (message (concat "path = " path))
 	    (add-to-list 'prefixes (get-prefix path first-prefix))))))))
@@ -429,7 +434,8 @@ the requested function are considered."
 
 (defun jde-xref-goto-caller (caller)
   (jde-find-class-source (car caller))
-  (goto-line (nth 4 caller)))
+  (goto-char (point-min))
+  (forward-line (1- (nth 4 caller))))
 
 ;;;###autoload
 (defun jde-xref-next-caller ()
@@ -660,7 +666,7 @@ while. If it does, you might want to consider increasing
 		       (jde-xref-get-current-class) token))))))
     (let ((uncalled-methods
 	    (mapcan 'get-unused-string
-		    (semantic-find-nonterminal-by-token 'function
+		    (semantic-brute-find-tag-by-class 'function
 							(current-buffer)
 							t)))
 	  (unreferenced-variables

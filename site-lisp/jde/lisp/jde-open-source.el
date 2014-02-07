@@ -1,5 +1,5 @@
 ;; jde-open-source.el -- Open class source files
-;; $Id: jde-open-source.el 179 2009-12-27 01:58:29Z lenbok $
+;; $Id: jde-open-source.el 270 2013-01-08 04:41:57Z shyamalprasad $
 ;;
 ;; Author: Klaus Berndl
 ;; Maintainer: Paul Landes <landes <at> mailc dt net>
@@ -25,7 +25,7 @@
 (require 'jde-parse)
 (require 'jde-util)
 (require 'jde-bsh)
-(require 'senator)
+(jde-semantic-require 'senator)
 
 (defcustom jde-open-class-at-point-find-file-function 'find-file-other-window
   "Define the function for opening the class at point. See
@@ -96,7 +96,7 @@ checks if it is a member of the base class(\"super\")."
        (fboundp 'jde-parse-find-completion-for-pair)))
 
 
-(defun jde-open-jump-to-class (parsed-symbol class-name) 
+(defun jde-open-jump-to-class (parsed-symbol class-name)
   "Place the cursor in the parsed variable"
   (let* (tags super-class (first-time t))
     ;; Searching only for the symbol '{' is not good enough. We can
@@ -118,7 +118,7 @@ checks if it is a member of the base class(\"super\")."
       (setq parsed-symbol (concat "\\b" parsed-symbol "\\b"))
       (while (not (senator-re-search-forward parsed-symbol nil t))
 	(message "Could not find %s in %s" parsed-symbol (buffer-name))
-        ;; searching for the thing-of-interest has failed 
+        ;; searching for the thing-of-interest has failed
         ;; let's try in the base class
         (progn
           (if (not super-class)
@@ -132,7 +132,7 @@ checks if it is a member of the base class(\"super\")."
           ;;if it is the first time try in the class definition
           ;;itself.
           (if first-time
-              (progn 
+              (progn
                 (setq first-time nil)
                 (senator-re-search-forward
                  (progn
@@ -145,16 +145,16 @@ checks if it is a member of the base class(\"super\")."
 (defun jde-get-parents ()
   "Returns a list with all the parents (super class and interfaces,
 if any) of the current class or interface."
-  (jde-remove-type 
+  (jde-remove-type
    (append (semantic-tag-type-superclasses
 	    (semantic-current-tag-of-class 'type))
-	   (semantic-tag-type-interfaces (semantic-current-tag-of-class 
+	   (semantic-tag-type-interfaces (semantic-current-tag-of-class
 					  'type)))))
 
-(defun jde-remove-type (list) 
+(defun jde-remove-type (list)
   "Removes generics '<Type>' declaration from every given
 class/interface name."
-  (mapcar '(lambda(s) (replace-regexp-in-string "<.*>" "" s)) list))
+  (mapcar #'(lambda(s) (replace-regexp-in-string "<.*>" "" s)) list))
 
 (defun jde-open-class-at-event (event)
   "Like `jde-open-class-at-point', but is mouse-bindable.
@@ -317,9 +317,7 @@ find the source for the class, it returns nil."
 		".java")
 	  package (jde-parse-get-package-from-name outer-class))
     (catch 'found
-      (loop for path in jde-sourcepath do
-	    (progn
-	      (setq path (jde-normalize-path path 'jde-sourcepath))
+      (loop for path in (jde-expand-wildcards-and-normalize jde-sourcepath 'jde-sourcepath) do
 	      (if (and (file-exists-p path)
 		       (or (string-match "\.jar$" path)
 			   (string-match "\.zip$" path)))
@@ -331,8 +329,7 @@ find the source for the class, it returns nil."
 			     (class-file-name (concat  pkg-path "/" file))
 			     success)
 			(setq buffer (get-buffer-create bufname))
-			(save-excursion
-			  (set-buffer buffer)
+			(with-current-buffer buffer
 			  (setq buffer-file-name (expand-file-name (concat path ":" class-file-name)))
 			  (setq buffer-file-truename file)
 			  (let ((exit-status
@@ -355,7 +352,7 @@ find the source for the class, it returns nil."
 			 (pkg-dir (expand-file-name pkg-path path))
 			 (file-path (expand-file-name file pkg-dir)))
 		    (if (file-exists-p file-path)
-			(throw 'found file-path))))))))))
+		      (throw 'found file-path)))))))))
 
 (defcustom jde-preferred-packages
   '("java.util" "java" "javax")

@@ -9,6 +9,9 @@
  '(completion-ignored-extensions (quote ("CVS/" ".cache" ".o" "~" ".bin" ".bak" ".obj" ".map" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".dvi" ".fmt" ".tfm" ".pdf" ".class" ".fas" ".lib" ".x86f" ".sparcf" ".lo" ".la" ".toc" ".log" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".vr" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".svn/")))
  '(current-language-environment "UTF-8")
  '(default-tab-width 4 t)
+ '(display-time-24hr-format t)
+ '(display-time-mail-file (quote none))
+ '(display-time-mode t)
  '(ecb-options-version "2.31")
  '(edit-server-port 9393)
  '(erc-prompt-for-password nil)
@@ -25,9 +28,7 @@
  '(jde-complete-unique-method-names t)
  '(jde-electric-return-p t)
  '(jde-enable-abbrev-mode t)
- '(jde-gen-buffer-boilerplate (quote ("/*"
-      " * See LICENSE file in distribution for copyright and licensing information."
-      " */")))
+ '(jde-gen-buffer-boilerplate (quote ("/*" " * See LICENSE file in distribution for copyright and licensing information." " */")))
  '(jde-gen-cflow-enable t)
  '(jde-gen-conditional-padding-1 "")
  '(jde-gen-conditional-padding-3 " ")
@@ -44,9 +45,15 @@
  '(org-odd-levels-only t)
  '(rails-tags-command "ctags -e -a --Ruby-kinds=-f -o %s -R %s")
  '(safe-local-variable-values (quote ((encoding . utf-8))))
- '(semanticdb-default-save-directory "~/.emacs.d/semantic/")
+ '(semanticdb-default-save-directory "~/.emacs.d/semantic/" t)
  '(tab-width 4)
  '(wdired-allow-to-change-permissions t)
  '(x-select-enable-clipboard t))
 
 (provide 'emacs-custom)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

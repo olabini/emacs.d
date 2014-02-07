@@ -1,5 +1,5 @@
 ;;; jde-jdb.el -- Debugger mode for jdb.
-;; $Id: jde-jdb.el 175 2009-12-24 02:59:33Z lenbok $
+;; $Id: jde-jdb.el 280 2013-04-14 06:35:01Z shyamalprasad $
 
 ;; Author: Paul Kinnucan <paulk@mathworks.com>x
 ;; Maintainer: Paul Landes <landes <at> mailc dt net>
@@ -669,7 +669,7 @@ expression at poing")
   (oset
    this
    :marker-regexp
-   "^.*: thread=.*, \\(\\(.*[.]\\)*\\)\\([^\$]*\\)\\(\$.*\\)*[.].+(), line=\\([0-9,.]*\\),")
+   "^.*: thread=.*, \\(\\(.*[.]\\)*\\)\\([^\$]*\\)\\(\$.*\\)*[.].+(), line=\\([0-9,. ]*\\),")
   ;; Regular expression to match a breakpoint message that lacks a line
   ;; number because the breakpoint occurs in a class compiled without deug
   ;; information.
@@ -718,7 +718,7 @@ expression at poing")
 			     msg
 			     (match-beginning 1)
 			     (match-end 1)))
-		     (line (string-to-int
+		     (line (string-to-number
 			    (substring
 			     msg
 			     (match-beginning 2)
@@ -738,7 +738,7 @@ expression at poing")
     (oset this
 	  :marker-acc (concat
 		       (oref this :marker-acc)
-		       input))
+		       (string-make-unibyte input)))
 
     ;; (message (format "<acc-start>%s<acc-end>" (oref this :marker-acc)))
 
@@ -961,8 +961,7 @@ expression at poing")
 
     (oset this :buffer (get-buffer-create (oref this :buffer-name)))
 
-    (save-excursion
-      (set-buffer (oref this :buffer))
+    (with-current-buffer (oref this :buffer)
       ;; Do not erase the last transcript; user may wish to view it.
       ;; (erase-buffer)
       (goto-char (point-max))
@@ -1186,6 +1185,28 @@ JDK.")
    :marker-regexp
    "^.*: \"thread=.*\", \\(\\(.*[.]\\)*\\)\\([^$]*\\)\\($.*\\)*[.].+(), line=\\([0-9,.]*\\)"))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
+;; JDK 1.6.0 Support                                                          ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defclass jde-db-jdb-1-6 (jde-db-jdb)
+  ()
+  (:allow-nil-initform t)
+  "Class of JPDA-based jdb shipped with J2SDK 1.6")
+
+(defmethod initialize-instance ((this jde-db-jdb-1-6) &rest fields)
+  "Constructor for jdb-1.6."
+  (call-next-method)
+  ;; Regular expression used to find a jdb breakpoint position marker.
+  ;; The regular expression has two subexpressions. The first matches
+  ;; the name of the class in which the breakpoint occurs; the second, the
+  ;; line number at which the breakpoint occurs."
+  (oset (oref this bp-listener)
+   :marker-regexp
+   "^.*: \"thread=.*\", \\(\\(.*[.]\\)*\\)\\([^$]*\\)\\($.*\\)*[.].+(), line=\\([0-9,.\240]*\\)"))
+
+
 (defun jde-jdb-get-jdb ()
   "Gets the version of jdb specified for the
 current project."
@@ -1193,14 +1214,18 @@ current project."
     (cond
      ((string= (car jde-debugger) "jdb")
       (cond
-       ((and (< (jde-java-major-version) 2)
-	     (< (jde-java-minor-version) 2))
-	(setq jdb (jde-db-jdb-1-1 "jdb 1.1")))
-       ((and (< (jde-java-major-version) 2)
-	     (= (jde-java-minor-version) 3))
-	(setq jdb (jde-db-jdb-1-3 "jdb 1.3")))
+       ((< (jde-java-major-version) 2)
+	(cond
+	 ((< (jde-java-minor-version) 2)
+	  (setq jdb (jde-db-jdb-1-1 "jdb 1.1")))
+	 ((= (jde-java-minor-version) 3)
+	  (setq jdb (jde-db-jdb-1-3 "jdb 1.3")))
+	 ((= (jde-java-minor-version) 4)
+	  (setq jdb (jde-db-jdb-1-4 "jdb 1.4")))
+	 (t
+	  (setq jdb (jde-db-jdb-1-6 "jdb 1.6")))))
        (t
-	(setq jdb (jde-db-jdb-1-4 "jdb 1.4")))))
+	(setq jdb (jde-db-jdb-1-6 "jdb 1.6")))))
      ((string= (car jde-debugger) "old jdb")
       (if (and (< (jde-java-major-version) 2)
 	       (< (jde-java-minor-version) 2))
@@ -1778,33 +1803,15 @@ the debuggee process at (e.g., jdbconn)."
     km)
   "Keymap for Jdb minor mode.")
 
-(defvar jde-jdb-minor-mode nil
-  "Non-nil if jdb minor mode is enabled.")
-(make-variable-buffer-local 'jde-jdb-minor-mode)
-
-(defun jde-jdb-minor-mode (&optional arg)
-  "Toggle jdb minor mode.
-With prefix argument ARG, turn on if positive, otherwise off..
-
-\\{jde-jdb-mode-map}"
-  (interactive
-   (list (or current-prefix-arg
-	     (if jde-jdb-minor-mode 0 1))))
-
-  (setq jde-jdb-minor-mode
-	(if arg
-	    (>
-	     (prefix-numeric-value arg)
-	     0)
-	  (not jde-jdb-minor-mode)))
-
+(define-minor-mode jde-jdb-minor-mode nil
+  :keymap jde-jdb-mode-map
   (if jde-jdb-minor-mode
       (if (featurep 'xemacs)
 	    (easy-menu-add jde-jdb-xemacs-menu-spec jde-jdb-mode-map))
     (if (featurep 'xemacs)
       (easy-menu-remove jde-jdb-xemacs-menu-spec))))
 
-(semantic-add-minor-mode 'jde-jdb-minor-mode " jdb" jde-jdb-mode-map)
+(semantic-add-minor-mode 'jde-jdb-minor-mode " jdb")
 
 
 ;; (fmakunbound 'jde-jdb-key-bindings)
@@ -1864,7 +1871,7 @@ You can use the notation [f1], [f2], etc., to specify function keys."
 and converts the result to an integer."
   (if (string-match "[^[:digit:]]" number)
       (setq number (replace-match "" nil nil number)))
-  (string-to-int number))
+  (string-to-number number))
 
 (provide 'jde-jdb)
 

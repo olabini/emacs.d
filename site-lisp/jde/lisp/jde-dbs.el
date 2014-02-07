@@ -1,5 +1,5 @@
 ;;; jde-dbs.el -- JDEbug Session Interface Functions
-;; $Id: jde-dbs.el 179 2009-12-27 01:58:29Z lenbok $
+;; $Id: jde-dbs.el 261 2012-11-04 19:49:12Z shyamalprasad $
 
 ;; Author: Paul Kinnucan <paulk@mathworks.com>
 ;; Maintainer: Paul Landes <landes <at> mailc dt net>
@@ -548,8 +548,7 @@ process-specific information about a breakpoint")
 		      (format "*Process %s(%d)*"
 			      (oref this main-class)
 			      (oref this id))))
-  (save-excursion
-    (set-buffer (oref this msg-buf))
+  (with-current-buffer (oref this msg-buf)
     (erase-buffer)
     (goto-char (point-min))
     (insert
@@ -878,8 +877,7 @@ for the breakpoint."
  (let ((buffer
 	 (oref debugger buffer)))
     (if buffer
-	(save-excursion
-	  (set-buffer buffer)
+	(with-current-buffer buffer
 	  (goto-char (process-mark (get-buffer-process buffer)))
 	  (insert-before-markers (concat message "\n"))))))
 
@@ -947,8 +945,7 @@ for the breakpoint."
 	(setq jde-dbs-debugger-output nil)
 
 
-	(save-excursion
-	  (set-buffer debugger-buffer)
+	(with-current-buffer debugger-buffer
 	  (erase-buffer)
 	  ;; Set working directory
 	  (if (and
@@ -2566,8 +2563,8 @@ the object.")
 	    (erase-buffer))
 	  (if (not jde-xemacsp)
 	      (let ((all (overlay-lists)))
-		(mapcar 'delete-overlay (car all))
-		(mapcar 'delete-overlay (cdr all))))
+		(mapc 'delete-overlay (car all))
+		(mapc 'delete-overlay (cdr all))))
 	  (apply 'widget-create (jde-dbs-map-threads-to-tree thread-list))
 	  (use-local-map widget-keymap)
 	  (widget-setup))

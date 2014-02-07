@@ -1,5 +1,5 @@
 ;; jde-complete.el -- Smart completion for the JDE
-;; $Id: jde-complete.el 176 2009-12-24 03:05:35Z lenbok $
+;; $Id: jde-complete.el 236 2010-06-02 03:22:00Z paullandes $
 
 ;; Author: Rodrigo Reyes <reyes@chez.com>
 ;; Maintainers: Rodrigo Reyes
@@ -56,7 +56,9 @@
 ;;jde-eldoc for completion signatures
 
 (require 'eldoc)
-(require 'semantic-idle)
+
+(eval-when-compile
+  (jde-semantic-require 'semantic-idle))
 
 (defgroup jde-complete nil
   "JDE Completion"

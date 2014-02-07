@@ -1,5 +1,5 @@
 ;;; jde-juci.el --- JDEE Universal Communication Interface
-;; $Id: jde-juci.el 125 2009-08-12 06:40:52Z paullandes $
+;; $Id: jde-juci.el 275 2013-03-03 18:01:28Z shyamalprasad $
 
 ;; Copyright (C) 2002, 2003 by Nick Sieger
 ;; Copyright (C) 2009 by Paul Landes
@@ -266,7 +266,7 @@ script.  Conversion of lisp types is done as follows:
 		   "\\r")
 		  (t
 		   (char-to-string c))))
-	     (string-to-sequence string 'list) ""))
+	     (string-to-list string) ""))
 
 
 

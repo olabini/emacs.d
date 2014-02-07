@@ -1,5 +1,5 @@
 ;;; jde-javadoc.el --- JDE javadoc autodoc
-;; $Id: jde-javadoc.el 157 2009-09-24 04:36:40Z lenbok $
+;; $Id: jde-javadoc.el 261 2012-11-04 19:49:12Z shyamalprasad $
 
 ;; Author: David Ponce <david@dponce.com>
 ;; Maintainer: David Ponce
@@ -35,7 +35,9 @@
 ;;; Code:
 
 (require 'tempo)
-(require 'semantic-java)
+(eval-when-compile
+  (require 'jde))
+(jde-semantic-require 'semantic-java)
 (require 'regexp-opt)
 
 (eval-when-compile
@@ -712,7 +714,7 @@ Local to checker report buffer.")
 	(define-key (current-local-map) "f" 'jde-javadoc-checker-fix)
 	(insert (car report))
 	(newline 2)
-	(mapcar (function
+	(mapc   (function
 		 (lambda (line)
 		   (let* ((from (point))
 			  (to (progn

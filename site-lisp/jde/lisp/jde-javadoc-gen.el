@@ -1,5 +1,5 @@
 ;;; jde-javadoc-gen.el -- Javadoc builder
-;; $Id: jde-javadoc-gen.el 182 2009-12-30 21:03:16Z lenbok $
+;; $Id: jde-javadoc-gen.el 221 2010-04-13 00:35:19Z lenbok $
 
 ;; Author: Sergey A Klibanov <sakliban@cs.wustl.edu>
 ;; Maintainer: Paul Landes <landes <at> mailc dt net>, Sergey A Klibanov
@@ -33,6 +33,7 @@
 (defvar browse-url-new-window-p)
 (defvar jde-global-classpath)
 (defvar jde-sourcepath)
+(declare-function jde-expand-wildcards-and-normalize "jde" (path &optional symbol))
 
 (defgroup jde-javadoc nil
   "Javadoc template generator"
@@ -328,8 +329,7 @@ by the jde-javadoc-gen variables."
 	       (list
 		"-sourcepath"
 		(jde-build-classpath
-		 jde-sourcepath
-		 'jde-sourcepath)))))
+		 (jde-expand-wildcards-and-normalize jde-sourcepath 'jde-sourcepath))))))
 
 
     ;; Insert bootclasspath

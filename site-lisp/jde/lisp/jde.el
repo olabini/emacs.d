@@ -1,5 +1,5 @@
 ;;; jde.el -- Integrated Development Environment for Java.
-;; $Id: jde.el 191 2010-01-08 08:29:48Z paullandes $
+;; $Id: jde.el 285 2013-05-16 18:29:12Z shyamalprasad $
 
 ;; Author: Paul Kinnucan <pkinnucan@attbi.com>
 ;; Maintainer: Paul Landes
@@ -32,15 +32,15 @@
 (defvar browse-url-new-window-p)
 
 ;;;###autoload
-(defconst jde-version "2.4.0.1"
+(defconst jde-version "2.4.1"
   "JDE version number.")
 
-(defconst jde-revision "$Revision: 191 $"
+(defconst jde-revision "$Revision: 285 $"
   "The subversion revision for this build.")
 
 (defconst jde-cedet-min-version "1.0beta2"
   "Cedet minimum version")
-(defconst jde-cedet-max-version "1.0"
+(defconst jde-cedet-max-version "2.0"
   "Cedet maximum version")
 
 (defconst jde-xemacsp (string-match "XEmacs" (emacs-version))
@@ -60,18 +60,22 @@
 (unless (fboundp 'custom-set-default)
    (defalias 'custom-set-default 'set-default))
 
-;; Use the full Java 1.5 grammar to parse Java files
-;; http://www.mail-archive.com/jde@sunsite.dk/msg07334.html
-;(autoload 'wisent-java-default-setup "wisent-java" "Hook run to setup Semantic in `java-mode'." nil nil)
+(when (fboundp 'font-lock-add-keywords)
+  (font-lock-add-keywords 'emacs-lisp-mode
+			  '(("(\\(jde-semantic-require\\)[ \t]+'?\\(.*?\\))"
+			     (1 font-lock-keyword-face)
+			     (2 font-lock-constant-face)))))
 
 ;; Autoloads must be loaded first since move to sole `(require 'jde)' style.
 (require 'jde-autoload)
 
-(require 'cedet)
 (require 'jde-util)
 (require 'jde-custom)
 (require 'jde-help)
-(require 'semantic-load)
+;; starting with Emacs 23 (from source ftp.gnu.org), cedet is now included
+(require (if (< emacs-major-version 23)
+	     'semantic-load
+	   'semantic))
 (require 'easymenu)
 (require 'cl)
 (require 'font-lock)
@@ -102,6 +106,19 @@
 (require 'jde-open-source)
 (require 'jde-annotations)
 (require 'regress)
+
+(defconst jde-emacs-cedet-p 
+  (and jde-emacs23p
+       (fboundp 'semantic-mode)
+       (boundp 'semantic-new-buffer-setup-functions))
+  "Non-nil if we are using a CEDET bundled with Emacs")
+
+(unless jde-emacs-cedet-p
+    ;; Use the full Java 1.5 grammar to parse Java files
+    ;; (legacy code I moved down here (shyamalprasad))
+    (autoload 'wisent-java-default-setup "wisent-java" 
+      "Hook run to setup Semantic in `java-mode'."
+      nil nil))
 
 (if (not (fboundp 'custom-set-default))
     (defalias 'custom-set-default 'set-default))
@@ -237,8 +254,49 @@ java enviroment variables."
       (customize-set-value 'jde-jdk nil)))
   (set-default sym val))
 
+(defun jde-default-jdk-registry ()
+  "Attempts to build a default value for jde-jdk-registry.
+This function uses platform specific rules and/or heuristics to
+pick a sensible default for jde-jdk-registry."
+  (let (version dir)
+    ;; Set version and dir for the current system
+    (cond
+     ;; Mac OS X: find default
+     ((eq system-type 'darwin)
+      (when (file-executable-p "/usr/libexec/java_home")
+	(setq dir (substring (shell-command-to-string "/usr/libexec/java_home")
+			     0 -1))
+	(if (string-match "\\(1\\.[4567]\\)\\.[0-9]" dir)
+	    (setq version (match-string 1 dir)))))
+
+     ;; On Linux use the default javac if it is installed
+     ((eq system-type 'gnu/linux)
+      (when (file-executable-p "/usr/bin/javac")
+	(let ((javac "/usr/bin/javac"))
+	  (while (file-symlink-p javac)
+	    (setq javac (file-symlink-p javac)))
+	  (setq dir (expand-file-name ".." (file-name-directory javac)))
+	  (cond
+	   ;; java-1.6.0-openjdk-amd64 or jdk1.7.0_21 etc.
+	   ((string-match "\\(1\\.[4567]\\)\\.[0-9]" dir)
+	    (setq version (match-string 1 dir)))
+
+	   ;; j2sdk1.6-oracle etc
+	   ((string-match "[^0-9]\\(1\\.[4567]\\)\\-" dir)
+	    (setq version (match-string 1 dir)))
+
+	   ;; java-7-openjdk-amd64 etc
+	   ((string-match "-\\([4567]\\)-" dir)
+	    (setq version (concat "1." (match-string 1 dir))))))))
+     ;; On other systems the user needs to customize this to get a
+     ;; fully functional install (patches welcome!)
+     (t
+      nil))
+    (and version dir (list (cons version dir)))))
+
+
 ;; (makunbound 'jde-jdk-registry)
-(defcustom jde-jdk-registry nil
+(defcustom jde-jdk-registry (jde-default-jdk-registry)
   "Specifies the versions and locations of the JDKs installed on your
 system.  For each JDK to be registered, enter the version number
 \(e.g., 1.4.0) of the JDK in the Version field. Enter the path of the
@@ -254,14 +312,28 @@ first."
 	   (string :tag "Path")))
   :set 'jde-set-jdk-dir-type)
 
-(defcustom jde-jdk nil
-  "Specifies the version of the JDK to be used to develop the current
-project. The version must be one of the versions listed in the
-`jde-jdk-registry'. If you specify nil (the default), the JDE uses the
+(defcustom jde-jdk (if (and (null (getenv
+				   (nth 1
+				   jde-java-environment-variables)))
+			    jde-jdk-registry)
+		       (list (caar jde-jdk-registry))
+		     nil)
+  "Specifies the version of the JDK to be used to develop the
+current project.
+
+This will be set to nil by default if the Java version
+environment variable (see `jde-java-enviroment-variables') is
+set. Otherwise it defaults to the first JDK registered in
+`jde-jdk-registry'. If that variable is nil, then this will
+default to nil.
+
+The version must be one of the versions listed in the
+`jde-jdk-registry'. If you specify nil, the JDE uses the
 JDK specified by the Java version environment variable (see
-`jde-java-enviroment-variables', if set; otherwise, the first JDK
-located on the system command path specified by te PATH environment
-variable.
+`jde-java-enviroment-variables'), if set; otherwise, the first JDK
+located on the system command path specified by the PATH environment
+variable is used (on Mac OS X the default Java installation is tried
+first).
 
 You must customize `jde-jdk-registry' first, then `jde-jdk'. After you
 have customized jde-jdk-registry, the customization buffer for`
@@ -285,31 +357,6 @@ the current project."
   (interactive)
   (message "JDEE %s" jde-version))
 
-(defun jde-find-jdk-in-exec-path ()
-  "Search for a JDK in `exec-path' and return the path of
-the root directory of the first JDK that is found.  Return nil if a
-JDK is not found anywhere in exec-path."
-  (let ((list exec-path)
-	(command "java")
-	file)
-    (while list
-      (setq list
-	    (if (and (setq file (expand-file-name command (car list)))
-		     (let ((suffixes executable-binary-suffixes)
-			   candidate)
-		       (while suffixes
-			 (setq candidate (concat file (car suffixes)))
-			 (if (and (file-executable-p candidate)
-				  (not (file-directory-p candidate)))
-			     (setq suffixes nil)
-			   (setq suffixes (cdr suffixes))
-			   (setq candidate nil)))
-		       (setq file candidate)))
-		nil
-	      (setq file nil)
-	      (cdr list))))
-    file))
-
 (defun jde-get-jdk-dir ()
   "Get the root directory of the JDK currently being used by the
 JDE. The directory is the directory of the version of the JDK
@@ -322,42 +369,51 @@ nor the Java home environment variable specify a JDK directory, this
 function displays an error message."
   (interactive)
 
-  (if jde-jdk
-      (let* ((jdk (assoc (car jde-jdk) jde-jdk-registry))
-	     (jdk-dir (cdr jdk)))
-	(when (null jdk)
+  (cond
+   ;; If jde-jdk is set, we try to find it in jde-jdk-registry and
+   ;; make sure the directory exists
+   (jde-jdk
+    (let* ((jdk-alias (car jde-jdk))
+	   (registry-entry (assoc jdk-alias jde-jdk-registry)))
+      (if (null registry-entry)
 	  (error (format
 		  "No mapping in the jde-jdk-registry found for JDK version %s"
-		  (car jde-jdk))))
-	(if (not (string= jdk-dir ""))
-	    (progn
-	      (setq jdk-dir (substitute-in-file-name jdk-dir))
-	      (if (not (file-exists-p jdk-dir))
-		  (error
-		   (format "The path specified for JDK %s does not exist: %s"
-			   jde-jdk
-			   jdk-dir)))))
-	jdk-dir)
-    (let ((jdk-dir (getenv (nth 1 jde-java-environment-variables))))
-      (if jdk-dir
-	  (progn
-	    (setq jdk-dir (substitute-in-file-name jdk-dir))
-	    (if (not (file-exists-p jdk-dir))
-		(error
-		 (format "The path specified by %s does not exist: %s"
-			 (nth 1 jde-java-environment-variables)
-			 jdk-dir))))
-	(progn
-	  (setq jdk-dir
-		(executable-find "javac"))
-	  (if jdk-dir
-	      (setq jdk-dir
-		    (expand-file-name
-		     ".."
-		     (file-name-directory jdk-dir)))
-	    (error "Cannot find the JDK directory. See `jde-jdk'."))))
-      jdk-dir)))
+		  jdk-alias))
+	;; check if directory exists. Originally this was only done if
+	;; the string was non-empty I'm not sure why, I have not
+	;; preserved that (shyamalprasad)
+	(let ((jdk-dir (substitute-in-file-name (cdr registry-entry))))
+	  (if (file-exists-p jdk-dir)
+	      jdk-dir
+	    (error (format "The path specified for JDK %s does not exist: %s"
+			   jdk-alias jdk-dir)))))))
 
+   ;; otherwise use JAVA_HOME if set
+   ((getenv (nth 1 jde-java-environment-variables))
+    (let ((jdk-dir (substitute-in-file-name
+		    (getenv (nth 1 jde-java-environment-variables)))))
+      (if (file-exists-p jdk-dir)
+	  jdk-dir
+	(error (format "The path specified by %s does not exist: %s"
+		       (nth 1 jde-java-environment-variables) jdk-dir)))))
+
+   ;; otherwise, use Apple Java Policy on Mac OS X
+   ((and (eq system-type 'darwin)
+	 (file-executable-p "/usr/libexec/java_home"))
+    (substring (shell-command-to-string "/usr/libexec/java_home") 0 -1))
+
+   ;; Otherwise default to java in $PATH
+   (t
+    (let* ((javac (executable-find "javac")))
+      (if javac
+	  ;; follow symbolic links since gnu/linux systems might be
+	  ;; using /etc/alternatives to the final installation
+	  (let ((javac-symlink (file-symlink-p javac)))
+	    (while javac-symlink
+	      (setq javac javac-symlink)
+	      (setq javac-symlink (file-symlink-p javac)))
+	    (expand-file-name ".." (file-name-directory javac)))
+	(error "Cannot find the JDK directory. See `jde-jdk'."))))))
 
 (defun jde-get-jdk-prog (progname)
    "Returns the full path of the program passed in.  By default, assume
@@ -384,12 +440,31 @@ function displays an error message."
 (defun jde-get-tools-jar ()
   "Gets the correct tools.jar or equivalent. Signals an
 error if it cannot find the jar."
-  (let ((tools
-	 (expand-file-name
-	  (if (eq system-type 'darwin)
-	      "Classes/classes.jar"
-	    "lib/tools.jar")
-	  (jde-get-jdk-dir))))
+  (let* ((jdk-dir (jde-get-jdk-dir))
+         (tools
+	  (expand-file-name
+	   (if (eq system-type 'darwin)
+	       (let ((classes-jar
+		      (cond
+		       ((file-exists-p
+			 (expand-file-name
+			  "Classes/classes.jar" jdk-dir))
+			"Classes/classes.jar")
+		       ((file-exists-p
+			 (expand-file-name
+			  "../Classes/classes.jar" jdk-dir))
+			"../Classes/classes.jar")
+		       ((file-exists-p
+			 (expand-file-name
+			  "bundle/Classes/classes.jar" jdk-dir))
+			"bundle/Classes/classes.jar")
+		       ;; starting with 1.7 (Oracle's JDK release) the
+		       ;; tools.jar location has become a little more
+		       ;; standardized
+		       (t "lib/tools.jar"))))
+		 classes-jar)
+	     "lib/tools.jar")
+	   jdk-dir)))
     (if (file-exists-p tools)
 	tools
       (error (concat "Cannot find JDK's tools jar file (or equivalent)."
@@ -404,8 +479,7 @@ system command path."
   (if (not jde-java-version-cache)
       (let ((buf (get-buffer-create "java version"))
 	    proc)
-	(save-excursion
-	  (set-buffer buf)
+	(with-current-buffer buf
 	  (setq proc
 		(start-process
 		 "java version" buf "java" "-version"))
@@ -544,13 +618,11 @@ the current project. See `jde-expand-classpath-p' and
 source files corresponding to class files.  When entering paths in the
 custom buffer, enter each path as a separate item in a separate edit
 field. Do NOT put more than one path in the same edit field. You'll
-only confuse JDE.  Paths may contain environment variables."
+only confuse JDE.  Paths may contain environment variables or wildcards."
   :group 'jde-project
   :type '(repeat (file :tag "Path")))
 
-
-;; (makunbound 'jde-build-function)
-(defcustom jde-build-function '(jde-make)
+(defcustom jde-build-function 'jde-make
   "*Function that will be invoked by the `jde-build' command.
 The `jde-make' function uses a make
 program to rebuild the project. The `jde-ant-build' function
@@ -559,14 +631,10 @@ specify a custom function to use. The custom function must
 be an interactive function that can be called by
 `call-interactively'."
   :group 'jde-project
-  :type '(list
-	  (radio-button-choice
-	   :format "%t \n%v"
-	   :tag "Function: "
-	   :entry-format " %b %v"
-	   (const jde-make)
-	   (const jde-ant-build)
-	   (function my-custom-build-function))))
+  :type '(radio
+	  (const :tag "Make" jde-make)
+	  (const :tag "Ant" jde-ant-build)
+	  (function :tag "Custom function" identity)))
 
 ;;(makunbound 'jde-debugger)
 (defcustom jde-debugger (list "jdb")
@@ -738,7 +806,7 @@ comment."
 	 (if (featurep 'xemacs) abbrev t)
 	 (lambda ()
 	   (unless (jde-parse-comment-or-quoted-p)
-	     (delete-backward-char (length abbrev)) ; remove abbreviation and
+	     (delete-char (- (length abbrev))) ; remove abbreviation and
 	     (insert expansion)))                   ; insert expansion
 	 0)))
    jde-mode-abbreviations)
@@ -826,7 +894,7 @@ interpreter."
   "Rebuild the entire project.
 This command invokes the function defined by `jde-build-function'."
   (interactive)
-  (call-interactively (car jde-build-function)))
+  (call-interactively jde-build-function))
 
 ; (define-derived-mode
 ;   jde-mode java-mode "JDE"
@@ -849,6 +917,11 @@ This command invokes the function defined by `jde-build-function'."
   (condition-case err
       (progn
 	(jde-check-versions)
+	(when jde-emacs-cedet-p
+	  ;; GNU Emacs has global semantic mode, no senator minor mode
+	  (setq jde-enable-senator nil)
+	  (add-to-list 'semantic-new-buffer-setup-functions
+		       '(jde-mode . jde-parse-semantic-default-setup)))
 	(java-mode)
 	(if (get 'java-mode 'special)
 	    (put 'jde-mode 'special t))
@@ -877,7 +950,8 @@ This command invokes the function defined by `jde-build-function'."
 	;; This feature loads the appropriate project settings whenever
 	;; a user switches from a Java buffer belonging to one project
 	;; to a buffer belonging to another.
-	(make-local-hook 'post-command-hook) ;; necessary for XEmacs (see below)
+	(when jde-xemacsp
+	  (make-local-hook 'post-command-hook)) ;; necessary for XEmacs (see below)
 	(add-hook 'post-command-hook
 		  'jde-detect-java-buffer-activation
 		  nil
@@ -928,9 +1002,17 @@ This command invokes the function defined by `jde-build-function'."
 
 	(jde-wiz-set-bsh-project)
 
-	;; Setup Semantic stuff needed by the JDEE when Semantic is ready to
-	;; parse!
-	(add-hook 'semantic-init-hooks  'jde-parse-semantic-default-setup)
+	(cond
+	 ;; In GNU Emacs provided CEDET there is no need for a hook,
+	 ;; semantic-new-buffer-setup-functions will invoke
+	 ;; jde-parse-semantic-default-setup automagically, but we
+	 ;; should make sure semantic mode is turned on
+	 (jde-emacs-cedet-p
+	  (wisent-java-default-setup)
+	  (semantic-mode 1))
+	 (t
+	  ;; Upstream CEDET - set up for when semantic is ready!
+	  (add-hook 'semantic-init-hook 'jde-parse-semantic-default-setup)))
 
 	;; Install debug menu.
 	(if (string= (car jde-debugger) "JDEbug")
@@ -995,10 +1077,10 @@ this version of the JDEE."
 
 (defun jde-earlier-versionp (ver1 ver2)
   "Return non-nil if VER1 is earlier than VER2"
-  (let ((ver1n (replace-in-string ver1 "beta" "zb"))
-	(ver2n (replace-in-string ver2 "beta" "zb")))
-    (setq ver1n (replace-in-string ver1n "pre" "zp"))
-    (setq ver2n (replace-in-string ver2n "pre" "zp"))
+  (let ((ver1n (jde-replace-in-string ver1 "beta" "zb"))
+	(ver2n (jde-replace-in-string ver2 "beta" "zb")))
+    (setq ver1n (jde-replace-in-string ver1n "pre" "zp"))
+    (setq ver2n (jde-replace-in-string ver2n "pre" "zp"))
     (if (string-match "z" ver1n)
 	(unless (string-match "z" ver2n)
 	  (setq ver2n (concat ver2n "zz")))
@@ -1020,8 +1102,7 @@ Optional ARGS are used to `format' MSG.
 Does nothing if `jde-log-max' is nil."
   (if jde-log-max
       (save-match-data
-	(save-excursion
-	  (set-buffer (get-buffer-create "*jde-log*"))
+	(with-current-buffer (get-buffer-create "*jde-log*")
 	  (goto-char (point-max))
 	  (insert (apply 'format msg args))
 	  (insert "\n")
@@ -1172,6 +1253,7 @@ Does nothing but return nil if `jde-log-max' is nil."
 		    ["Make"            jde-make-show-options t]
 		    ["Ant"             jde-ant-show-options t]
 		    ["Complete"        jde-show-complete-options t]
+		    ["JUnit"           jde-junit-show-options t]
 		    ["Wiz"             jde-show-wiz-options t]
 		    )
 	      (list "Project File"
@@ -1490,6 +1572,30 @@ SYMBOL is unnecessary."
 	  (setq p (expand-file-name p))))
     (setq p (jde-convert-cygwin-path p))
     p))
+
+(defcustom jde-expand-wildcards-in-paths-p t
+  "Expands entries in the 'jde-sourcepath which are wildcards patterns into a list of matching files or directories which are interpolated into the sourcepath list."
+   :group 'jde-project
+   :type 'boolean)
+
+(defun jde-expand-wildcards-and-normalize (path &optional symbol)
+  "Expand any entries with wildcard patterns in path and interpolate them into the result"
+  (if jde-expand-wildcards-in-paths-p
+      (mapcan
+       (lambda (path)
+	 (let ((exp-paths (file-expand-wildcards path)))
+	   (if exp-paths exp-paths (list path))))
+       (jde-normalize-paths path symbol))
+    (jde-normalize-paths path symbol)
+    ))
+
+(defmacro jde-normalize-paths (pathlist &optional symbol)
+  "Normalize all paths of the list PATHLIST and returns a list with the
+expanded paths."
+  `(mapcar (lambda (path)
+			 (jde-normalize-path path ,symbol))
+		   ,pathlist))
+
 
 (defun jde-directory-files-recurs (dir &optional include-regexp)
   "Get all the files in DIR, and any subdirectories of DIR, whose
@@ -2311,7 +2417,7 @@ defined, otherwise the classpath specified by the CLASSPATH
 environment variable."
   (let* ((directory-sep-char ?/)  ;; Override NT/XEmacs setting
 	 (classpath
-	      (jde-build-path-arg nil (jde-get-global-classpath) t)))
+	      (jde-build-path-arg nil (jde-get-global-classpath) t 'jde-global-classpath)))
     (format "jde.util.JdeUtilities.setProjectValues(\"%s\", %s);"
 	    jde-current-project
 	    classpath)))
@@ -2329,8 +2435,7 @@ version of speedar is installed."
   (let* ((default-directory (expand-file-name "lisp" (jde-find-jde-data-directory)))
 	 (generated-autoload-file (expand-file-name "jde-autoload.el" default-directory)))
     (mapc 'update-file-autoloads (directory-files "." nil "\\.el$"))
-    (save-excursion
-      (set-buffer  "jde-autoload.el")
+    (with-current-buffer "jde-autoload.el"
       (save-buffer))
     (kill-buffer "jde-autoload.el")))
 

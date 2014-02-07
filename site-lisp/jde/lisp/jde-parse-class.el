@@ -27,7 +27,7 @@
 ;; LCD Archive Entry:
 ;; jde-parse-class|Andrew Hyatt|
 ;; |Parse a Java class file to get xref info for the JDEE.
-;; |$Date: 2009-09-17 19:55:19 -0500 (Thu, 17 Sep 2009) $|$Revision: 150 $|~/packages/jde-parse-class.el
+;; |$Date: 2009-09-17 17:55:19 -0700 (Thu, 17 Sep 2009) $|$Revision: 150 $|~/packages/jde-parse-class.el
 
 ;;; Commentary:
 

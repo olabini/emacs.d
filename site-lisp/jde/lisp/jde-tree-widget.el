@@ -1,5 +1,5 @@
 ;;; jde-tree-widget.el --- Tree widget
-;; $Id: jde-tree-widget.el 127 2009-08-12 08:22:57Z paullandes $
+;; $Id: jde-tree-widget.el 261 2012-11-04 19:49:12Z shyamalprasad $
 
 ;; Copyright (C) 2001, 2004 by David Ponce
 ;; Copyright (C) 2009 by Paul Landes
@@ -459,8 +459,8 @@ where:
   (let ((inhibit-read-only t))
     (erase-buffer))
   (let ((all (tree-widget-sample-overlay-lists)))
-    (mapcar #'tree-widget-sample-delete-overlay (car all))
-    (mapcar #'tree-widget-sample-delete-overlay (cdr all)))
+    (mapc #'tree-widget-sample-delete-overlay (car all))
+    (mapc #'tree-widget-sample-delete-overlay (cdr all)))
 
   (widget-insert (format "%s. \n\n" (buffer-name)))
 
@@ -505,8 +505,8 @@ Reuse the cached :args property value if exists."
   (let ((inhibit-read-only t))
     (erase-buffer))
   (let ((all (tree-widget-sample-overlay-lists)))
-    (mapcar #'tree-widget-sample-delete-overlay (car all))
-    (mapcar #'tree-widget-sample-delete-overlay (cdr all)))
+    (mapc #'tree-widget-sample-delete-overlay (car all))
+    (mapc #'tree-widget-sample-delete-overlay (cdr all)))
 
   (widget-insert (format "%s. \n\n" (buffer-name)))
 

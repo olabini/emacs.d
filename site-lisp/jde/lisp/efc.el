@@ -1,5 +1,5 @@
 ;;; efc.el -- Emacs Foundation Classes
-;; $Id: efc.el 174 2009-12-24 02:46:18Z lenbok $
+;; $Id: efc.el 260 2012-10-24 02:27:51Z shyamalprasad $
 
 ;; Author: Paul Kinnucan <paulk@mathworks.com>
 ;; Maintainer: Paul Landes <landes <at> mailc dt net>
@@ -430,8 +430,7 @@ compiler process.")
 	 (executable-path (oref this exec-path))
 	 (args (get-args this)))
 
-    (save-excursion
-      (set-buffer outbuf)
+    (with-current-buffer outbuf
 
       (insert (format "cd %s\n" default-directory))
 

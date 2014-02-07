@@ -1,5 +1,5 @@
 ;;; beanshell.el
-;; $Id: beanshell.el 175 2009-12-24 02:59:33Z lenbok $
+;; $Id: beanshell.el 260 2012-10-24 02:27:51Z shyamalprasad $
 
 ;; Author: Paul Kinnucan <paulk@mathworks.com>
 ;; Maintainer: Paul Landes <landes <at> mailc dt net>
@@ -79,6 +79,8 @@
 (require 'eieio)
 (require 'comint)
 (require 'lmenu)
+(eval-when-compile
+  (require 'cl))
 
 (declare-function jde-find-jde-doc-directory "jde" nil)
 
@@ -590,8 +592,7 @@ to the string form required by the vm."
 (defmethod bsh-detect-java-eval-error ((this bsh) bsh-output)
   (if (string-match "// Error:" bsh-output)
       (if (oref this separate-error-buffer)
-	  (save-excursion
-	    (set-buffer (get-buffer-create "*Beanshell Error*"))
+	  (with-current-buffer (get-buffer-create "*Beanshell Error*")
 	    (erase-buffer)
 	    (insert (format "Expression: %s" (oref this java-expr)))
 	    (newline)
@@ -720,8 +721,7 @@ with the buffer named BUFFER-NAME."
   (let (bsh-object
 	(buffer (get-buffer buffer-name)))
     (if buffer
-	(save-excursion
-	  (set-buffer buffer)
+	(with-current-buffer buffer
 	  (setq bsh-object bsh-the-bsh)))
     bsh-object))
 

@@ -1,5 +1,5 @@
 ;;; jde-project.el -- Integrated Development Environment for Java.
-;; $Id: jde-project.el 179 2009-12-27 01:58:29Z lenbok $
+;; $Id: jde-project.el 260 2012-10-24 02:27:51Z shyamalprasad $
 
 ;; Author: Paul Kinnucan <paulk@mathworks.com>
 ;; Maintainer: Paul Landes <landes <at> mailc dt net>
@@ -32,7 +32,7 @@
 (defgroup jde-project nil
   "JDE Project Options"
   :group 'jde
-  :prefix "jde-project")
+  :prefix "jde-project-")
 
 
 (defvar jde-project-menu-definition
@@ -192,7 +192,7 @@ the Application Project Creation dialog."
     (jde-project-show-creation-dialog project)))
 
 ;;;###autoload
-(defun jde-describe-path (path-type)
+(defun jde-describe-path (path-type &optional buf)
   "Prints and gives file existance for each path.
 PATH-TYPE is either `global classpath' for `jde-global-classpath' or
 `source path' for `jde-sourcepath'."
@@ -205,8 +205,8 @@ PATH-TYPE is either `global classpath' for `jde-global-classpath' or
 	    path jde-sourcepath)
       (setq path-name "Global Classpath"
 	      path jde-global-classpath))
-    (save-excursion
-      (set-buffer (get-buffer-create (format "*JDEE %s*" path-name)))
+    (with-current-buffer
+	(or buf (get-buffer-create (format "*JDEE %s*" path-name)))
       (setq truncate-lines t)
       (erase-buffer)
       (insert (format "%s:
@@ -221,7 +221,7 @@ blank:  path doesn't exist
 	(setq file (replace-regexp-in-string "~/" user-home file nil t))
 	(insert (format "[%s]  %s\n" desc file)))
       (goto-char (point-min))
-      (pop-to-buffer (current-buffer)))))
+      (unless buf (pop-to-buffer (current-buffer))))))
 
 (provide 'jde-project)
 

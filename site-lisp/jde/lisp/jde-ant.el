@@ -1,5 +1,5 @@
 ;; jde-ant.el --- Use Apache Ant to build your JDE projects
-;; $Id: jde-ant.el 176 2009-12-24 03:05:35Z lenbok $
+;; $Id: jde-ant.el 260 2012-10-24 02:27:51Z shyamalprasad $
 
 ;; Copyright (C) 2009 by Paul Landes
 ;; Author: Jason Stell | jason.stell@globalone.net
@@ -168,12 +168,6 @@ jde-ant-build command prompts you for an ant target."
   :group 'jde-ant
   :type 'boolean)
 
-;; Variable added by Ola Bini (ola.bini@gmail.com)
-(defcustom jde-ant-send-buffer t
-"*Specify whether to send the file in buffer as argument."
-  :group 'jde-project
-  :type 'boolean)
-
 (defvar jde-ant-interactive-buildfile nil
   "Defauilt buildfile to use when prompting interactively.")
 
@@ -306,11 +300,6 @@ variable ANT_HOME."
 		      " -buildfile " buildfile-delimiter
 		      (jde-normalize-path buildfile)
 		      buildfile-delimiter)))
-
-    ;;Code added by Ola Bini (ola.bini@gmail.com)
-    (if jde-ant-send-buffer
-        (setq ant-command 
-              (concat ant-command " \"-Dbuffer=" buffer-file-name "\" ")))
 
     (if (not (string= jde-ant-args ""))
 	(setq ant-command (concat ant-command " " jde-ant-args)))
@@ -694,8 +683,7 @@ Returns nil if it cannot find a project file in DIR or an ascendant directory."
   (let ((targets nil )
 	(temp-buf (get-buffer-create "*jde-ant-get-target-list-temp-buffer*")))
     (unwind-protect
-	(save-excursion
-	  (set-buffer temp-buf)
+	(with-current-buffer temp-buf
 	  (erase-buffer)
 	  (insert-file-contents buildfile)
 	  (goto-char (point-min))

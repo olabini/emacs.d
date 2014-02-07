@@ -1,9 +1,9 @@
 
-;;;### (autoloads (bsh-script-help) "beanshell" "beanshell.el" (19289
-;;;;;;  5860))
+;;;### (autoloads (bsh-script-help) "beanshell" "beanshell.el" (20899
+;;;;;;  44901))
 ;;; Generated autoloads from beanshell.el
 
-(autoload (quote bsh-script-help) "beanshell" "\
+(autoload 'bsh-script-help "beanshell" "\
 Display BeanShell User's Guide.
 
 \(fn)" t nil)
@@ -11,16 +11,16 @@ Display BeanShell User's Guide.
 ;;;***
 
 ;;;### (autoloads (jde-ant-show-options jde-ant-projecthelp jde-ant-build)
-;;;;;;  "jde-ant" "jde-ant.el" (19289 5860))
+;;;;;;  "jde-ant" "jde-ant.el" (20899 44901))
 ;;; Generated autoloads from jde-ant.el
 
-(autoload (quote jde-ant-build) "jde-ant" "\
+(autoload 'jde-ant-build "jde-ant" "\
 Build the current project using Ant.  If interactive, we try to prompt the
   user for certain variables..
 
 \(fn BUILDFILE TARGET &optional INTERACTIVE-ARGS)" t nil)
 
-(autoload (quote jde-ant-projecthelp) "jde-ant" "\
+(autoload 'jde-ant-projecthelp "jde-ant" "\
 Display Ant project help for the current project.
 This will execute the Ant program with the `-projecthelp' switch to output
 available targets with their descriptions for the current buildfile. This
@@ -28,7 +28,7 @@ function uses the same rules as `jde-ant-build' for finding the buildfile.
 
 \(fn BUILDFILE)" t nil)
 
-(autoload (quote jde-ant-show-options) "jde-ant" "\
+(autoload 'jde-ant-show-options "jde-ant" "\
 Show the JDE Ant Options panel.
 
 \(fn)" t nil)
@@ -36,20 +36,20 @@ Show the JDE Ant Options panel.
 ;;;***
 
 ;;;### (autoloads (jde-bookmark-list jde-bookmark-add jde-bookmark-visit)
-;;;;;;  "jde-bookmark" "jde-bookmark.el" (19289 5860))
+;;;;;;  "jde-bookmark" "jde-bookmark.el" (20899 44901))
 ;;; Generated autoloads from jde-bookmark.el
 
-(autoload (quote jde-bookmark-visit) "jde-bookmark" "\
+(autoload 'jde-bookmark-visit "jde-bookmark" "\
 Visit a class by bookmark name.
 
 \(fn KEY)" t nil)
 
-(autoload (quote jde-bookmark-add) "jde-bookmark" "\
+(autoload 'jde-bookmark-add "jde-bookmark" "\
 Add the current visited class as a bookmark.
 
 \(fn KEY &optional FQ-CLASS)" t nil)
 
-(autoload (quote jde-bookmark-list) "jde-bookmark" "\
+(autoload 'jde-bookmark-list "jde-bookmark" "\
 List bookmarks.
 
 \(fn)" t nil)
@@ -57,10 +57,10 @@ List bookmarks.
 ;;;***
 
 ;;;### (autoloads (jde-bsh-quote-expr jde-bsh-run jde-jeval) "jde-bsh"
-;;;;;;  "jde-bsh.el" (19289 5860))
+;;;;;;  "jde-bsh.el" (20899 44901))
 ;;; Generated autoloads from jde-bsh.el
 
-(autoload (quote jde-jeval) "jde-bsh" "\
+(autoload 'jde-jeval "jde-bsh" "\
 Uses the JDEE's instance of the BeanShell
 Java interpreter to evaluate the Java expression EXPR.  If the
 BeanShell is not running, the JDEE starts an instance. This function
@@ -76,12 +76,12 @@ prints out, Emacs has nothing to evaluate or report.
 
 \(fn JAVA-STATEMENT &optional EVAL-RETURN NO-PRINT-P)" t nil)
 
-(autoload (quote jde-bsh-run) "jde-bsh" "\
+(autoload 'jde-bsh-run "jde-bsh" "\
 *Starts the JDEE version of the BeanShell.
 
 \(fn)" t nil)
 
-(autoload (quote jde-bsh-quote-expr) "jde-bsh" "\
+(autoload 'jde-bsh-quote-expr "jde-bsh" "\
 Add necessary syntax for a beanshell string (parameter) in the current
 buffer.  This is useful for quoting a whole buffer or strings with newlines,
 etc.  This gives the outside double quotes as well.
@@ -97,11 +97,11 @@ NO-QUOTE-WRAP-P, if non-nil, don't add double quotes around the whole statement.
 
 ;;;***
 
-;;;### (autoloads (jde-bug-debug-app) "jde-bug" "jde-bug.el" (19289
-;;;;;;  5860))
+;;;### (autoloads (jde-bug-debug-app) "jde-bug" "jde-bug.el" (20899
+;;;;;;  44901))
 ;;; Generated autoloads from jde-bug.el
 
-(autoload (quote jde-bug-debug-app) "jde-bug" "\
+(autoload 'jde-bug-debug-app "jde-bug" "\
 Runs the debugger on the application in the current source buffer.
 
 \(fn)" t nil)
@@ -109,15 +109,15 @@ Runs the debugger on the application in the current source buffer.
 ;;;***
 
 ;;;### (autoloads (jde-checkstyle jde-checkstyle-customize) "jde-checkstyle"
-;;;;;;  "jde-checkstyle.el" (19289 5860))
+;;;;;;  "jde-checkstyle.el" (20899 44901))
 ;;; Generated autoloads from jde-checkstyle.el
 
-(autoload (quote jde-checkstyle-customize) "jde-checkstyle" "\
+(autoload 'jde-checkstyle-customize "jde-checkstyle" "\
 Set Java style checking options.
 
 \(fn)" t nil)
 
-(autoload (quote jde-checkstyle) "jde-checkstyle" "\
+(autoload 'jde-checkstyle "jde-checkstyle" "\
 Checks the Java program in the current buffer.
 This command invokes the style checker specified by `jde-checkstyle-class'
 with the options specif2ied by the JDEE customization variables
@@ -130,7 +130,7 @@ history enabled.
 
 ;;;***
 
-;;;### (autoloads nil "jde-compat" "jde-compat.el" (19289 5860))
+;;;### (autoloads nil "jde-compat" "jde-compat.el" (20899 44901))
 ;;; Generated autoloads from jde-compat.el
 
 (defconst jde-xemacsp (string-match "XEmacs" (emacs-version)) "\
@@ -139,17 +139,17 @@ Non-nil if we are running in the XEmacs environment.")
 ;;;***
 
 ;;;### (autoloads (jde-compile jde-set-compile-options) "jde-compile"
-;;;;;;  "jde-compile.el" (19289 5860))
+;;;;;;  "jde-compile.el" (20899 44901))
 ;;; Generated autoloads from jde-compile.el
 
-(autoload (quote jde-set-compile-options) "jde-compile" "\
+(autoload 'jde-set-compile-options "jde-compile" "\
 Sets the compile options.
 Enter the options as you would on the command line, e.g.,
 -depend -verbose.
 
 \(fn OPTIONS)" t nil)
 
-(autoload (quote jde-compile) "jde-compile" "\
+(autoload 'jde-compile "jde-compile" "\
 Compile the Java program in the current buffer.
 This command invokes the compiler specified by `jde-compiler'
 with the options specified by the JDE customization variables
@@ -166,12 +166,12 @@ uses the compiler executable specified by
 ;;;***
 
 ;;;### (autoloads (jde-customize-option) "jde-custom" "jde-custom.el"
-;;;;;;  (19289 5860))
+;;;;;;  (20899 44901))
 ;;; Generated autoloads from jde-custom.el
 
-(defalias (quote jde-customize-variable) (quote jde-customize-option))
+(defalias 'jde-customize-variable 'jde-customize-option)
 
-(autoload (quote jde-customize-option) "jde-custom" "\
+(autoload 'jde-customize-option "jde-custom" "\
 Customize SYMBOL, which must be a JDEE option variable.
 
 \(fn SYMBOL)" t nil)
@@ -180,26 +180,26 @@ Customize SYMBOL, which must be a JDEE option variable.
 
 ;;;### (autoloads (jde-debug-applet jde-debug jde-db-set-app-args
 ;;;;;;  jde-db-set-args jde-db-set-debugger) "jde-db" "jde-db.el"
-;;;;;;  (19289 5860))
+;;;;;;  (20899 44901))
 ;;; Generated autoloads from jde-db.el
 
-(autoload (quote jde-db-set-debugger) "jde-db" "\
+(autoload 'jde-db-set-debugger "jde-db" "\
 Specify the pathname of the debugger, if an executable, or the
 debugger's fully qualified class name, if a class.
 
 \(fn NAME IS-EXECUTABLE)" t nil)
 
-(autoload (quote jde-db-set-args) "jde-db" "\
+(autoload 'jde-db-set-args "jde-db" "\
 Specify the arguments (except -classpath) to be passed to the debugger.
 
 \(fn ARGS)" t nil)
 
-(autoload (quote jde-db-set-app-args) "jde-db" "\
+(autoload 'jde-db-set-app-args "jde-db" "\
 Specify the arguments to be passed to the Java application class.
 
 \(fn ARGS)" t nil)
 
-(autoload (quote jde-debug) "jde-db" "\
+(autoload 'jde-debug "jde-db" "\
 Run the debugger specified by `jde-debugger' on the Java application
 whose source resides in the current buffer. This command determines
 the main class of the application either from the variable
@@ -210,7 +210,7 @@ buffer. This command creates a command buffer for the debug session.
 
 \(fn)" t nil)
 
-(autoload (quote jde-debug-applet) "jde-db" "\
+(autoload 'jde-debug-applet "jde-db" "\
 Runs an applet in the jdb debugger. This function prompts you to enter
 the path of an html document that displays the applet. If you
 do not enter a path, this function next checks
@@ -228,10 +228,10 @@ file in the current buffer.
 ;;;***
 
 ;;;### (autoloads (jde-ejb-entity-bean-buffer jde-ejb-session-bean-buffer)
-;;;;;;  "jde-ejb" "jde-ejb.el" (19289 5860))
+;;;;;;  "jde-ejb" "jde-ejb.el" (20899 44901))
 ;;; Generated autoloads from jde-ejb.el
 
-(autoload (quote jde-ejb-session-bean-buffer) "jde-ejb" "\
+(autoload 'jde-ejb-session-bean-buffer "jde-ejb" "\
 Create a new Java buffer containing an EJB session bean class of the same name.
 This command also creates buffers with the EJB Home and EJB Remote interfaces
 and the XML Deployment descriptor defined
@@ -240,7 +240,7 @@ to the EJB naming convention.
 
 \(fn EJB-NAME)" t nil)
 
-(autoload (quote jde-ejb-entity-bean-buffer) "jde-ejb" "\
+(autoload 'jde-ejb-entity-bean-buffer "jde-ejb" "\
 Create a new Java buffer containing an EJB entity bean class of the same name.
 This command also creates buffers with the EJB Home and EJB Remote interfaces
 and the XML Deployment descriptor defined
@@ -257,44 +257,44 @@ to the EJB naming convention.
 ;;;;;;  jde-gen-equals-method-template jde-gen-equals-parens-around-expression
 ;;;;;;  jde-gen-equals-trailing-and-operators jde-gen-buffer jde-gen-jfc-app-buffer
 ;;;;;;  jde-gen-bean-buffer jde-gen-console-buffer jde-gen-interface-buffer
-;;;;;;  jde-gen-class-buffer) "jde-gen" "jde-gen.el" (19289 5860))
+;;;;;;  jde-gen-class-buffer) "jde-gen" "jde-gen.el" (20899 44901))
 ;;; Generated autoloads from jde-gen.el
 
-(autoload (quote jde-gen-class-buffer) "jde-gen" "\
+(autoload 'jde-gen-class-buffer "jde-gen" "\
 Create a new Java buffer containing a class of the same name.
 This command inserts the class template generated by `jde-gen-class'.
 
 \(fn FILE)" t nil)
 
-(autoload (quote jde-gen-interface-buffer) "jde-gen" "\
+(autoload 'jde-gen-interface-buffer "jde-gen" "\
 Create a new Java buffer containing an interface of the same name.
 This command inserts the interface template generated by `jde-gen-interface'.
 It then moves the point to the location of the first method.
 
 \(fn FILE)" t nil)
 
-(autoload (quote jde-gen-console-buffer) "jde-gen" "\
+(autoload 'jde-gen-console-buffer "jde-gen" "\
 Create a new Java buffer containing a console class of the same name.
 This command inserts the class template generated by `jde-gen-class'.
 It then moves the point to the location to the constructor.
 
 \(fn FILE)" t nil)
 
-(autoload (quote jde-gen-bean-buffer) "jde-gen" "\
+(autoload 'jde-gen-bean-buffer "jde-gen" "\
 Create a new Java buffer containing a Java bean of the same name.
 This command inserts the class template generated by `jde-gen-bean'.
 It then moves the point to the location of the constructor.
 
 \(fn FILE)" t nil)
 
-(autoload (quote jde-gen-jfc-app-buffer) "jde-gen" "\
+(autoload 'jde-gen-jfc-app-buffer "jde-gen" "\
 Create a new Java buffer containing a JFC application class.
 This command inserts the class template generated by `jde-gen-jfc-app'.
 It then moves the point to the location to the constructor.
 
 \(fn FILE)" t nil)
 
-(autoload (quote jde-gen-buffer) "jde-gen" "\
+(autoload 'jde-gen-buffer "jde-gen" "\
 Create a new Java buffer containing a code template.
 This command inserts the specified template at the beginning
 of the buffer.
@@ -319,7 +319,7 @@ Or, with `jde-gen-equals-trailing-and-operators' set to t:
 	(s == null ? o.s == null : s.equals(o.s));
 ")
 
-(custom-autoload (quote jde-gen-equals-trailing-and-operators) "jde-gen" t)
+(custom-autoload 'jde-gen-equals-trailing-and-operators "jde-gen" t)
 
 (defvar jde-gen-equals-parens-around-expression nil "\
 Specifies whether the generated equals expression should be
@@ -337,16 +337,16 @@ Or, with `jde-gen-equals-trailing-and-operators' set to t:
 	    (s == null ? o.s == null : s.equals(o.s)));
 ")
 
-(custom-autoload (quote jde-gen-equals-parens-around-expression) "jde-gen" t)
+(custom-autoload 'jde-gen-equals-parens-around-expression "jde-gen" t)
 
-(defvar jde-gen-equals-method-template (quote ("'>" "\"/**\" '> 'n" "\" * Check if this object is equal (equivalent) to another object.\" '> 'n" "\" */\" '> 'n" "(jde-gen-method-signature \"public\" \"boolean\" \"equals\" \"Object obj\")" "(jde-gen-electric-brace)" "\"if (obj == this) return true;\" '> 'n" "\"if ((obj == null) || !getClass().equals(obj.getClass())) return false;\" '> 'n" "'> 'n" "(jde-gen-equals-return \"obj\" \"o\") '> 'n" "\"}\" '> 'n '>))")) "\
+(defvar jde-gen-equals-method-template '("'>" "(when jde-gen-create-javadoc" "'(l \"/**\" '> 'n" "    \" * Check if this object is equal (equivalent) to another object.\" '> 'n" "    \" */\" '> 'n" "))" "(jde-gen-method-signature \"public\" \"boolean\" \"equals\" \"Persistable obj\")" "(jde-gen-electric-brace)" "\"if (obj == this) return true;\" '> 'n" "\"if ((obj == null) || !getClass().equals(obj.getClass())) return false;\" '> 'n" "'> 'n" "(jde-gen-equals-return \"obj\" \"o\") '> 'n" "\"}\" '> 'n))") "\
 *Template for creating an equals method.
 Setting this variable defines a template instantiation command
 `jde-gen-equals-method', as a side-effect.")
 
-(custom-autoload (quote jde-gen-equals-method-template) "jde-gen" nil)
+(custom-autoload 'jde-gen-equals-method-template "jde-gen" nil)
 
-(autoload (quote jde-gen-equals-return) "jde-gen" "\
+(autoload 'jde-gen-equals-return "jde-gen" "\
 Generate a body of an appropriate override for the
 java.lang.Object#equals(Object) function. This function gets the
 list of member variables from`jde-parse-get-serializable-members'.
@@ -381,16 +381,16 @@ Or, with `jde-gen-equals-trailing-and-operators' set to t:
 	(b == o.b) &&
 	(s == null ? o.s == null : s.equals(o.s));
 
-\(fn &optional PARM-NAME VAR-NAME CLASS)" t nil)
+\(fn &optional PARM-NAME VAR-NAME CLASS SUPER-METHOD)" t nil)
 
-(defvar jde-gen-hashcode-method-template (quote ("'>" "\"/**\" '> 'n" "\" * Calculate the hash code for this object.\" '> 'n" "\" * \" '> 'n" "\" * <p>The rules laid out in J. Blosh's Effective Java are used\" '> 'n" "\" * for the hash code calculation.</p>\" '> 'n" "\" * \" '> 'n" "\" * @return the hash code.\" '> 'n" "\" * \" '> 'n" "\" * @see java.lang.Object#hashCode\" '> 'n" "\" */\" '> 'n" "(jde-gen-method-signature \"public\"\"int\" \"hashCode\" nil)" "(jde-gen-electric-brace)" "(jde-gen-hashcode-body) '> 'n" "\"}\" '> 'n '>")) "\
+(defvar jde-gen-hashcode-method-template '("'>" "(when jde-gen-create-javadoc" "'(l " "\"/**\" '> 'n" "\" * Calculate the hash code for this object.\" '> 'n" "\" * \" '> 'n" "\" * <p>The rules laid out in J. Blosh's Effective Java are used\" '> 'n" "\" * for the hash code calculation.</p>\" '> 'n" "\" * \" '> 'n" "\" * @return the hash code.\" '> 'n" "\" * \" '> 'n" "\" * @see java.lang.Object#hashCode\" '> 'n" "\" */\" '> 'n))" "(jde-gen-method-signature \"public\"\"int\" \"hashCode\" nil)" "(jde-gen-electric-brace)" "(jde-gen-hashcode-body) '> 'n" "\"}\" '> 'n '>") "\
 *Template for creating a hashCode method.
 Setting this variable defines a template instantiation command
 `jde-gen-hashcode-method', as a side-effect.")
 
-(custom-autoload (quote jde-gen-hashcode-method-template) "jde-gen" nil)
+(custom-autoload 'jde-gen-hashcode-method-template "jde-gen" nil)
 
-(autoload (quote jde-gen-hashcode-body) "jde-gen" "\
+(autoload 'jde-gen-hashcode-body "jde-gen" "\
 Generate a body of a hashCode function.
 This function gets the list of member variables of the current
 class from `jde-parse-get-serializable-members'.
@@ -403,21 +403,21 @@ then used instead of the result of `semantic-current-tag'.
 
 \(fn &optional VAR-NAME CLASS)" t nil)
 
-(defvar jde-gen-tostring-method-template (quote ("'>" "(when jde-gen-create-javadoc" "'(l " "\"/**\" '> 'n" "\" * Get a string representation of this object.\" '> 'n" "\" * \" '> 'n" "\" * @return a string representation of this object.\" '> 'n" "\" * \" '> 'n" "\" * @see java.lang.Object#toString\" '> 'n" "\" */\" '> 'n))" "(jde-gen-method-signature \"public\" \"String\" \"toString\" \"\")" "(jde-gen-electric-brace)" "(jde-gen-tostring-return) '> 'n" "\"}\" '>")) "\
+(defvar jde-gen-tostring-method-template '("'>" "(when jde-gen-create-javadoc" "'(l " "\"/**\" '> 'n" "\" * Get a string representation of this object.\" '> 'n" "\" * \" '> 'n" "\" * @return a string representation of this object.\" '> 'n" "\" * \" '> 'n" "\" * @see java.lang.Object#toString\" '> 'n" "\" */\" '> 'n))" "(jde-gen-method-signature \"public\" \"String\" \"toString\" \"\")" "(jde-gen-electric-brace)" "(jde-gen-tostring-return) '> 'n" "\"}\" '>") "\
 *Template for creating an toString method.
 Setting this variable defines a template instantiation
 command `jde-gen-tostring-method', as a side-effect.")
 
-(custom-autoload (quote jde-gen-tostring-method-template) "jde-gen" nil)
+(custom-autoload 'jde-gen-tostring-method-template "jde-gen" nil)
 
-(autoload (quote jde-gen-tostring-return) "jde-gen" "\
+(autoload 'jde-gen-tostring-return "jde-gen" "\
 Generate a body of an appropriate override for the
 java.lang.Object#toString function. This gets the member variables
 of the current class from semantic via `semantic-current-tag'.
 
 \(fn &optional CLASS)" t nil)
 
-(autoload (quote jde-gen-object-methods) "jde-gen" "\
+(autoload 'jde-gen-object-methods "jde-gen" "\
 Generates an equals(), a hashCode() and a toString method.
 
 \(fn)" t nil)
@@ -427,9 +427,9 @@ Generates an equals(), a hashCode() and a toString method.
 Setting this variable defines a template instantiation
 command `jde-gen-exception', as a side-effect.")
 
-(custom-autoload (quote jde-gen-exception-buffer-template) "jde-gen" nil)
+(custom-autoload 'jde-gen-exception-buffer-template "jde-gen" nil)
 
-(autoload (quote jde-gen-exception-buffer) "jde-gen" "\
+(autoload 'jde-gen-exception-buffer "jde-gen" "\
 Create a new Java buffer containing an exception class of the same name.
 This command inserts the template generated by `jde-gen-exception'.
 It then moves the point to the location of the first method.
@@ -439,27 +439,26 @@ It then moves the point to the location of the first method.
 ;;;***
 
 ;;;### (autoloads (jde-help-browse-jdk-doc jde-help-beanshell) "jde-help"
-;;;;;;  "jde-help.el" (19289 5860))
+;;;;;;  "jde-help.el" (20899 44901))
 ;;; Generated autoloads from jde-help.el
 
-(autoload (quote jde-help-beanshell) "jde-help" "\
+(autoload 'jde-help-beanshell "jde-help" "\
 Displays the BeanShell documentation.
 
 \(fn)" t nil)
 
-(autoload (quote jde-help-browse-jdk-doc) "jde-help" "\
-Displays the JDK doc in a web browser. This function uses the URL
-stored in the variable jde-jdk-doc-url to locate the JDK documentation.
+(autoload 'jde-help-browse-jdk-doc "jde-help" "\
+Displays the JDK doc in a web browser.
 
 \(fn)" t nil)
 
 ;;;***
 
 ;;;### (autoloads (jde-import-at-point jde-import-organize) "jde-import"
-;;;;;;  "jde-import.el" (19289 5860))
+;;;;;;  "jde-import.el" (20899 44901))
 ;;; Generated autoloads from jde-import.el
 
-(autoload (quote jde-import-organize) "jde-import" "\
+(autoload 'jde-import-organize "jde-import" "\
 Organize import statements of the current Java source buffer.
 If optional FORCE is non-nil force reordering even if imports are
 already organized.
@@ -480,7 +479,7 @@ version of the JDE with the semantic parser.
 
 \(fn &optional FORCE)" t nil)
 
-(autoload (quote jde-import-at-point) "jde-import" "\
+(autoload 'jde-import-at-point "jde-import" "\
 Import a class at the current point.
 The fully qualified class is received from user input.
 
@@ -489,10 +488,10 @@ The fully qualified class is received from user input.
 ;;;***
 
 ;;;### (autoloads (jde-java-font-lock-setup-keywords) "jde-java-font-lock"
-;;;;;;  "jde-java-font-lock.el" (19289 5860))
+;;;;;;  "jde-java-font-lock.el" (20899 44901))
 ;;; Generated autoloads from jde-java-font-lock.el
 
-(autoload (quote jde-java-font-lock-setup-keywords) "jde-java-font-lock" "\
+(autoload 'jde-java-font-lock-setup-keywords "jde-java-font-lock" "\
 Setup font lock keywords in `java-font-lock-keywords-4'.
 If optional REBUILD flag is non-nil create a new cache of regular
 expressions.
@@ -502,15 +501,15 @@ expressions.
 ;;;***
 
 ;;;### (autoloads (jde-java-properties-validate jde-java-properties-mode)
-;;;;;;  "jde-java-properties" "jde-java-properties.el" (19289 5860))
+;;;;;;  "jde-java-properties" "jde-java-properties.el" (20899 44901))
 ;;; Generated autoloads from jde-java-properties.el
 
-(autoload (quote jde-java-properties-mode) "jde-java-properties" "\
+(autoload 'jde-java-properties-mode "jde-java-properties" "\
 Major mode for Java properties files buffer.
 
 \(fn)" t nil)
 
-(autoload (quote jde-java-properties-validate) "jde-java-properties" "\
+(autoload 'jde-java-properties-validate "jde-java-properties" "\
 Determine whether or not the properties file conforms to the Sun
 java.util.Properties format.  Only the first invalid line is found.
 
@@ -522,10 +521,10 @@ found.
 ;;;***
 
 ;;;### (autoloads (jde-javadoc-make-buffer jde-javadoc-make jde-javadoc-make-internal)
-;;;;;;  "jde-javadoc-gen" "jde-javadoc-gen.el" (19289 5860))
+;;;;;;  "jde-javadoc-gen" "jde-javadoc-gen.el" (20899 44901))
 ;;; Generated autoloads from jde-javadoc-gen.el
 
-(autoload (quote jde-javadoc-make-internal) "jde-javadoc-gen" "\
+(autoload 'jde-javadoc-make-internal "jde-javadoc-gen" "\
 Generates javadoc for the current project if MAKE-PACKAGES-P
 and `jde-javadoc-gen-packages' are nonnil; otherwise, make doc
 for the current buffer. This command runs the
@@ -544,7 +543,7 @@ the generated documentation in a browser.
 
 \(fn &optional MAKE-PACKAGES-P)" nil nil)
 
-(autoload (quote jde-javadoc-make) "jde-javadoc-gen" "\
+(autoload 'jde-javadoc-make "jde-javadoc-gen" "\
 Generates javadoc for the current project. This command runs the
 currently selected JDK's javadoc program to generate the documentation.
 It uses `jde-get-jdk-dir' to determine the location of the currently
@@ -561,7 +560,7 @@ the generated documentation in a browser.
 
 \(fn)" t nil)
 
-(autoload (quote jde-javadoc-make-buffer) "jde-javadoc-gen" "\
+(autoload 'jde-javadoc-make-buffer "jde-javadoc-gen" "\
 Generates javadoc for the current buffer. This command runs the
 currently selected JDK's javadoc program to generate the
 documentation. It uses `jde-get-jdk-dir' to determine the location of the currently
@@ -583,37 +582,37 @@ browser.
 ;;;;;;  jde-javadoc-checkdoc-at-line jde-javadoc-remdoc-at-line jde-javadoc-autodoc-at-line
 ;;;;;;  jde-javadoc-customize jde-javadoc-checker-quit jde-javadoc-checker-fix
 ;;;;;;  jde-javadoc-checker-next jde-javadoc-checker-previous) "jde-javadoc"
-;;;;;;  "jde-javadoc.el" (19289 5860))
+;;;;;;  "jde-javadoc.el" (20899 44901))
 ;;; Generated autoloads from jde-javadoc.el
 
-(autoload (quote jde-javadoc-checker-previous) "jde-javadoc" "\
+(autoload 'jde-javadoc-checker-previous "jde-javadoc" "\
 Go to the previous tag with doc errors.
 
 \(fn)" t nil)
 
-(autoload (quote jde-javadoc-checker-next) "jde-javadoc" "\
+(autoload 'jde-javadoc-checker-next "jde-javadoc" "\
 Goto the next tag with doc errors.
 
 \(fn)" t nil)
 
-(autoload (quote jde-javadoc-checker-fix) "jde-javadoc" "\
+(autoload 'jde-javadoc-checker-fix "jde-javadoc" "\
 Fix documentation of checked tag.
 Used in `jde-javadoc-checker-report-mode'.
 
 \(fn)" t nil)
 
-(autoload (quote jde-javadoc-checker-quit) "jde-javadoc" "\
+(autoload 'jde-javadoc-checker-quit "jde-javadoc" "\
 Quit the `jde-javadoc-checker' report buffer.
 Used in `jde-javadoc-checker-report-mode'.
 
 \(fn)" t nil)
 
-(autoload (quote jde-javadoc-customize) "jde-javadoc" "\
+(autoload 'jde-javadoc-customize "jde-javadoc" "\
 Show the jde-javadoc options panel.
 
 \(fn)" t nil)
 
-(autoload (quote jde-javadoc-autodoc-at-line) "jde-javadoc" "\
+(autoload 'jde-javadoc-autodoc-at-line "jde-javadoc" "\
 Update javadoc comment block for declaration at current line.
 
 Uses the semantic bovinator parser table to find declarations (see
@@ -715,7 +714,7 @@ See also the `jde-javadoc-field-type', `jde-javadoc-a' and
 
 \(fn)" t nil)
 
-(autoload (quote jde-javadoc-remdoc-at-line) "jde-javadoc" "\
+(autoload 'jde-javadoc-remdoc-at-line "jde-javadoc" "\
 Remove javadoc comment block for declaration at current line.
 Require confirmation if optional NOCONFIRM is non-nil.
 Return non-nil if done.
@@ -723,7 +722,7 @@ This uses `jde-javadoc-nonterminal-at-line' to find declarations.
 
 \(fn &optional NOCONFIRM)" t nil)
 
-(autoload (quote jde-javadoc-checkdoc-at-line) "jde-javadoc" "\
+(autoload 'jde-javadoc-checkdoc-at-line "jde-javadoc" "\
 Check javadoc comment block of declaration at current line.
 
 Uses the semantic bovinator parser table to find declarations (see
@@ -734,20 +733,20 @@ LINE OF THE CLASS OR METHOD DECLARATION.  IF NOT RESULT IS UNCERTAIN.
 
 \(fn)" t nil)
 
-(autoload (quote jde-javadoc-checkdoc) "jde-javadoc" "\
+(autoload 'jde-javadoc-checkdoc "jde-javadoc" "\
 Check doc comments of tags in the current buffer.
 Report the next tag with documentation errors.
 
 \(fn)" t nil)
 
-(autoload (quote jde-javadoc-remove) "jde-javadoc" "\
+(autoload 'jde-javadoc-remove "jde-javadoc" "\
 Remove all Javadoc from the region (if one is active) or the buffer.
 START, the start position in the buffer.
 END, the end position in the buffer.
 
 \(fn START END)" t nil)
 
-(autoload (quote jde-javadoc-enable-menu-p) "jde-javadoc" "\
+(autoload 'jde-javadoc-enable-menu-p "jde-javadoc" "\
 Return non-nil if corresponding doc menu item is enabled.
 That is point is on the first line of a class, method, or field
 definition.
@@ -759,20 +758,20 @@ definition.
 ;;;### (autoloads (jde-junit-show-options jde-junit-run jde-junit-add-test-to-suite
 ;;;;;;  jde-junit4-test-class-buffer jde-junit-test-class-buffer
 ;;;;;;  jde-junit4-test-class jde-junit-test-class) "jde-junit" "jde-junit.el"
-;;;;;;  (19289 5860))
+;;;;;;  (20899 44901))
 ;;; Generated autoloads from jde-junit.el
 
-(autoload (quote jde-junit-test-class) "jde-junit" "\
+(autoload 'jde-junit-test-class "jde-junit" "\
 Instantiate a test class template.
 
 \(fn)" t nil)
 
-(autoload (quote jde-junit4-test-class) "jde-junit" "\
+(autoload 'jde-junit4-test-class "jde-junit" "\
 Instantiate a test class template.
 
 \(fn)" t nil)
 
-(autoload (quote jde-junit-test-class-buffer) "jde-junit" "\
+(autoload 'jde-junit-test-class-buffer "jde-junit" "\
 Create a buffer containing a skeleton unit test class having the same name as the
 root name of the buffer. This command prompts you to enter the file name
 of the test class. It assumes that the file name has the form CLASSTest.java
@@ -783,7 +782,7 @@ more information, see http://www.junit.org.
 
 \(fn)" t nil)
 
-(autoload (quote jde-junit4-test-class-buffer) "jde-junit" "\
+(autoload 'jde-junit4-test-class-buffer "jde-junit" "\
 Create a buffer containing a skeleton unit test class having
 the same name as the root name of the buffer. This command
 prompts you to enter the file name of the test class. It assumes
@@ -794,17 +793,17 @@ framework. For more information, see http://www.junit.org.
 
 \(fn)" t nil)
 
-(autoload (quote jde-junit-add-test-to-suite) "jde-junit" "\
+(autoload 'jde-junit-add-test-to-suite "jde-junit" "\
 Instantiate an addTest method.
 
 \(fn)" t nil)
 
-(autoload (quote jde-junit-run) "jde-junit" "\
+(autoload 'jde-junit-run "jde-junit" "\
 Starts junit testrunner with buffer corresponding class name.
 
 \(fn)" t nil)
 
-(autoload (quote jde-junit-show-options) "jde-junit" "\
+(autoload 'jde-junit-show-options "jde-junit" "\
 Show the JDE JUnit Options panel.
 
 \(fn)" t nil)
@@ -812,10 +811,10 @@ Show the JDE JUnit Options panel.
 ;;;***
 
 ;;;### (autoloads (jde-make-show-options jde-make) "jde-make" "jde-make.el"
-;;;;;;  (19289 5860))
+;;;;;;  (20899 44901))
 ;;; Generated autoloads from jde-make.el
 
-(autoload (quote jde-make) "jde-make" "\
+(autoload 'jde-make "jde-make" "\
 Run the make program specified by `jde-make-program' with the
 command-line arguments specified by `jde-make-args'. If
 `jde-read-make-args' is nonnil, this command also prompts you to enter
@@ -825,7 +824,7 @@ enter to the make program along with the arguments specified by
 
 \(fn)" t nil)
 
-(autoload (quote jde-make-show-options) "jde-make" "\
+(autoload 'jde-make-show-options "jde-make" "\
 Show the JDE Make Options panel.
 
 \(fn)" t nil)
@@ -833,10 +832,10 @@ Show the JDE Make Options panel.
 ;;;***
 
 ;;;### (autoloads (jde-find-class-source jde-read-class) "jde-open-source"
-;;;;;;  "jde-open-source.el" (19289 5860))
+;;;;;;  "jde-open-source.el" (20899 44901))
 ;;; Generated autoloads from jde-open-source.el
 
-(autoload (quote jde-read-class) "jde-open-source" "\
+(autoload 'jde-read-class "jde-open-source" "\
 Select a class interactively.  PROMPT is used to prompt the user for the
 first class name, FQ-PROMPT is used only if the class name expands into more
 than one fully qualified name.
@@ -872,7 +871,7 @@ When called interactively, select the class and copy it to the kill ring.
 
 \(fn &optional PROMPT FQ-PROMPT THIS-CLASS-P CONFIRM-FQ-P NO-CONFIRM-NFQ-P VALIDATE-FN)" t nil)
 
-(autoload (quote jde-find-class-source) "jde-open-source" "\
+(autoload 'jde-find-class-source "jde-open-source" "\
 *Find the source file for a specified fully qualified class.
 Calls `jde-find-class-source-file' to do the search.
 If it finds the source file, it opens the file in a buffer.
@@ -882,10 +881,10 @@ If it finds the source file, it opens the file in a buffer.
 ;;;***
 
 ;;;### (autoloads (jde-package-update) "jde-package" "jde-package.el"
-;;;;;;  (19289 5860))
+;;;;;;  (20899 44901))
 ;;; Generated autoloads from jde-package.el
 
-(autoload (quote jde-package-update) "jde-package" "\
+(autoload 'jde-package-update "jde-package" "\
 Create or update the package statement in the current Java source
 file buffer based on the file's location relative to the root of
 the package directory as specified by one of the entries in
@@ -900,10 +899,10 @@ this command does nothing. This command signals an error if the
 
 ;;;### (autoloads (jde-member-to-attribute jde-camel-to-lisp jde-camel-to-c-const
 ;;;;;;  jde-camel-to-sql jde-hungarian-to-reverse-camel-notation)
-;;;;;;  "jde-parse-expr" "jde-parse-expr.el" (19289 5860))
+;;;;;;  "jde-parse-expr" "jde-parse-expr.el" (20899 44901))
 ;;; Generated autoloads from jde-parse-expr.el
 
-(autoload (quote jde-hungarian-to-reverse-camel-notation) "jde-parse-expr" "\
+(autoload 'jde-hungarian-to-reverse-camel-notation "jde-parse-expr" "\
 Converts Hungarian (i.e. m_sMyApp) to reverse camel notation (i.e. myApp).
 Hungarian notation is used, for example, in most Microsoft visual C++ code
 whereas reverse camel notation is used as the Sun Java standard style.
@@ -915,22 +914,22 @@ replacement.  This adds a `this.' to each replacment.
 
 \(fn START END LOCAL-REPLACEMENT-P)" t nil)
 
-(autoload (quote jde-camel-to-sql) "jde-parse-expr" "\
+(autoload 'jde-camel-to-sql "jde-parse-expr" "\
 Convert from reverse camel notation to the SQL underscore convention.
 
 \(fn START END)" t nil)
 
-(autoload (quote jde-camel-to-c-const) "jde-parse-expr" "\
+(autoload 'jde-camel-to-c-const "jde-parse-expr" "\
 Convert from reverse camel notation to the C constant convention.
 
 \(fn START END)" t nil)
 
-(autoload (quote jde-camel-to-lisp) "jde-parse-expr" "\
+(autoload 'jde-camel-to-lisp "jde-parse-expr" "\
 Convert from reverse camel notation to the lisp symbol convention.
 
 \(fn START END)" t nil)
 
-(autoload (quote jde-member-to-attribute) "jde-parse-expr" "\
+(autoload 'jde-member-to-attribute "jde-parse-expr" "\
 Convert Java member to a getter or setter syntax.
 
 MEMBER-NAME is member to convret.  This is taken as the current word at point
@@ -945,10 +944,10 @@ setter, otherwise, make a getter.
 ;;;***
 
 ;;;### (autoloads (jde-parse-get-buffer-class) "jde-parse" "jde-parse.el"
-;;;;;;  (19289 5860))
+;;;;;;  (20899 44901))
 ;;; Generated autoloads from jde-parse.el
 
-(autoload (quote jde-parse-get-buffer-class) "jde-parse" "\
+(autoload 'jde-parse-get-buffer-class "jde-parse" "\
 Get the fully qualified name of the class of this buffer.
 
 NO-PACKAGE-P, if non-`nil', return only the class name (sans
@@ -961,16 +960,16 @@ If called interactively, add the name in the mini-buffer.
 ;;;***
 
 ;;;### (autoloads (jde-create-new-project jde-save-project jde-open-project-file)
-;;;;;;  "jde-project-file" "jde-project-file.el" (19289 5860))
+;;;;;;  "jde-project-file" "jde-project-file.el" (20899 44901))
 ;;; Generated autoloads from jde-project-file.el
 
-(autoload (quote jde-open-project-file) "jde-project-file" "\
+(autoload 'jde-open-project-file "jde-project-file" "\
 Opens the project file for the Java source file in the
 current buffer.
 
 \(fn)" t nil)
 
-(autoload (quote jde-save-project) "jde-project-file" "\
+(autoload 'jde-save-project "jde-project-file" "\
 Saves source file buffer options in one or more project files.
 This command provides an easy way to create and update a project file
 for a Java project. Simply open a source file, set the desired
@@ -981,7 +980,7 @@ for that file.
 
 \(fn)" t nil)
 
-(autoload (quote jde-create-new-project) "jde-project-file" "\
+(autoload 'jde-create-new-project "jde-project-file" "\
 Creates a new JDE project file in directory NEW-DIR, saving any
 current customized variables.  If a project file already exists in the
 given directory, the project is simply re-saved.  This functions the
@@ -996,34 +995,34 @@ hierarchical projects.
 ;;;***
 
 ;;;### (autoloads (jde-describe-path jde-project-create-project)
-;;;;;;  "jde-project" "jde-project.el" (19289 5860))
+;;;;;;  "jde-project" "jde-project.el" (20899 44901))
 ;;; Generated autoloads from jde-project.el
 
-(autoload (quote jde-project-create-project) "jde-project" "\
+(autoload 'jde-project-create-project "jde-project" "\
 Creates a JDE project.
 
 \(fn)" t nil)
 
-(autoload (quote jde-describe-path) "jde-project" "\
+(autoload 'jde-describe-path "jde-project" "\
 Prints and gives file existance for each path.
 PATH-TYPE is either `global classpath' for `jde-global-classpath' or
 `source path' for `jde-sourcepath'.
 
-\(fn PATH-TYPE)" t nil)
+\(fn PATH-TYPE &optional BUF)" t nil)
 
 ;;;***
 
 ;;;### (autoloads (jde-replace-fully-qualified-class-at-point jde-rename-class)
-;;;;;;  "jde-refactor" "jde-refactor.el" (19289 5860))
+;;;;;;  "jde-refactor" "jde-refactor.el" (20899 44901))
 ;;; Generated autoloads from jde-refactor.el
 
-(autoload (quote jde-rename-class) "jde-refactor" "\
+(autoload 'jde-rename-class "jde-refactor" "\
 Rename the current class to another class name.  This does a class name
 string replace, changes the buffer name, and changes the file name.
 
 \(fn NEW-CLASS-NAME)" t nil)
 
-(autoload (quote jde-replace-fully-qualified-class-at-point) "jde-refactor" "\
+(autoload 'jde-replace-fully-qualified-class-at-point "jde-refactor" "\
 Replace the unqualified class at the current point with the fully qualified
 class.
 
@@ -1033,22 +1032,22 @@ class.
 
 ;;;### (autoloads (jde-run-applet jde-run jde-run-set-applet-doc
 ;;;;;;  jde-run-set-applet-viewer jde-run-set-app-args jde-run-set-args
-;;;;;;  jde-run-set-app) "jde-run" "jde-run.el" (19289 5860))
+;;;;;;  jde-run-set-app) "jde-run" "jde-run.el" (20899 44901))
 ;;; Generated autoloads from jde-run.el
 
-(autoload (quote jde-run-set-app) "jde-run" "\
+(autoload 'jde-run-set-app "jde-run" "\
 Specify the name of the application class to run.
 
 \(fn APP)" t nil)
 
-(autoload (quote jde-run-set-args) "jde-run" "\
+(autoload 'jde-run-set-args "jde-run" "\
 Specify arguments to be passed to the Java vm.
 This command serves as an alternative to using the JDE Run Options
 panel to specify command-line arguments for the Java interpreter.
 
 \(fn ARGS)" t nil)
 
-(autoload (quote jde-run-set-app-args) "jde-run" "\
+(autoload 'jde-run-set-app-args "jde-run" "\
 Specify the arguments to be passed to the Java application class.
 This command provides an alternative to using the JDE Run Options panel
 to specify command-line arguments to pass to the application when starting
@@ -1056,20 +1055,20 @@ the application.
 
 \(fn ARGS)" t nil)
 
-(autoload (quote jde-run-set-applet-viewer) "jde-run" "\
+(autoload 'jde-run-set-applet-viewer "jde-run" "\
 Sets the viewer to be used to view an applet. The default is
 appletviewer.
 
 \(fn VIEWER)" t nil)
 
-(autoload (quote jde-run-set-applet-doc) "jde-run" "\
+(autoload 'jde-run-set-applet-doc "jde-run" "\
 Specify the doc to be used to view an applet.
 This command provides an alternative to using the JDE Options
 panel to specifying the applet document.
 
 \(fn DOC)" t nil)
 
-(autoload (quote jde-run) "jde-run" "\
+(autoload 'jde-run "jde-run" "\
 Run the Java application specified by `jde-run-executable', if
 not the null string. Otherwise run the class specified by
 `jde-run-application-class', if non-null; otherwise the class in the
@@ -1085,7 +1084,7 @@ interact with the program.
 
 \(fn PREFIX)" t nil)
 
-(autoload (quote jde-run-applet) "jde-run" "\
+(autoload 'jde-run-applet "jde-run" "\
 Runs an applet. This function prompts you to enter the path of an
 html document that displays the applet. If you enter return without
 specifying a document, this function next checks whether
@@ -1107,10 +1106,10 @@ file.
 ;;;***
 
 ;;;### (autoloads (jde-stat-loc-report-directory jde-stat-loc-report-project
-;;;;;;  jde-stat-loc-report) "jde-stat" "jde-stat.el" (19289 5860))
+;;;;;;  jde-stat-loc-report) "jde-stat" "jde-stat.el" (20899 44901))
 ;;; Generated autoloads from jde-stat.el
 
-(autoload (quote jde-stat-loc-report) "jde-stat" "\
+(autoload 'jde-stat-loc-report "jde-stat" "\
 Generates a report showing the number of code, comment,
 javadoc, and blank lines in the current Java source buffer. Optionally
 a total count could be passed to be displayes, as well as the number of
@@ -1118,7 +1117,7 @@ processed files.
 
 \(fn &optional COUNT &optional TOTAL-FILES)" t nil)
 
-(autoload (quote jde-stat-loc-report-project) "jde-stat" "\
+(autoload 'jde-stat-loc-report-project "jde-stat" "\
 Generates a report showing the number of code, comment,
 javadoc, and blank lines in all the java files in the current
 directory and subdirectories. This method will kill any
@@ -1126,7 +1125,7 @@ buffer containing a java file contained in dir.
 
 \(fn DIR)" t nil)
 
-(autoload (quote jde-stat-loc-report-directory) "jde-stat" "\
+(autoload 'jde-stat-loc-report-directory "jde-stat" "\
 Generates a report showing the number of code, comment,
 javadoc, and blank lines in all the java files in the current
 directory. This method will kill any buffer containing a java file
@@ -1137,10 +1136,10 @@ contained in dir.
 ;;;***
 
 ;;;### (autoloads (jde-htmlize-code jde-exception-goto jde-require)
-;;;;;;  "jde-util" "jde-util.el" (19289 5860))
+;;;;;;  "jde-util" "jde-util.el" (20899 44901))
 ;;; Generated autoloads from jde-util.el
 
-(autoload (quote jde-require) "jde-util" "\
+(autoload 'jde-require "jde-util" "\
 Require FEATURE, either pre-installed or from the distribution.
  That is, first try to load the FEATURE library. Then try to load the
  jde-FEATURE library from the JDEE's distribution.
@@ -1148,12 +1147,12 @@ Require FEATURE, either pre-installed or from the distribution.
 
 \(fn FEATURE)" nil nil)
 
-(autoload (quote jde-exception-goto) "jde-util" "\
+(autoload 'jde-exception-goto "jde-util" "\
 Go to the Java source file and line indicated by an exception stack trace.
 
 \(fn)" t nil)
 
-(autoload (quote jde-htmlize-code) "jde-util" "\
+(autoload 'jde-htmlize-code "jde-util" "\
 Write the current code region as an HTML document.
 Line numbers are added as well.
 
@@ -1164,7 +1163,7 @@ See `jde-htmlize-code-destinations'.
 ;;;***
 
 ;;;### (autoloads (jde-which-method-mode) "jde-which-method" "jde-which-method.el"
-;;;;;;  (19289 5860))
+;;;;;;  (20899 44901))
 ;;; Generated autoloads from jde-which-method.el
 
 (defvar jde-which-method-mode t "\
@@ -1172,23 +1171,23 @@ Enables the JDE's which method mode.
 When which method mode is enabled, the current method name is
 displayed in the mode line.")
 
-(custom-autoload (quote jde-which-method-mode) "jde-which-method" t)
+(custom-autoload 'jde-which-method-mode "jde-which-method" t)
 
 ;;;***
 
 ;;;### (autoloads (jde-xref-customize jde-xref-update jde-xref-list-uncalled-functions
 ;;;;;;  jde-xref-display-call-tree jde-xref-next-caller jde-xref-first-caller
-;;;;;;  jde-xref-make-xref-db) "jde-xref" "jde-xref.el" (19289 5860))
+;;;;;;  jde-xref-make-xref-db) "jde-xref" "jde-xref.el" (20899 44901))
 ;;; Generated autoloads from jde-xref.el
 
-(autoload (quote jde-xref-make-xref-db) "jde-xref" "\
+(autoload 'jde-xref-make-xref-db "jde-xref" "\
 Create a database of caller to callee (and the reverse) from the
 classes in `jde-built-class-path' and store the data in the location
 specified by `jde-xref-db-file'
 
 \(fn)" t nil)
 
-(autoload (quote jde-xref-first-caller) "jde-xref" "\
+(autoload 'jde-xref-first-caller "jde-xref" "\
 Put the list of who calls the current function on the stack and
 display the first caller.  Subsequent callers are displayed through
 `jde-xref-show-next-caller'.  STRICT should be true if the callers of
@@ -1199,13 +1198,13 @@ the requested function are considered.
 
 \(fn STRICT)" t nil)
 
-(autoload (quote jde-xref-next-caller) "jde-xref" "\
+(autoload 'jde-xref-next-caller "jde-xref" "\
 If there are items still on the caller stack, pop the first one off
 and show it
 
 \(fn)" t nil)
 
-(autoload (quote jde-xref-display-call-tree) "jde-xref" "\
+(autoload 'jde-xref-display-call-tree "jde-xref" "\
 Display an interactive call tree of which function call the current
   function, which can be expanded outward.  STRICT should be true if
   the callers of interfaces to a function, or calls to a superclass
@@ -1215,7 +1214,7 @@ Display an interactive call tree of which function call the current
 
 \(fn STRICT)" t nil)
 
-(autoload (quote jde-xref-list-uncalled-functions) "jde-xref" "\
+(autoload 'jde-xref-list-uncalled-functions "jde-xref" "\
 Displays a simple list of function that are never called, at least
 not directly.  Do not assume that this means this code can never be
 reached, since reflection could always call any method.  Use this list
@@ -1230,14 +1229,14 @@ while. If it does, you might want to consider increasing
 
 \(fn STRICT)" t nil)
 
-(autoload (quote jde-xref-update) "jde-xref" "\
+(autoload 'jde-xref-update "jde-xref" "\
 Update the caller table after a recompile.  This can be called by
 the user when they recompile outside of emacs.  It will update the
 call list of all files modified in emacs
 
 \(fn &rest IGNORED)" t nil)
 
-(autoload (quote jde-xref-customize) "jde-xref" "\
+(autoload 'jde-xref-customize "jde-xref" "\
 Display the customization buffer for the xref package.
 
 \(fn)" t nil)
@@ -1245,49 +1244,61 @@ Display the customization buffer for the xref package.
 ;;;***
 
 ;;;### (autoloads (jde-compile-jde jde-show-help jde-mode jde-build
-;;;;;;  jde-set-global-classpath jde-version) "jde" "jde.el" (19289
-;;;;;;  5861))
+;;;;;;  jde-set-global-classpath jde-version) "jde" "jde.el" (20899
+;;;;;;  44901))
 ;;; Generated autoloads from jde.el
 
-(defconst jde-version "2.4.0.1" "\
+(defconst jde-version "2.4.1" "\
 JDE version number.")
 
-(autoload (quote jde-version) "jde" "\
+(autoload 'jde-version "jde" "\
 Get the version of JDEE.
 
 \(fn)" t nil)
 
-(autoload (quote jde-set-global-classpath) "jde" "\
+(autoload 'jde-set-global-classpath "jde" "\
 Set the value of `jde-global-classpath'.
 It specifies the -classpath argument for the Java compiler and
 interpreter.
 
 \(fn CLASSPATH)" t nil)
 
-(autoload (quote jde-build) "jde" "\
+(autoload 'jde-build "jde" "\
 Rebuild the entire project.
 This command invokes the function defined by `jde-build-function'.
 
 \(fn)" t nil)
 
-(autoload (quote jde-mode) "jde" "\
+(autoload 'jde-mode "jde" "\
 Major mode for developing Java applications and applets.
 \\{jde-mode-map}
 
 \(fn)" t nil)
 
-(add-to-list (quote auto-mode-alist) (quote ("\\.java\\'" . jde-mode)))
+(add-to-list 'auto-mode-alist '("\\.java\\'" . jde-mode))
 
-(autoload (quote jde-show-help) "jde" "\
+(autoload 'jde-show-help "jde" "\
 Displays the JDE User's Guide in a browser.
 
 \(fn)" t nil)
 
-(autoload (quote jde-compile-jde) "jde" "\
+(autoload 'jde-compile-jde "jde" "\
 Byte-compile all uncompiled files of jde.
 
 \(fn)" t nil)
 
 ;;;***
+;; helper defined for the CEDET to GNU Emacs CEDET Transition
+;; Cannot be generated by an autoload without circular dependencies
+(defun jde-semantic-require (sym)
+  (cond ((string= sym 'senator)
+         (or (require sym nil t)
+             (require 'semantic/senator)))
+        (t (or (require sym nil t)
+               (require
+                (intern
+                 (if (string-match "-" (symbol-name sym))
+                     (replace-match "/"  nil t (symbol-name sym))
+                   (symbol-name sym))))))))
 
 (provide 'jde-autoload)

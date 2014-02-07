@@ -1,5 +1,5 @@
 ;;; jde-dbo.el -- JDEbug output functions
-;; $Id: jde-dbo.el 179 2009-12-27 01:58:29Z lenbok $
+;; $Id: jde-dbo.el 261 2012-11-04 19:49:12Z shyamalprasad $
 
 ;; Author: Paul Kinnucan <paulk@mathworks.com>
 ;; Maintainer: Paul Landes <landes <at> mailc dt net>
@@ -193,8 +193,7 @@ See also the hook `tree-widget-after-toggle-fucntions'."
 	 (locals (jde-dbs-cmd-exec cmd))
 	 var)
 
-    (save-excursion
-      (set-buffer (oref process locals-buf))
+    (with-current-buffer (oref process locals-buf)
       (kill-all-local-variables)
       (let ((inhibit-read-only t))
 	(erase-buffer))
@@ -204,10 +203,11 @@ See also the hook `tree-widget-after-toggle-fucntions'."
 		 (delete-extent extent)
 		 nil))
 	(let ((all (overlay-lists)))
-	  (mapcar 'delete-overlay (car all))
-	  (mapcar 'delete-overlay (cdr all))))
+	  (mapc 'delete-overlay (car all))
+	  (mapc 'delete-overlay (cdr all))))
 
-      (make-local-hook 'tree-widget-after-toggle-functions)
+      (when jde-xemacsp
+	(make-local-hook 'tree-widget-after-toggle-functions))
       (add-hook 'tree-widget-after-toggle-functions
 		'jde-dbo-locals-update-open-nodes nil t)
 
@@ -516,8 +516,7 @@ The remaining elements are arguments to pass to the handler."
   is called with name to return a true or false value (this is used
   for caching the state). If CLEAR is true then the buffer is cleared
   before creating the tree-widget."
-  (save-excursion
-    (set-buffer buf)
+  (with-current-buffer buf
     (when clear
       (erase-buffer))
     (let* ((var-tag (format "%s %s [id: %s]" (oref var-value jtype) name

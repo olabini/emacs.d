@@ -1,5 +1,5 @@
 ;;; jde-db.el -- Debugger mode for jdb.
-;; $Id: jde-db.el 179 2009-12-27 01:58:29Z lenbok $
+;; $Id: jde-db.el 275 2013-03-03 18:01:28Z shyamalprasad $
 
 ;; Author: Paul Kinnucan <paulk@mathworks.com>
 ;; Maintainer: Paul Landes <landes <at> mailc dt net>
@@ -47,7 +47,7 @@
 (defvar jde-global-classpath)
 (defvar jde-sourcepath)
 (defvar jde-debugger)
-
+(declare-function jde-expand-wildcards-and-normalize "jde" (path &optional symbol))
 
 ;; ======================================================================
 ;; jde-db variables
@@ -307,10 +307,9 @@ to be used for debugging the JDEE's debuggers."
 	(when (not buf)
 	  (setq buf (get-buffer-create  "debugger output"))
 	  (pop-to-buffer buf))
-	(save-excursion
-	  (set-buffer buf)
+	(with-current-buffer buf
 	  (goto-char (point-max))
-	  (insert-string output)))))
+	  (insert output)))))
 
 (defun jde-db-get-debuggee-status ()
   "Get the`jde-db-debuggee-status' of the
@@ -535,8 +534,7 @@ uses overlays as markers in Emacs and extents in XEmacs.")
 
 (defmethod jde-db-breakpoint-get-line ((this jde-db-breakpoint))
   "Get the number of the line at which this breakpoint is set."
-  (save-excursion
-    (set-buffer (find-file-noselect (oref this file)))
+  (with-current-buffer (find-file-noselect (oref this file))
     (if (oref this marker)
 	(let ((marker-start
 	       (if (featurep 'xemacs)
@@ -614,8 +612,7 @@ and sets the status of all breakpoints to `specified'."
 	    (file (oref xbp file))
 	    (buf (find-buffer-visiting file)))
        (if buf
-	   (save-excursion
-	     (set-buffer buf)
+	   (with-current-buffer buf
 	     (let ((xmarker (oref xbp marker)))
 	       (jde-db-breakpoint-marker-delete xmarker))))))
       jde-db-breakpoints)
@@ -664,8 +661,9 @@ particular breakpoint and to select breakpoints to be clear."
 				     (progn
 				       (find-file-other-window
 					(widget-get widget :file))
-				       (goto-line
-					(widget-get widget :line))))
+				       (goto-char (point-min))
+				       (forward-line 
+					(1- (widget-get widget :line)))))
 
 			   :button-face
 			    (cond
@@ -766,7 +764,8 @@ already highlighted."
 		 (status (oref bp status)))
 	    (if (string-equal file (oref bp file))
 		(progn
-		  (goto-line line)
+		  (goto-char (point-min))
+		  (forward-line (1- line))
 		  (oset bp
 			marker
 			(jde-db-breakpoint-marker "breakpoint marker"))
@@ -830,11 +829,11 @@ class. Otherwise, it returns nil."
 	(progn
 	  (if (not (get-buffer-window buffer))
 	      (set-window-buffer window buffer))
-	  (save-excursion
-	    (set-buffer buffer)
+	  (with-current-buffer buffer
 	    (save-restriction
 	      (widen)
-	      (goto-line line)
+	      (goto-char (point-min))
+	      (forward-line (1- line))
 	      (setq pos (point))
 	      (setq overlay-arrow-string "=>")
 	      (or overlay-arrow-position
@@ -1317,8 +1316,7 @@ command list."
 	  (oset this next-cmd (cdr (oref this next-cmd)))
 	  (oset this last-cmd curr-cmd)
 	  (jde-db-cmd-init curr-cmd)
-	  (save-excursion
-	    (set-buffer (oref this buffer))
+	  (with-current-buffer (oref this buffer)
 	    (let ((proc (oref this process))
 		  (cmd-line (jde-db-cmd-make-command-line curr-cmd)))
 	      (if cmd-line
@@ -2000,17 +1998,14 @@ name, e.g. A$B if point is in inner class B of A."
   "Return true if one of `jde-sourcepath'
 matches FILE."
   (let* ((directory-sep-char ?/)
-	 (filename (jde-normalize-path file)))
+		 (filename (jde-normalize-path file)))
     (find-if
      (lambda (dir-x)
        (string-match
-	(concat
-	 "^"
-	 (jde-normalize-path
-	  dir-x
-	  'jde-sourcepath))
-	filename))
-     jde-sourcepath)))
+		(concat "^" dir-x)
+		filename))
+     (jde-expand-wildcards-and-normalize jde-sourcepath 'jde-sourcepath))))
+
 
 (provide 'jde-db)
 

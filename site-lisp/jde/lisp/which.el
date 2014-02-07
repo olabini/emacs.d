@@ -1,5 +1,5 @@
 ;; which.el - UNIX command line `which' like library
-;; $Id: which.el 127 2009-08-12 08:22:57Z paullandes $
+;; $Id: which.el 270 2013-01-08 04:41:57Z shyamalprasad $
 
 ;; Author: Paul Kinnucan <paulk@mathworks.com>
 ;; Maintainer: Paul Landes <landes <at> mailc dt net>
@@ -45,10 +45,10 @@ This command searches the directories in `exec-path'."
 (defun which-find-executable (exe directory-list) 
   "Show the full path name of an executable in DIRECTORY-LIST."
   (catch 'answer
-    (mapcar
-     '(lambda (dir)
+    (mapc
+     #'(lambda (dir)
 (mapcar
-'(lambda (suf)
+#'(lambda (suf)
     (let ((try (expand-file-name (concat exe suf) dir)))
       (and (file-executable-p try)
    (null (file-directory-p try))
@@ -60,10 +60,10 @@ windows-suffixes))
 (defun which-find-all-executables (exe directory-list) 
   "Show the full path name of an executable in DIRECTORY-LIST."
   (let ((answers))
-    (mapcar
-     '(lambda (dir)
-(mapcar
-'(lambda (suf)
+    (mapc
+     #'(lambda (dir)
+(mapc
+#'(lambda (suf)
     (let ((try (expand-file-name (concat exe suf) dir)))
       (and (file-executable-p try)
    (null (file-directory-p try))

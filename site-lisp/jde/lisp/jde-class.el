@@ -1,5 +1,5 @@
 ;; jde-class.el --- Class usage commands for the JDEE.
-;; $Id: jde-class.el 127 2009-08-12 08:22:57Z paullandes $
+;; $Id: jde-class.el 261 2012-11-04 19:49:12Z shyamalprasad $
 
 ;; Copyright (C) 2003 Andrew Hyatt
 ;; Copyright (C) 2009 by Paul Landes
@@ -174,7 +174,7 @@ the strings in LIST exist at the end of STR"
 (defun jde-remove-all-from-directory (dir)
   (if (file-directory-p dir)
     (progn
-      (mapcar 'jde-remove-all-from-directory
+      (mapc 'jde-remove-all-from-directory
 	      (directory-files dir t "[^\\.]$"))
       (delete-directory dir))
     (delete-file dir)))

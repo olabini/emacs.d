@@ -123,7 +123,7 @@
      (erc-pal-face ((t (:background "#232323" :foreground "Magenta" :weight bold :underline nil))))
      (erc-prompt-face ((t (:background "#232323" :foreground "#48D1CC" :weight bold :underline nil))))
      (erc-timestamp-face ((t (:background "#232323" :foreground "#6B8E23" :weight bold :underline nil))))
-     (erc-underline-face ((t (:background "#232323" :foreground "#00ff00" :weight 'normal :underline t))))
+     (erc-underline-face ((t (:background "#232323" :foreground "#00ff00" :weight normal :underline t))))
 
      (error ((t (:bold t :foreground "Pink" :weight bold))))
      (escape-glyph ((t (:foreground "cyan"))))

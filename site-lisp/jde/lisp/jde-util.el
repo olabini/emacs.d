@@ -1,5 +1,5 @@
 ;;; jde-util.el -- JDE utilities.
-;; $Id: jde-util.el 183 2010-01-02 20:22:14Z lenbok $
+;; $Id: jde-util.el 275 2013-03-03 18:01:28Z shyamalprasad $
 
 ;; Author: Paul Kinnucan <paulk@mathworks.com>
 ;; Maintainer: Paul Landes <landes <at> mailc dt net>
@@ -91,12 +91,11 @@ Unless optional argument INPLACE is non-nil, return a new string."
 	      (aset newstr i tochar)))
 	newstr)))
 
-(if (not (fboundp 'replace-in-string))
-    (defun replace-in-string  (string regexp newtext &optional literal)
-      "Replace REGEXP with NEWTEXT in STRING. see: `replace-match'"
-      (if (string-match regexp string)
-	  (replace-match newtext nil literal string)
-	string)))
+(defun jde-replace-in-string  (string regexp newtext &optional literal)
+  "Replace REGEXP with NEWTEXT in STRING. see: `replace-match'"
+  (if (string-match regexp string)
+      (replace-match newtext nil literal string)
+    string))
 
 
 (defun jde-get-line-at-point (&optional pos)
@@ -205,12 +204,13 @@ currently selected source buffer."
 			   "like an exception stack trace line")))
 	(let ((full-class (match-string 1))
 	      (method (match-string 2)))
-	  (setq line (string-to-int (match-string 3)))
+	  (setq line (string-to-number (match-string 3)))
 	  (setq file (jde-find-class-source-file full-class))
 	  (if (null file)
 	      (error "Java source for class `%s' not found" full-class)))))
     (find-file-other-window file)
-    (goto-line line)))
+    (goto-char (point-min))
+    (forward-line (1- line))))
 
 ;;;###autolaod
 (defalias 'jde-goto-exception 'jde-exception-goto)
@@ -263,6 +263,12 @@ See `jde-htmlize-code-destinations'."
 		    (browse-url (buffer-file-name))))
 	    (if (buffer-live-p buf)
 		(kill-buffer buf))))))))
+
+(defun jde-create-default-prompt (prompt default)
+  "Format a prompt with optional default formatting."
+  (format "%s%s"
+	  prompt (if default
+		     (format " (default %s): " default) ": ")))
 
 (provide 'jde-util)
 

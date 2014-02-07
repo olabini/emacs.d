@@ -1,5 +1,5 @@
 ;;; jde-java-grammar.el
-;; $Id: jde-java-grammar.el 179 2009-12-27 01:58:29Z lenbok $
+;; $Id: jde-java-grammar.el 282 2013-04-27 23:45:49Z shyamalprasad $
 
 ;; Author: Paul Kinnucan <paulk@mathworks.com>
 ;; Maintainer: Paul Landes <landes <at> mailc dt net>
@@ -23,10 +23,10 @@
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
-(require 'semantic-java)
 (require 'jde-parse)
+(jde-semantic-require 'semantic-java)
 (eval-when-compile
-  (require 'senator)
+  (jde-semantic-require 'senator)
   (require 'jde-which-method))
 
 
@@ -37,10 +37,11 @@
 (defun jde-parse-semantic-default-setup ()
   "Setup the semantic bovinator for the JDE.
 Should be run when Semantic is ready to parse, that is, via
-`semantic-init-hooks'."
+`semantic-init-hook'."
 
-  ;; Remove me from `semantic-init-hooks'
-  (remove-hook 'semantic-init-hooks 'jde-parse-semantic-default-setup)
+  (unless jde-emacs-cedet-p
+    ;; Remove me from `semantic-init-hook'
+    (remove-hook 'semantic-init-hook 'jde-parse-semantic-default-setup))
 
   (when jde-auto-parse-enable
     ;; JDE delegates auto-parse to Semantic if possible.  Since
@@ -55,17 +56,20 @@ Should be run when Semantic is ready to parse, that is, via
 	  (semantic-idle-scheduler-mode 1)))
      (t
       ;; Default to JDE's auto-parse
-      (make-local-hook 'semantic-change-hooks)
+      (when jde-xemacsp
+	(make-local-hook 'semantic-change-hooks))
       (add-hook 'semantic-change-hooks
 		'jde-parse-buffer-changed-hook t t))))
 
   ;; Track full reparses
-  (make-local-hook 'semantic-after-toplevel-cache-change-hook)
+  (when jde-xemacsp
+    (make-local-hook 'semantic-after-toplevel-cache-change-hook))
   (add-hook 'semantic-after-toplevel-cache-change-hook
 	    'jde-parse-update-after-parse nil t)
 
   ;; Track partial reparses
-  (make-local-hook 'semantic-after-partial-cache-change-hook)
+  (when jde-xemacsp
+    (make-local-hook 'semantic-after-partial-cache-change-hook))
   (add-hook 'semantic-after-partial-cache-change-hook
 	    'jde-parse-update-after-partial-parse nil t)
 

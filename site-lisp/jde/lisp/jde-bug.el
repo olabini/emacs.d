@@ -1,5 +1,5 @@
 ;;; jde-bug.el -- JDEbug Interface
-;; $Id: jde-bug.el 176 2009-12-24 03:05:35Z lenbok $
+;; $Id: jde-bug.el 280 2013-04-14 06:35:01Z shyamalprasad $
 
 ;; Author: Paul Kinnucan <paulk@mathworks.com>
 ;; Maintainer: Paul Landes <landes <at> mailc dt net>
@@ -542,7 +542,6 @@ consuming and slows down stepping through the code."
 	)
   "JDEbug menu specification")
 
-
 (defvar jde-bug-mode-map
   (let ((km (make-sparse-keymap)))
     (easy-menu-define jde-bug-menu km "JDEbug Minor Mode Menu"
@@ -550,27 +549,10 @@ consuming and slows down stepping through the code."
     km)
   "Keymap for JDEbug minor mode.")
 
-(defvar jde-bug-minor-mode nil
-  "Non-nil if JDEBug minor mode is enabled.")
-(make-variable-buffer-local 'jde-bug-minor-mode)
+(define-minor-mode jde-bug-minor-mode nil
+  :keymap jde-bug-mode-map)
 
-(defun jde-bug-minor-mode (&optional arg)
-  "Toggle JDEbug minor mode.
-With prefix argument ARG, turn on if positive, otherwise off.
-
-\\{jde-bug-mode-map}"
-  (interactive
-   (list (or current-prefix-arg
-	     (if jde-bug-minor-mode 0 1))))
-
-  (setq jde-bug-minor-mode
-	(if arg
-	    (> (prefix-numeric-value arg) 0)
-	  (not jde-bug-minor-mode)))
-
-  (run-hook-with-args 'jde-bug-minor-mode-hook jde-bug-minor-mode))
-
-(semantic-add-minor-mode 'jde-bug-minor-mode " JDEbug" jde-bug-mode-map)
+(semantic-add-minor-mode 'jde-bug-minor-mode " JDEbug")
 
 ;; (fmakunbound 'jde-bug-key-bindings)
 (defcustom jde-bug-key-bindings
@@ -1639,7 +1621,7 @@ requests to cancel."
 			    (oref process threads-buf)))
 	     (msg-buffer (when (slot-boundp process 'msg-buf)
 			(oref process msg-buf)))
-	     (frame (new-frame '((name . "JDebug") (minibuffer . nil))))
+	     (frame (make-frame '((name . "JDebug") (minibuffer . nil))))
 	     (height (/ (frame-height frame) (count-if 'identity
 						       (list cli-buffer
 							     locals-buffer

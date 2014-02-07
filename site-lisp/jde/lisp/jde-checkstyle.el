@@ -1,5 +1,5 @@
 ;;; jde-checkstyle.el --- Checkstyle interface for JDE
-;; $Id: jde-checkstyle.el 179 2009-12-27 01:58:29Z lenbok $
+;; $Id: jde-checkstyle.el 274 2013-03-03 04:04:55Z shyamalprasad $
 
 ;; Copyright (C) 2001, 2002, 2003, 2004 Markus Mohnen and Paul Kinnucan
 ;; Copyright (C) 2009 by Paul Landes
@@ -29,7 +29,7 @@
 ;; LCD Archive Entry:
 ;; jde-checkstyle|Markus Mohnen|
 ;; |Checkstyle interface for JDE
-;; |$Date: 2009-12-26 19:58:29 -0600 (Sat, 26 Dec 2009) $|$Revision: 179 $|~/packages/jde-checkstyle.el
+;; |$Date: 2013-03-02 20:04:55 -0800 (Sat, 02 Mar 2013) $|$Revision: 274 $|~/packages/jde-checkstyle.el
 
 ;;; Commentary:
 
@@ -272,10 +272,10 @@ string describing how the compilation finished."
       (compilation-mode)
       (setq buffer-read-only nil)
 
-      (set (make-local-variable 'compilation-finish-function)
+      (set (make-local-variable 'compilation-finish-functions)
 	   (lambda (buf msg)
 	     (run-hook-with-args 'jde-checkstyle-finish-hook buf msg)
-	     (setq compilation-finish-function nil)))
+	     (setq compilation-finish-functions nil)))
       (if (boundp 'compilation-parse-errors-function)
 	  (set (make-local-variable 'compilation-parse-errors-function) parser))
       (if (boundp 'compilation-error-message)
@@ -354,8 +354,7 @@ string describing how the compilation finished."
 		    (list "-r" (jde-normalize-path jde-checkstyle-source-dir))
 		  (list source-file)))))
 
-    (save-excursion
-      (set-buffer outbuf)
+    (with-current-buffer outbuf
 
       (insert (format "cd %s\n" default-directory))
 

@@ -1,5 +1,5 @@
 ;;; jde-java-font-lock.el -- Extra level font locking for java
-;; $Id: jde-java-font-lock.el 179 2009-12-27 01:58:29Z lenbok $
+;; $Id: jde-java-font-lock.el 267 2012-12-18 16:18:00Z paullandes $
 
 ;; Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005 by David Ponce
 ;; Copyright (C) 2009 by Paul Landes
@@ -900,7 +900,7 @@ expressions."
 	    '(1 'font-lock-warning-face t)))
 	;; package and imports
 	`(,(c-make-font-lock-search-function
-	    "\\<\\(package\\|import\\(?:\\s-+static\\)?\\)\\s-+\\(\\(?:[a-z*][a-zA-Z0-9]*\\.?\\)*\\)"
+	    "\\<\\(package\\|import\\(?:\\s-+static\\)?\\)\\s-+\\(\\(?:[a-z_$*][a-zA-Z0-9_$]*\\.?\\)*\\)"
 	    '(1 'font-lock-keyword-face t)
 	    '(2 'jde-java-font-lock-package-face t)))
 	;; constructor
@@ -1145,10 +1145,16 @@ standard `java-mode'."
 ;; Java has a different font for comments than Emacs Lisp, but by default,
 ;; `jde-java-font-lock-javadoc-face' inherits from `font-lock-doc-face', which
 ;; is the mapping for `c-doc-face-name' Emacs 22 and up
-(defconst c-doc-face-name 'jde-java-font-lock-javadoc-face)
+(if (> emacs-major-version 23)
+    (defconst c-doc-face-name 'jde-java-font-lock-javadoc-face)
+  ;; starting with 24, cc-fonts clobbers this because of some change of order
+  ;; of loading
+  (eval-after-load
+      "cc-fonts"
+    '(defconst c-doc-face-name 'jde-java-font-lock-javadoc-face)))
 
 ;; By default, enable extra fontification in `jde-mode'.
-(add-hook 'jde-mode-hook #'jde-setup-syntax-coloring)
+(add-hook 'java-mode-hook #'jde-setup-syntax-coloring)
 
 (provide 'jde-java-font-lock)
 
