@@ -17,5 +17,6 @@
 (autoload 'ido-mode "ido" nil t)
 (autoload 'fontize-set-default-font "fontize" nil t)
 (autoload 'fontize-decrease-font-size "fontize" nil t)
+(autoload 'ruby-insert-end "ruby-insert-end" nil t)
 
 (provide 'emacs-require)

@@ -1,4 +1,7 @@
 (setq
+ tls-program                        '("openssl s_client -connect %h:%p -no_ssl2 -ign_eof"
+;;                                      "gnutls-cli --priority secure256 -p %p %h"
+)
  inhibit-startup-message             t
  line-number-mode                    t
  column-number-mode                  t
