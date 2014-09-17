@@ -26,10 +26,16 @@
                      dart-mode
                      dash
                      debpaste
+                     dired-isearch
+                     dired-rainbow
+                     dired-single
                      dna-mode
+                     dockerfile-mode
                      ecb
                      edit-server
                      elein
+                     eimp
+                     emamux
                      epl
                      epresent
                      erc-crypt
@@ -37,6 +43,7 @@
                      erc-view-log
                      erlang
                      feature-mode
+                     fixme-mode
                      fringe-helper
                      fsharp-mode
                      fuel
@@ -45,11 +52,15 @@
                      git-blame
                      git-commit-mode
                      git-rebase-mode
+                     github-clone
+                     gitignore-mode
                      go-mode
                      google-maps
                      google-this
+                     gradle-mode
                      groovy-mode
                      haml-mode
+                     handlebars-mode
                      haskell-mode
                      htmlize
                      ibuffer-git
@@ -64,12 +75,15 @@
                      less-css-mode
                      levenshtein
                      magit
-                     magithub
                      malabar-mode
+                     markdown-mode
+                     markdown-mode+
                      markup-faces
                      midje-mode
                      minitest
                      mmm-mode
+                     multi-term
+                     muttrc-mode
                      nodejs-repl
                      nrepl
                      nrepl-ritz
@@ -79,6 +93,7 @@
                      pabbrev
                      paredit
                      php-mode
+                     pip-requirements
                      pkg-info
                      popup
                      pos-tip
@@ -91,6 +106,7 @@
                      racket-mode
                      rainbow-delimiters
                      rainbow-mode
+                     rbenv
                      rhtml-mode
                      rinari
                      rspec-mode
@@ -112,6 +128,7 @@
                      scala-mode
                      scala-mode2
                      scss-mode
+                     shell-here
                      slime
                      slime-clj
                      slime-js
@@ -123,15 +140,13 @@
                      tuareg
                      twittering-mode
                      url-shortener
-                     xml-rpc
-                     yaml-mode
-                     rbenv
-                     shell-here
                      w3m
                      wc-mode
                      web-beautify
                      wgrep
                      wgrep-ack
+                     xml-rpc
+                     yaml-mode
                      ))
 
 (setq package-archives '(("elpa" . "http://tromey.com/elpa/")

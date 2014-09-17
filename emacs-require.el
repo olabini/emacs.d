@@ -19,4 +19,6 @@
 (autoload 'fontize-decrease-font-size "fontize" nil t)
 (autoload 'ruby-insert-end "ruby-insert-end" nil t)
 
+(require 'post)
+
 (provide 'emacs-require)

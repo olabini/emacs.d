@@ -39,9 +39,6 @@
  inferior-lisp-program               "sbcl"
 )
 
-(eval-after-load "erc-join"
-  '(erc-autojoin-mode 1))
-
 (auto-compression-mode t)
 (auto-insert-mode t)
 (global-font-lock-mode t)

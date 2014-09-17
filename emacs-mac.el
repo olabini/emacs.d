@@ -16,7 +16,7 @@
 
 (defun zsh ()
   (interactive)
-  (let* ((explicit-shell-file-name "/usr/local/bin/zsh")
+  (let* ((explicit-shell-file-name "/usr/bin/zsh")
          (shell-file-name explicit-shell-file-name)
          (comint-prompt-read-only t))
     (shell)

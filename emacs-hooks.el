@@ -115,6 +115,10 @@
           (lambda ()
             (define-key ido-completion-map "\C-w" 'ido-delete-backward-updir)))
 
+(add-hook 'org-mode-hook
+          (lambda ()
+            (require 'org-custom)))
+
 (eval-after-load "io-mode"
   '(progn
     (require 'io-templates)
