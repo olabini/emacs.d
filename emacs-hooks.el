@@ -117,7 +117,8 @@
 
 (add-hook 'org-mode-hook
           (lambda ()
-            (require 'org-custom)))
+            (require 'org-custom)
+            (require 'org-mode-notes-exporter)))
 
 (eval-after-load "io-mode"
   '(progn

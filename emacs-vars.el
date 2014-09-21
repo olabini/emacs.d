@@ -37,6 +37,7 @@
  ibuffer-expert                      t
  ibuffer-show-empty-filter-groups    nil
  inferior-lisp-program               "sbcl"
+ interprogram-paste-function 'x-cut-buffer-or-selection-value
 )
 
 (auto-compression-mode t)

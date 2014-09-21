@@ -22,6 +22,8 @@
 
 ;;
 
+(require 'ox)
+
 ;;; Code:
 (org-export-define-backend 'presentation-notes
   '(
@@ -29,6 +31,8 @@
     (plain-text . org-mode-notes-exporter-text)
     (paragraph . org-mode-notes-exporter-paragraph)
     (section .  (lambda (section contents info) contents))
+    (comment . org-mode-notes-exporter-comment)
+    (comment-block . org-mode-notes-exporter-comment)
     (template .  (lambda (contents info) (concat "<notes>\n" contents "\n</notes>"))))
   :menu-entry
   '(?n "Export to Presentation Notes"
@@ -81,7 +85,6 @@
             (let* ((list-pages (count-pages-internally headline nil))
                    (note current-note)
                    (pages (figure-current-pages (car num) current-page list-pages)))
-              (message (format "stuff for %s: %d   pages: %s" text list-pages pages))
               (set-next-pages pages)
               (setq current-note nil)
               (if note
@@ -94,6 +97,16 @@
 
 (defun org-mode-notes-exporter-paragraph (paragraph contents info)
   contents)
+
+(defun string/starts-with (string prefix)
+  "Return t if STRING starts with prefix."
+  (and (string-match (rx-to-string `(: bos ,prefix) t) string) t))
+
+(defun org-mode-notes-exporter-comment (comment contents info)
+  (let ((text (org-element-property :value comment)))
+    (if (string/starts-with text "NOTE:")
+        (concat "<note number=\"1\">" (substring text 6) "</note>")
+        "")))
 
 (defun org-export-as-notes
   (&optional async subtreep visible-only body-only ext-plist)
