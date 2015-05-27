@@ -1,17 +1,17 @@
 (setq load-path
-      (remove "/usr/local/share/emacs/24.3/lisp/org"
+      (remove "/usr/local/share/emacs/24.5/lisp/org"
               (append
                (mapcar
                 'expand-file-name
                 '(
+                  "~/.emacs.d/main"
                   "~/.emacs.d/site-lisp/jde/lisp"
                   "~/.emacs.d/site-lisp/downloaded"
                   "~/.emacs.d/site-lisp/own"
                   "~/.emacs.d/site-lisp/erc-sasl"
-                  "~/.emacs.d/"
                   )) load-path)))
 
-(setq custom-file (expand-file-name "~/.emacs.d/emacs-custom.el"))
+(setq custom-file (expand-file-name "~/.emacs.d/main/emacs-custom.el"))
 
 (require 'emacs-custom)
 (require 'emacs-packages)

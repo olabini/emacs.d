@@ -8,13 +8,19 @@
 (im-notifications-line-mode t)
 (im-notifications-updated)
 
+(defun erc-freenode ()
+  (interactive)
+  (erc :server "freenode.irc.local" :port 16333 :nick "olabini"))
+
+(defun erc-oftc ()
+  (interactive)
+  (erc :server "oftc.irc.local" :port 16335 :nick "olabini"))
+
 (defun erc-all ()
   "Connect to IRC."
   (interactive)
-  (erc :server "127.0.0.1" :port 16333 :nick "olabini")
-  (erc :server "127.0.0.1" :port 16334 :nick "olabini")
-  (erc :server "127.0.0.1" :port 16335 :nick "olabini")
-  )
+  (erc-freenode)
+  (erc-oftc))
 
 (defun update-notification-hook (begin end length notification-name)
   (let ((cb (current-buffer))

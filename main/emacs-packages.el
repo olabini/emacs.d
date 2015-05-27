@@ -87,6 +87,7 @@
                      nodejs-repl
                      nrepl
                      nrepl-ritz
+                     omnisharp
                      org
                      org-present
                      oz

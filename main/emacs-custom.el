@@ -4,6 +4,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(Info-additional-directory-list (quote ("~/.emacs.d/info/")))
+ '(ack-and-a-half-prompt-for-directory t)
+ '(ack-and-a-half-root-directory-functions nil)
  '(bsh-jar "~/.emacs.d/jde/java/lib/bsh.jar")
  '(coffee-tab-width 2)
  '(completion-ignored-extensions (quote ("CVS/" ".cache" ".o" "~" ".bin" ".bak" ".obj" ".map" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".dvi" ".fmt" ".tfm" ".pdf" ".class" ".fas" ".lib" ".x86f" ".sparcf" ".lo" ".la" ".toc" ".log" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".vr" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".svn/")))
@@ -16,7 +18,9 @@
  '(edit-server-port 9393)
  '(erc-autojoin-channels-alist nil)
  '(erc-autojoin-mode nil)
+ '(erc-current-nick-highlight-type (quote all))
  '(erc-prompt-for-password nil)
+ '(erc-track-exclude-types (quote ("JOIN" "NICK" "PART" "QUIT" "333" "353")))
  '(fill-column 140)
  '(grep-command "grep -nH -r -e *")
  '(ido-enable-flex-matching t)
@@ -50,22 +54,16 @@
  '(org-babel-load-languages (quote ((ruby . t) (emacs-lisp . t) (clojure . t) (io . t) (js . t) (python . t))))
  '(org-beamer-environments-extra (quote (("takahashi" "t" "\\begin{takahashi}%L" "\\end{takahashi}") ("businesscard" "X" "\\begin{businesscard}" "\\end{businesscard}"))))
  '(org-beamer-theme nil)
- '(org-export-backends (quote (ascii beamer html icalendar latex md deck freemind)))
+ '(org-export-backends (quote (ascii beamer html icalendar latex md deck freemind reveal\.js)))
  '(org-hide-leading-stars t)
  '(org-latex-pdf-process (quote ("xelatex -shell-escape -interaction nonstopmode -output-directory %o %f")))
  '(org-odd-levels-only t)
  '(org-pretty-entities t)
  '(rails-tags-command "ctags -e -a --Ruby-kinds=-f -o %s -R %s")
  '(safe-local-variable-values (quote ((encoding . utf-8))))
- '(semanticdb-default-save-directory "~/.emacs.d/semantic/")
+ '(semanticdb-default-save-directory "~/.emacs.d/semantic/" t)
  '(tab-width 4)
  '(wdired-allow-to-change-permissions t)
  '(x-select-enable-clipboard t))
 
 (provide 'emacs-custom)
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )

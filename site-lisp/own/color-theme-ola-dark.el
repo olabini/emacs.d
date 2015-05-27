@@ -106,7 +106,7 @@
      (erc-bold-face ((t (:background "#232323" :foreground "#00ff00" :weight bold :underline nil))))
      (erc-button ((t (:background "#232323" :foreground "#00ff00" :weight bold :underline nil))))
      (erc-command-indicator-face ((t ( :background "#232323" :foreground "#00ff00" :weight bold :underline nil))))
-     (erc-current-nick-face ((t (:background "#232323" :foreground "#228B22" :weight bold :underline nil))))
+     (erc-current-nick-face ((t (:background "#232323" :foreground "light sea green" :weight bold :underline nil))))
      (erc-dangerous-host-face ((t (:background "#232323" :foreground "#ff00f0" :weight normal :underline nil))))
      (erc-default-face ((t (:background "#232323" :foreground "#00ff00" :weight normal :underline nil))))
      (erc-direct-msg-face ((t (:background "#232323" :foreground "#98FB98" :weight normal :underline nil))))

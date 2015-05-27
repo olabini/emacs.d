@@ -42,6 +42,7 @@
 (auto-mode "\\.seph$" 'seph-mode)
 (auto-mode "\\.sp$" 'seph-mode)
 (auto-mode "\\.js$" 'js2-mode)
+(auto-mode "\\.jsm$" 'js2-mode)
 (auto-mode "\\.ml[iylp]?$" 'caml-mode)
 (auto-mode "\\.fs[iylx]?$" 'fsharp-mode)
 (auto-mode "\\.org$" 'org-mode)
