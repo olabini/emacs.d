@@ -33,3 +33,4 @@
 (load "emacs-user-init" t)
 (put 'downcase-region 'disabled nil)
 (server-start)
+(color-theme-ola-dark)

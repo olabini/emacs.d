@@ -148,6 +148,16 @@
                      wgrep-ack
                      xml-rpc
                      yaml-mode
+                     s
+                     js2-refactor
+                     ag
+                     helm
+                     helm-ag
+                     helm-rb
+                     helm-git
+                     gist
+                     gh
+                     github-clone
                      ))
 
 (setq package-archives '(("elpa" . "http://tromey.com/elpa/")

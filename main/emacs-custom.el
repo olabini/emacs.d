@@ -60,7 +60,7 @@
  '(org-odd-levels-only t)
  '(org-pretty-entities t)
  '(rails-tags-command "ctags -e -a --Ruby-kinds=-f -o %s -R %s")
- '(safe-local-variable-values (quote ((encoding . utf-8))))
+ '(safe-local-variable-values (quote ((js2-basic-offset . 4) (encoding . utf-8))))
  '(semanticdb-default-save-directory "~/.emacs.d/semantic/" t)
  '(tab-width 4)
  '(wdired-allow-to-change-permissions t)
