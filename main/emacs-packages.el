@@ -13,7 +13,6 @@
                      caml
                      cider
                      clojure-mode
-                     clojure-project-mode
                      clojure-test-mode
                      clojurescript-mode
                      coffee-mode
@@ -71,7 +70,6 @@
                      js2-mode
                      js3-mode
                      json-mode
-                     lein
                      less-css-mode
                      levenshtein
                      magit
@@ -85,8 +83,6 @@
                      multi-term
                      muttrc-mode
                      nodejs-repl
-                     nrepl
-                     nrepl-ritz
                      omnisharp
                      org
                      org-present
@@ -100,7 +96,6 @@
                      pos-tip
                      pretty-lambdada
                      processing-mode
-                     project-mode
                      puppet-mode
                      python-mode
                      quack
@@ -174,6 +169,7 @@
   (unless package-archive-contents (package-refresh-contents))
   (dolist (package package-list)
     (unless (package-installed-p package)
+      (message "Installing: %s" package)
       (package-install package))))
 
 (ensure-packages)
