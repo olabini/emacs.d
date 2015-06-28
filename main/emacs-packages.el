@@ -158,6 +158,8 @@
                      gist
                      gh
                      github-clone
+                     go-autocomplete
+                     go-eldoc
                      ))
 
 (setq package-archives '(("elpa" . "http://tromey.com/elpa/")

@@ -18,6 +18,7 @@
 (autoload 'fontize-set-default-font "fontize" nil t)
 (autoload 'fontize-decrease-font-size "fontize" nil t)
 (autoload 'ruby-insert-end "ruby-insert-end" nil t)
+(autoload 'set-local-envs "local-env" nil t)
 
 (require 'post)
 

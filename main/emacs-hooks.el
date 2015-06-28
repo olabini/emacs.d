@@ -140,4 +140,8 @@
     (rvm-use-default)
     ))
 
+(add-hook 'before-save-hook 'gofmt-before-save)
+
+(add-hook 'go-mode-hook 'set-local-envs)
+
 (provide 'emacs-hooks)

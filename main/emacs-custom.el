@@ -59,6 +59,7 @@
  '(org-latex-pdf-process (quote ("xelatex -shell-escape -interaction nonstopmode -output-directory %o %f")))
  '(org-odd-levels-only t)
  '(org-pretty-entities t)
+ '(shell-command-switch "-ic")
  '(rails-tags-command "ctags -e -a --Ruby-kinds=-f -o %s -R %s")
  '(safe-local-variable-values (quote ((js2-basic-offset . 4) (encoding . utf-8))))
  '(semanticdb-default-save-directory "~/.emacs.d/semantic/" t)
