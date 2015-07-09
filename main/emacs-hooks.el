@@ -140,8 +140,20 @@
     (rvm-use-default)
     ))
 
-(add-hook 'before-save-hook 'gofmt-before-save)
+(defun local-go-mode-hooks ()
+  (set-local-envs)
+  (go-eldoc-setup)
+  (setq gofmt-command "goimports")
+  (add-hook 'before-save-hook 'gofmt-before-save)
+  (local-set-key (kbd "M-.") 'godef-jump)
+  (if (not (string-match "go" compile-command))
+      (set (make-local-variable 'compile-command)
+           "_direnv_hook && go build && go test"))
+  (set (make-local-variable 'compilation-read-command) nil)
+  (define-key (current-local-map) "\C-c\C-c" 'compile)
+  (require 'auto-complete-config)
+  (require 'go-autocomplete))
 
-(add-hook 'go-mode-hook 'set-local-envs)
+(add-hook 'go-mode-hook 'local-go-mode-hooks)
 
 (provide 'emacs-hooks)
