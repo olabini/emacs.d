@@ -76,6 +76,9 @@
             (setq c-basic-offset 4)
             (local-set-key [tab] 'indent-or-complete)
             (local-set-key [?\C-c tab] 'indent-region)
+            (require 'whitespace)
+            (setq whitespace-style '(face empty tabs lines-tail trailing))
+            (whitespace-mode t)
             )))
 
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
@@ -110,6 +113,9 @@
             (require 'run-dart)))
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+(defun turn-off-delete-trailing-whitespace ()
+  (remove-hook 'before-save-hook 'delete-trailing-whitespace))
 
 (add-hook 'ido-setup-hook
           (lambda ()
@@ -148,12 +154,19 @@
   (local-set-key (kbd "M-.") 'godef-jump)
   (if (not (string-match "go" compile-command))
       (set (make-local-variable 'compile-command)
-           "_direnv_hook && go build && go test"))
+           "_direnv_hook && go test"))
   (set (make-local-variable 'compilation-read-command) nil)
   (define-key (current-local-map) "\C-c\C-c" 'compile)
   (require 'auto-complete-config)
   (require 'go-autocomplete))
 
+(defun local-post-mode-hooks ()
+  (set (make-local-variable 'fill-column) 70)
+  )
 (add-hook 'go-mode-hook 'local-go-mode-hooks)
+
+(add-hook 'post-mode-hook 'local-post-mode-hooks)
+
+(add-hook 'markdown-mode-hook 'turn-off-delete-trailing-whitespace)
 
 (provide 'emacs-hooks)

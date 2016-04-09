@@ -65,9 +65,17 @@
                 (filename . "workspace/jruby"))
                ("Annai"
                 (filename . "workspace/tw/annai"))
+               ("IM"
+                (or
+                 (name . "^\\*pond\\*$")
+                 (name . "^\\*xmpp: ")
+                 ))
+               ("STRIKE"
+                (filename . "SPEAR/projects/STRIKE"))
                ("Programming"
                 (or
                  (mode . ioke-mode)
+                 (mode . go-mode)
                  (mode . ruby-mode)
                  (mode . python-mode)
                  (mode . emacs-lisp-mode)
@@ -84,6 +92,8 @@
                  (name . "^\\*Org Agenda\\*$")))
                ("Emacs"
                 (or
+                 (name . "^\\*compilation\\*$")
+                 (name . "^\\*Completions\\*$")
                  (name . "^\\*scratch\\*$")
                  (name . "^\\*Messages\\*$")))
                ))))

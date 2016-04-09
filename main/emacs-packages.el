@@ -42,6 +42,7 @@
                      erc-view-log
                      erlang
                      feature-mode
+                     fill-column-indicator
                      fixme-mode
                      fringe-helper
                      fsharp-mode

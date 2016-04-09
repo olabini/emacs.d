@@ -28,8 +28,13 @@
 
 (defconst local-env-cache (make-hash-table :test 'equal))
 
+(defun exec-with-fallback (cmd1 cmd2)
+  (let ((result (shell-command-to-string cmd1)))
+    result))
+
 (defun calculate-current-env ()
-  (let* ((current-env (shell-command-to-string (concat local-env-shell-name " -lic '_direnv_hook && env'")))
+  (let* ((current-env (exec-with-fallback (concat local-env-shell-name " -lic '_direnv_hook && env'")
+                                          (concat local-env-shell-name " -lic 'env'")))
          (each-env (split-string current-env "\n"))
          (env-split (mapcar (lambda (e) (split-string e "=")) each-env))
          (path (split-string (car (cdr (assoc "PATH" env-split))) ":")))
